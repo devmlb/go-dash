@@ -14,9 +14,6 @@ interface Pywebview {
 declare global {
     interface Window {
         pywebview: Pywebview;
-        writeProgress?: (v: string) => void;
-        writeProgressDesc?: (v: string) => void;
-        _pywebviewReady?: boolean
     }
 }
 
