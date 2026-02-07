@@ -37,7 +37,13 @@ class Organ_Service:
         self.storage_service.open_file(self.get(id)["path"])
 
     def get_cover_b64(self, id: str) -> str:
-        return self.storage_service.get_image_b64(self.get(id)["cover"])
+        try:
+            return self.storage_service.get_image_b64(self.get(id)["cover"])
+        except:
+            raise Exception(f"Warning: no cover provided for organ with id '{id}'")
 
     def get_preview_b64(self, id: str) -> str:
-        return self.storage_service.get_image_b64(self.get(id)["preview"])
+        try:
+            return self.storage_service.get_image_b64(self.get(id)["preview"])
+        except:
+            raise Exception(f"Warning: no preview provided for organ with id '{id}'")

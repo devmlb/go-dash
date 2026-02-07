@@ -36,4 +36,4 @@ class Storage_Service:
         with open(path, "rb") as image_file:
             b64_image = base64.b64encode(image_file.read())
 
-        return b64_image
+        return b64_image.decode('utf-8')
