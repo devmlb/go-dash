@@ -18,7 +18,7 @@ class Storage_Service:
                 config_file.write(json.dumps({"organs": []}, indent=2))
 
     def get_config(self) -> dict:
-        with open(self.config_path, "w", encoding="utf8") as config_file:
+        with open(self.config_path, "r", encoding="utf8") as config_file:
             config = config_file.read()
 
         return json.loads(config)

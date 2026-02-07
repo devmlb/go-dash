@@ -12,7 +12,7 @@ class Organ_Service:
         self.organs = self.storage_service.get_config()["organs"]
 
         for i in range(len(self.organs)):
-            self.organs[i]["id"] = f"{self.organs[i]["name"]}-{self.organs[i]["creator"]}-{self.organs[i]["date"]}"
+            self.organs[i]["id"] = f"""{self.organs[i]["name"]}-{self.organs[i]["creator"]}-{self.organs[i]["date"]}"""
 
     def get_all(self) -> list:
         sanitized_organs = []
