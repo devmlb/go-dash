@@ -33,7 +33,7 @@ jobs:
             PREVIOUS_VERSION=""
           else
             # Get the previous VITE_VERSION from the previous commit
-            if git checkout HEAD~1 -- .env.production 2>&1; then
+            if git checkout HEAD~1 -- .env.production 2>/dev/null; then
               PREVIOUS_VERSION=$(grep '^VITE_VERSION=' .env.production | cut -d '=' -f2 | tr -d '"' | tr -d ' ')
             else
               echo "File did not exist in previous commit"
@@ -93,13 +93,13 @@ jobs:
       
       - name: Verify build output
         run: |
-          echo "Checking dist folder contents:"
-          dir dist
+          Write-Host "Checking dist folder contents:"
+          Get-ChildItem dist
           if (Test-Path "dist\GO Dash") {
-            echo "GO Dash folder found"
-            dir "dist\GO Dash"
+            Write-Host "GO Dash folder found"
+            Get-ChildItem "dist\GO Dash"
           } else {
-            echo "Error: GO Dash folder not found"
+            Write-Host "Error: GO Dash folder not found"
             exit 1
           }
         shell: pwsh
@@ -115,11 +115,11 @@ jobs:
           $tag = "${{ needs.check-version-change.outputs.new_version }}"
           $releases = gh release list --limit 100
           if ($releases -match $tag) {
-            echo "release_exists=true" >> $env:GITHUB_OUTPUT
-            echo "Release $tag already exists"
+            "release_exists=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+            Write-Host "Release $tag already exists"
           } else {
-            echo "release_exists=false" >> $env:GITHUB_OUTPUT
-            echo "Release $tag does not exist"
+            "release_exists=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+            Write-Host "Release $tag does not exist"
           }
         shell: pwsh
         env:
