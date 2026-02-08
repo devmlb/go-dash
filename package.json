@@ -27,6 +27,7 @@
   "author": "Mlb",
   "license": "GNU GPLv3",
   "dependencies": {
+    "lucide-react": "^0.563.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "run-script-os": "^1.1.6"

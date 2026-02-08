@@ -21,11 +21,11 @@ class Storage_Service:
                             "organs": [
                                 {
                                     "name": "My amazing organ",
-                                    "creator": "Me",
+                                    "country": "France",
                                     "date": 2026,
                                     "cover": "C\\Users\\me\\mycover.jpg",
                                     "preview": "C\\Users\\me\\mypreview.jpg",
-                                    "path": "C\\Users\\me\\myorgan.organ",
+                                    "path": "C\\Users\\me\\myorgan.orgue",
                                 }
                             ]
                         },

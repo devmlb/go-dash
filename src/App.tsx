@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type JSX, type SetStateAction } from "react";
+import { MapPin, Calendar } from "lucide-react";
 
 import "./App.css";
 import {
@@ -56,7 +57,7 @@ function OrganCard({
             </div>
             <div className="content">
                 <h3 className="name">{organ.name}</h3>
-                <div className="infos">{`${organ.creator} • ${organ.date.toString()}`}</div>
+                <div className="infos">{`${organ.country} • ${organ.date.toString()}`}</div>
             </div>
         </div>
     );
@@ -123,8 +124,14 @@ function Panel({
                                     <h2 className="name">
                                         {selectedOrgan.name}
                                     </h2>
-                                    <div>{`Par ${selectedOrgan.creator}`}</div>
-                                    <div>{selectedOrgan.date.toString()}</div>
+                                    <div>
+                                        <MapPin size={16} />
+                                        {selectedOrgan.country}
+                                    </div>
+                                    <div>
+                                        <Calendar size={16} />
+                                        {selectedOrgan.date.toString()}
+                                    </div>
                                 </div>
                                 <button
                                     onClick={() => openOrgan(selectedOrgan.id)}

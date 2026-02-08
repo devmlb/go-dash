@@ -1,7 +1,7 @@
 interface Organ {
     id: string;
     name: string;
-    creator: string;
+    country: string;
     date: number;
 }
 

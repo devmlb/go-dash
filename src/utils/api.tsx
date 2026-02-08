@@ -12,9 +12,9 @@ async function getOrgansList(): Promise<Organ[]> {
         for (let i = 0; i < 20; i++) {
             data.push({
                 id: `organ-${i.toString()}`,
-                name: "NDTJ",
-                creator: "Debierre",
-                date: 1850,
+                name: "My organ",
+                country: "France",
+                date: 2026,
             });
         }
         return data;

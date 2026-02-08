@@ -153,6 +153,18 @@ main > .panel > .content > .actions {
     gap: 20px;
 }
 
+main > .panel > .content > .actions > .infos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+main > .panel > .content > .actions > .infos > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 main > .panel > .content > .actions > .infos > .name {
     color: var(--color-on-surface);
     margin-block-start: 0;
