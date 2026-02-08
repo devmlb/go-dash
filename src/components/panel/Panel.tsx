@@ -5,13 +5,12 @@ import "./Panel.css";
 import { getPreview, openOrgan } from "../../utils/api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { Organ } from "../../utils/types/api.types";
+import { useBridgeReady } from "../../utils/hooks/bridge.hook";
 
 function Panel({
     selectedOrgan,
-    pywebviewReady,
 }: {
     selectedOrgan: Organ | null;
-    pywebviewReady: boolean;
 }): JSX.Element {
     const {
         data: preview,
@@ -22,7 +21,7 @@ function Panel({
             ? async (): Promise<string> => await getPreview(selectedOrgan.id)
             : async (): Promise<string> => "",
         [selectedOrgan],
-        pywebviewReady,
+        useBridgeReady(),
     );
 
     const [mousePosition, setMousePosition] = useState<{

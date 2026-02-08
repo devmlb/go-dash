@@ -1,24 +1,16 @@
-import { useState, type Dispatch, type JSX, type SetStateAction } from "react";
+import { useState, type JSX } from "react";
 
 import "./App.css";
-import { openConfig, getOrgansList, getCover, reloadOrgans } from "./utils/api";
-import { useApi } from "./utils/hooks/api.hook";
+import { openConfig, reloadOrgans } from "./utils/api";
 import type { Organ } from "./utils/types/api.types";
-import { useBridge } from "./utils/hooks/bridge.hook";
+import { BridgeProvider } from "./utils/contexts/bridge.context";
 import logo from "./assets/logo.ico";
 import { Panel } from "./components/panel/Panel";
 import { Grid } from "./components/grid/Grid";
 
 function App(): JSX.Element {
-    const pywebviewReady = useBridge();
-
     const [selected, setSelected] = useState<Organ | null>(null);
     const [reloadTime, setReloadTime] = useState<number>(Date.now());
-    const {
-        data: organs,
-        isLoading,
-        error,
-    } = useApi<Organ[]>(getOrgansList, [reloadTime], pywebviewReady);
 
     const reload = async (): Promise<void> => {
         await reloadOrgans();
@@ -27,7 +19,7 @@ function App(): JSX.Element {
     };
 
     return (
-        <>
+        <BridgeProvider>
             <div className="appbar">
                 <div className="branding">
                     <img className="logo" src={logo} />
@@ -42,13 +34,10 @@ function App(): JSX.Element {
                 </div>
             </div>
             <main>
-                <Grid />
-                <Panel
-                    selectedOrgan={selected}
-                    pywebviewReady={pywebviewReady}
-                />
+                <Grid reloadTime={reloadTime} setSelectedOrgan={setSelected} />
+                <Panel selectedOrgan={selected} />
             </main>
-        </>
+        </BridgeProvider>
     );
 }
 
