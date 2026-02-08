@@ -32,17 +32,14 @@ jobs:
             echo "No previous commit found (initial commit)"
             PREVIOUS_VERSION=""
           else
-            # Get the previous VITE_VERSION from the previous commit
-            if git checkout HEAD~1 -- .env.production 2>/dev/null; then
-              PREVIOUS_VERSION=$(grep '^VITE_VERSION=' .env.production | cut -d '=' -f2 | tr -d '"' | tr -d ' ')
+            # Get the previous VITE_VERSION from the previous commit using git show
+            if git show HEAD~1:.env.production >/dev/null 2>&1; then
+              PREVIOUS_VERSION=$(git show HEAD~1:.env.production | grep '^VITE_VERSION=' | cut -d '=' -f2 | tr -d '"' | tr -d ' ')
             else
               echo "File did not exist in previous commit"
               PREVIOUS_VERSION=""
             fi
             echo "Previous version: $PREVIOUS_VERSION"
-            
-            # Restore current version
-            git checkout HEAD -- .env.production
           fi
           
           # Check if version changed
