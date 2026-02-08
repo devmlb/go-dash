@@ -56,6 +56,17 @@ button:hover {
 
 .appbar > .app-title {
     margin-block: 0;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.appbar > .app-title > .version {
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: var(--color-surface-dark);
+    border-radius: 100px;
 }
 
 .appbar > .actions {

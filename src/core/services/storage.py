@@ -15,14 +15,30 @@ class Storage_Service:
 
         if not os.path.exists(self.config_path):
             with open(self.config_path, "w", encoding="utf8") as config_file:
-                config_file.write(json.dumps({"organs": []}, indent=2))
+                config_file.write(
+                    json.dumps(
+                        {
+                            "organs": [
+                                {
+                                    "name": "My amazing organ",
+                                    "creator": "Me",
+                                    "date": 2026,
+                                    "cover": "C\\Users\\me\\mycover.jpg",
+                                    "preview": "C\\Users\\me\\mypreview.jpg",
+                                    "path": "C\\Users\\me\\myorgan.organ",
+                                }
+                            ]
+                        },
+                        indent=2,
+                    )
+                )
 
     def get_config(self) -> dict:
         with open(self.config_path, "r", encoding="utf8") as config_file:
             config = config_file.read()
 
         return json.loads(config)
-    
+
     def get_config_path(self) -> str:
         return self.config_path
 
@@ -36,4 +52,4 @@ class Storage_Service:
         with open(path, "rb") as image_file:
             b64_image = base64.b64encode(image_file.read())
 
-        return b64_image.decode('utf-8')
+        return b64_image.decode("utf-8")

@@ -161,7 +161,12 @@ function App(): JSX.Element {
     return (
         <>
             <div className="appbar">
-                <h1 className="app-title">GO Dash</h1>
+                <h1 className="app-title">
+                    GO Dash
+                    <span className="version">
+                        {import.meta.env.VITE_VERSION}
+                    </span>
+                </h1>
                 <div className="actions">
                     <button onClick={reload}>Recharger</button>
                     <button onClick={openConfig}>Éditer la config</button>
