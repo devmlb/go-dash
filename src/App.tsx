@@ -12,6 +12,7 @@ import {
 import { useApi } from "./utils/hooks/api.hook";
 import type { Organ } from "./utils/types/api.types";
 import { useBridge } from "./utils/hooks/bridge.hook";
+import logo from "./assets/logo.ico";
 
 function OrganCard({
     organ,
@@ -161,12 +162,13 @@ function App(): JSX.Element {
     return (
         <>
             <div className="appbar">
-                <h1 className="app-title">
-                    GO Dash
+                <div className="branding">
+                    <img className="logo" src={logo} />
+                    <h1 className="title">GO Dash</h1>
                     <span className="version">
                         {import.meta.env.VITE_VERSION}
                     </span>
-                </h1>
+                </div>
                 <div className="actions">
                     <button onClick={reload}>Recharger</button>
                     <button onClick={openConfig}>Éditer la config</button>

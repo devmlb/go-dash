@@ -54,14 +54,22 @@ button:hover {
     padding: 30px;
 }
 
-.appbar > .app-title {
-    margin-block: 0;
+.appbar > .branding {
     display: flex;
     gap: 20px;
     align-items: center;
 }
 
-.appbar > .app-title > .version {
+.appbar > .branding > .logo {
+    width: 36px;
+    height: auto;
+}
+
+.appbar > .branding > .title {
+    margin-block: 0;
+}
+
+.appbar > .branding > .version {
     padding: 4px 10px;
     font-size: 12px;
     font-weight: 500;
