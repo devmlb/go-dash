@@ -1,7 +1,7 @@
 import { useState, type Dispatch, type JSX, type SetStateAction } from "react";
 
 import "./App.css";
-import { openConfig, getOrgansList, getCover } from "./utils/api";
+import { openConfig, getOrgansList, getCover, getPreview } from "./utils/api";
 import { useApi } from "./utils/hooks/api.hook";
 import type { Organ } from "./utils/types/api.types";
 import { useBridge } from "./utils/hooks/bridge.hook";
@@ -31,22 +31,101 @@ function OrganCard({
             className="organ"
             onClick={() => setSelected(organ)}
         >
-            <div
-                className={`cover${isCoverLoading ? " shimmer-loading" : ""}`}
-                style={
-                    cover && !isCoverLoading
-                        ? {
-                              backgroundImage: `url(${cover})`,
-                          }
-                        : undefined
-                }
-            >
-                {coverError && "Impossible de charger l'image"}
+            <div className="cover shimmer-loading">
+                <div
+                    className="image"
+                    style={
+                        cover && !isCoverLoading
+                            ? {
+                                  backgroundImage: `url(${cover})`,
+                              }
+                            : undefined
+                    }
+                />
+                {coverError && (
+                    <div className="error">Impossible de charger l'image</div>
+                )}
             </div>
             <div className="content">
                 <h3 className="name">{organ.name}</h3>
                 <div className="infos">{`${organ.creator} • ${organ.date.toString()}`}</div>
             </div>
+        </div>
+    );
+}
+
+function Panel({
+    selectedOrgan,
+    pywebviewReady,
+}: {
+    selectedOrgan: Organ | null;
+    pywebviewReady: boolean;
+}): JSX.Element {
+    const {
+        data: preview,
+        isLoading: isPreviewLoading,
+        error: previewError,
+    } = useApi<string>(
+        selectedOrgan
+            ? async (): Promise<string> => await getPreview(selectedOrgan.id)
+            : async (): Promise<string> => "",
+        [selectedOrgan],
+        pywebviewReady,
+    );
+
+    const [mousePosition, setMousePosition] = useState<{
+        x: number;
+        y: number;
+    }>({ x: 50, y: 50 });
+    const [isHovering, setIsHovering] = useState<boolean>(false);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLImageElement>): void => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        setMousePosition({ x, y });
+    };
+
+    return (
+        <div className="panel">
+            {selectedOrgan ? (
+                !isPreviewLoading &&
+                !previewError &&
+                preview && (
+                    <>
+                        <div className="preview-container shimmer-loading">
+                            <div
+                                className="preview"
+                                onMouseMove={handleMouseMove}
+                                onMouseEnter={() => setIsHovering(true)}
+                                onMouseLeave={() => setIsHovering(false)}
+                                style={{
+                                    scale: isHovering ? 1.5 : 1,
+                                    transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
+                                    backgroundImage: `url(${preview})`,
+                                }}
+                            />
+                        </div>
+                        <div className="content">
+                            <div className="legend">
+                                Passer la souris sur l'image pour zoomer.
+                            </div>
+                            <div className="actions">
+                                <div className="infos">
+                                    <h2 className="name">
+                                        {selectedOrgan.name}
+                                    </h2>
+                                    <div>{`Par ${selectedOrgan.creator}`}</div>
+                                    <div>{selectedOrgan.date.toString()}</div>
+                                </div>
+                                <button onClick={openConfig}>Ouvrir l'orgue</button>
+                            </div>
+                        </div>
+                    </>
+                )
+            ) : (
+                <div className="none">Aucun orgue sélectionné.</div>
+            )}
         </div>
     );
 }
@@ -85,13 +164,10 @@ function App(): JSX.Element {
                             />
                         ))}
                 </div>
-                <div className="panel">
-                    {selected ? (
-                        ""
-                    ) : (
-                        <div className="none">Aucun orgue sélectionné.</div>
-                    )}
-                </div>
+                <Panel
+                    selectedOrgan={selected}
+                    pywebviewReady={pywebviewReady}
+                />
             </main>
         </>
     );
