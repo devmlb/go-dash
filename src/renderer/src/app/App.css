@@ -10,6 +10,7 @@
 * {
     box-sizing: border-box;
     scrollbar-color: var(--color-surface-dark) var(--color-background);
+    font-family: "Segoe UI", sans-serif;
 }
 
 html,
@@ -23,7 +24,6 @@ body,
 }
 
 #root {
-    font-family: "Segoe UI", sans-serif;
     background-color: var(--color-background);
     color: var(--color-on-surface);
     display: flex;

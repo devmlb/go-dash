@@ -6,7 +6,7 @@ import type { MinimalOrgan } from "../utils/types/api.type";
 import logo from "../assets/logo.ico";
 import { Panel } from "./panel/Panel";
 import { Grid } from "./grid/Grid";
-import { Modal } from "../components/modal/Modal";
+import { AddModal } from "./modals/AddModal";
 
 function App(): JSX.Element {
     const [selected, setSelected] = useState<MinimalOrgan | null>(null);
@@ -35,25 +35,7 @@ function App(): JSX.Element {
                 <div className="actions">
                     <button onClick={reload}>Recharger</button>
                     <button onClick={openModal}>Ajouter un orgue</button>
-                    <Modal
-                        isOpen={isAddModalOpen}
-                        onClose={closeModal}
-                        onConfirm={closeModal}
-                        title="Ajouter un orgue"
-                    >
-                        <input type="text" placeholder="Nom" />
-                        <input type="text" placeholder="Pays" />
-                        <input type="number" placeholder="Année" />
-                        <input type="text" placeholder="Facteur d'orgue" />
-                        <input type="text" placeholder="URL" />
-                        <input type="text" placeholder="Caractéristiques" />
-                        <input type="text" placeholder="Chemin" />
-                        <input
-                            type="text"
-                            placeholder="Chemin de la couverture"
-                        />
-                        <input type="text" placeholder="Chemin de l'aperçu" />
-                    </Modal>
+                    <AddModal isOpen={isAddModalOpen} close={closeModal} />
                 </div>
             </div>
             <main>
