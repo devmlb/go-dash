@@ -38,11 +38,9 @@ function Panel({
     return (
         <div className="panel">
             {selectedOrgan ? (
-                !isPreviewLoading &&
-                !previewError &&
-                preview && (
-                    <>
-                        <div className="preview-container shimmer-loading">
+                <>
+                    <div className="preview-container shimmer-loading">
+                        {!isPreviewLoading && !previewError && preview && (
                             <div
                                 className="preview"
                                 onMouseMove={handleMouseMove}
@@ -54,34 +52,32 @@ function Panel({
                                     backgroundImage: `url(${preview})`,
                                 }}
                             />
+                        )}
+                    </div>
+                    <div className="content">
+                        <div className="legend">
+                            Passer la souris sur l&apos;image pour zoomer.
                         </div>
-                        <div className="content">
-                            <div className="legend">
-                                Passer la souris sur l&apos;image pour zoomer.
-                            </div>
-                            <div className="actions">
-                                <div className="infos">
-                                    <h2 className="name">
-                                        {selectedOrgan.name}
-                                    </h2>
-                                    <div>
-                                        <MapPin size={16} />
-                                        {selectedOrgan.country}
-                                    </div>
-                                    <div>
-                                        <Calendar size={16} />
-                                        {selectedOrgan.year.toString()}
-                                    </div>
+                        <div className="actions">
+                            <div className="infos">
+                                <h2 className="name">{selectedOrgan.name}</h2>
+                                <div>
+                                    <MapPin size={16} />
+                                    {selectedOrgan.country}
                                 </div>
-                                <button
-                                    onClick={() => openOrgan(selectedOrgan._id)}
-                                >
-                                    Ouvrir l&apos;orgue
-                                </button>
+                                <div>
+                                    <Calendar size={16} />
+                                    {selectedOrgan.year.toString()}
+                                </div>
                             </div>
+                            <button
+                                onClick={() => openOrgan(selectedOrgan._id)}
+                            >
+                                Ouvrir l&apos;orgue
+                            </button>
                         </div>
-                    </>
-                )
+                    </div>
+                </>
             ) : (
                 <div className="none">Aucun orgue sélectionné.</div>
             )}
