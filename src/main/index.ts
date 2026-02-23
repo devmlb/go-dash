@@ -11,9 +11,11 @@ function createWindow(): BrowserWindow {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         width: 900,
-        height: 670,
+        height: 700,
         autoHideMenuBar: true,
         // ...(process.platform === "linux" ? { icon } : {}),
+        backgroundColor: "#fcfcfc",
+        title: "GO Dash",
         webPreferences: {
             preload: join(__dirname, "../preload/index.js"),
             sandbox: false,
@@ -55,6 +57,7 @@ app.whenReady().then(() => {
     });
 
     const window = createWindow();
+    window.maximize();
 
     if (!is.dev) {
         updaterService.init();
