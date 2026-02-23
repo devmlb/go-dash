@@ -1,0 +1,30 @@
+.edit-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    & .file-selection {
+        padding-left: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--color-surface-darker);
+
+        & > .description {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            & > span {
+                color: var(--color-on-surface);
+
+                &.error {
+                    color: #af0202;
+                }
+            }
+        }
+    }
+}

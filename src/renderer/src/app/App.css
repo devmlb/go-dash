@@ -1,0 +1,112 @@
+:root {
+    --color-background: #fcfcfc;
+    --color-surface: #ffffff;
+    --color-surface-dark: #e0e0e0;
+    --color-surface-darker: #cccccc;
+    --color-on-surface: #121212;
+    --color-on-surface-low-emphasis: #606060;
+}
+
+* {
+    box-sizing: border-box;
+    scrollbar-color: var(--color-surface-dark) var(--color-background);
+    font-family: "Segoe UI", sans-serif;
+}
+
+html,
+body,
+#root {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#root {
+    background-color: var(--color-background);
+    color: var(--color-on-surface);
+    display: flex;
+    flex-direction: column;
+
+    & > .appbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px;
+
+        & > .branding {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+
+            & > .logo {
+                width: 36px;
+                height: auto;
+            }
+
+            & > .title {
+                margin-block: 0;
+            }
+
+            & > .version {
+                padding: 4px 10px;
+                font-size: 12px;
+                font-weight: 500;
+                background-color: var(--color-surface-dark);
+                border-radius: 100px;
+            }
+        }
+
+        & > .actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+    }
+
+    & > main {
+        flex-grow: 1;
+        overflow-y: auto;
+        display: flex;
+    }
+}
+
+button {
+    border: none;
+    border-radius: 1000px;
+    padding: 15px 20px;
+    background-color: transparent;
+    color: var(--color-on-surface-low-emphasis);
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-weight: bold;
+    flex-shrink: 0;
+    height: fit-content;
+}
+
+button:hover {
+    background-color: var(--color-surface-dark);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer-loading {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(
+        to right,
+        var(--color-surface-dark) 4%,
+        var(--color-surface-darker) 25%,
+        var(--color-surface-dark) 36%
+    );
+    background-size: 1000px 100% !important;
+    background-repeat: repeat !important;
+}

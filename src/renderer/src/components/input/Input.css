@@ -1,0 +1,41 @@
+.input {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    & input {
+        border: solid 1px var(--color-surface-dark);
+        padding: 15px 20px;
+        background-color: var(--color-surface);
+        border-radius: 100px;
+        transition: border-color 0.2s;
+        font-weight: 600;
+        font-size: 14px;
+
+        &:hover,
+        &:focus {
+            outline: none;
+            border-color: var(--color-on-surface);
+        }
+
+        &::placeholder {
+            color: var(--color-surface-darker);
+            transition: color 0.2s;
+        }
+    }
+
+    &:has(.error) {
+        & > input,
+        & > input:hover,
+        & > input:focus {
+            border-color: #af0202;
+        }
+    }
+
+    & > .error {
+        font-size: 12px;
+        font-weight: 600;
+        padding-left: 22px;
+        color: #af0202;
+    }
+}
