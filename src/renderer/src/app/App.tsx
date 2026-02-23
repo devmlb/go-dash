@@ -7,6 +7,7 @@ import logo from "../assets/logo.ico";
 import { Panel } from "./panel/Panel";
 import { Grid } from "./grid/Grid";
 import { EditModal } from "./modals/EditModal";
+import { createPortal } from "react-dom";
 
 function App(): JSX.Element {
     const [selectedOrganId, setSelectedOrganId] = useState<string | null>(null);
@@ -52,7 +53,13 @@ function App(): JSX.Element {
                 <div className="actions">
                     <button onClick={reload}>Recharger</button>
                     <button onClick={openModal}>Ajouter un orgue</button>
-                    <EditModal isOpen={isAddModalOpen} close={closeModal} />
+                    {createPortal(
+                        <EditModal
+                            isOpen={isAddModalOpen}
+                            close={closeModal}
+                        />,
+                        document.body,
+                    )}
                 </div>
             </div>
             <main>
