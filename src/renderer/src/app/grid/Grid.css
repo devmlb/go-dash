@@ -1,11 +1,16 @@
 .grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
     height: fit-content;
     padding: 30px;
     padding-top: 0;
     flex-grow: 1;
+
+    @media (max-width: 1400px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
     & > .organ {
         display: flex;
@@ -16,8 +21,6 @@
         cursor: pointer;
         position: relative;
         background-color: var(--color-surface);
-        min-width: 300px;
-        max-width: 400px;
         flex-grow: 1;
 
         & > .cover {
