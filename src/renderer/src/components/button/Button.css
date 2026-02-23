@@ -1,0 +1,100 @@
+/* Global rules */
+
+.button {
+    border: none;
+    border-radius: 1000px;
+    padding: 0 20px;
+    height: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    transition: background-color .2s, color.2s;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+}
+
+.button:has(svg) {
+    padding-left: 14px;
+}
+
+.button.icon-button {
+    padding: 0px 12px;
+}
+
+.button.loading>* {
+    visibility: hidden;
+}
+
+.button.loading::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    animation: spinner 1s ease infinite;
+}
+
+@keyframes spinner {
+    from {
+        transform: rotate(0turn);
+    }
+
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+/* Primary */
+
+.button.primary {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.button.primary:hover {
+    background-color: var(--color-primary-light);
+}
+
+.button.primary:disabled {
+    background-color: var(--color-surface-dark);
+    color: var(--color-on-surface-low-emphasis);
+}
+
+.button.primary.loading::after {
+    background-color: var(--color-surface-dark);
+    border-top-color: var(--color-primary);
+}
+
+/* Secondary */
+
+.button.secondary {
+    background-color: transparent;
+    color: var(--color-primary-light);
+}
+
+.button.secondary:hover {
+    background-color: var(--color-surface-dark);
+}
+
+.button.secondary:disabled {
+    color: var(--color-on-surface-low-emphasis);
+    background-color: transparent;
+}
+
+.button.secondary.loading::after {
+    background-color: transparent;
+    border-top-color: var(--color-on-surface-low-emphasis);
+}
