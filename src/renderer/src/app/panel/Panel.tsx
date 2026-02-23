@@ -1,5 +1,5 @@
 import { useReducer, useState, type JSX } from "react";
-import { MapPin, Calendar } from "lucide-react";
+import { MapPin, Calendar, Hammer, Globe, Tag } from "lucide-react";
 import { createPortal } from "react-dom";
 
 import "./Panel.css";
@@ -92,6 +92,30 @@ function Panel({
                                 <div>
                                     <Calendar size={16} />
                                     {selectedOrgan.year.toString()}
+                                </div>
+                            )}
+                            {selectedOrgan.builder && (
+                                <div>
+                                    <Hammer size={16} />
+                                    {selectedOrgan.builder}
+                                </div>
+                            )}
+                            {selectedOrgan.features && (
+                                <div>
+                                    <Tag size={16} />
+                                    {selectedOrgan.features}
+                                </div>
+                            )}
+                            {selectedOrgan.url && (
+                                <div>
+                                    <Globe size={16} />
+                                    <a
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        href={selectedOrgan.url}
+                                    >
+                                        Site web
+                                    </a>
                                 </div>
                             )}
                         </div>
