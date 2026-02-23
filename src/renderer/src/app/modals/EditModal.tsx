@@ -161,6 +161,12 @@ function buildFormFields(organInfos: Organ | null): FormFields {
     return defaults;
 }
 
+function extractFilename(filePath: string | null | undefined): string | null {
+    if (!filePath) return null;
+    const filename = filePath.match(/[^\\/]*\.[a-zA-Z]+$/);
+    return filename ? filename[0] : "";
+}
+
 function EditModal({
     isOpen,
     close,
@@ -281,14 +287,34 @@ function EditModal({
                         );
                     } else {
                         return (
-                            <button
+                            <div
                                 key={"field" + fieldKey}
-                                onClick={() =>
-                                    handlePathSelection(fieldKey, field.action)
-                                }
+                                className="file-selection"
                             >
-                                {field.legend}
-                            </button>
+                                <span className="description">
+                                    {field.legend} :
+                                    <span
+                                        className={
+                                            field.required && !field.value
+                                                ? "error"
+                                                : ""
+                                        }
+                                    >
+                                        {extractFilename(field.value) ??
+                                            "Aucun"}
+                                    </span>
+                                </span>
+                                <button
+                                    onClick={() =>
+                                        handlePathSelection(
+                                            fieldKey,
+                                            field.action,
+                                        )
+                                    }
+                                >
+                                    Sélectionner
+                                </button>
+                            </div>
                         );
                     }
                 })}
