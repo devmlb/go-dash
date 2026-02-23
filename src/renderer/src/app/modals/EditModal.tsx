@@ -72,7 +72,7 @@ function EditModal({
 }: {
     isOpen: boolean;
     close: () => void;
-    organId: string;
+    organId?: string;
     onSaved?: () => void;
 }): JSX.Element {
     const { data: organInfos } = useApi<Organ | null>(
@@ -131,7 +131,7 @@ function EditModal({
             isOpen={isOpen}
             onClose={close}
             onConfirm={closeAndSave}
-            title="Ajouter un orgue"
+            title={organId ? "Modifier un orgue" : "Ajouter un orgue"}
             isConfirmActionEnabled={areAllFieldsValids()}
         >
             <div className="edit-modal-content">
