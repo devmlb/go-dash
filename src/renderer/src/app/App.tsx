@@ -1,13 +1,14 @@
-import { useReducer, useState, type JSX } from "react";
+import { useReducer, useState, useEffect, type JSX } from "react";
+import { createPortal } from "react-dom";
 
 import "./App.css";
-// import { openConfig, reloadOrgans } from "./utils/api";
 import type { MinimalOrgan } from "../utils/types/api.type";
 import logo from "../assets/logo.ico";
 import { Panel } from "./panel/Panel";
 import { Grid } from "./grid/Grid";
 import { EditModal } from "./modals/EditModal";
-import { createPortal } from "react-dom";
+import { getAppVersion } from "../utils/api";
+import { useApi } from "../utils/hooks/api.hook";
 
 function App(): JSX.Element {
     const [selectedOrganId, setSelectedOrganId] = useState<string | null>(null);
@@ -17,6 +18,8 @@ function App(): JSX.Element {
         (count: number) => count + 1,
         0,
     );
+
+    const { data: appVersion } = useApi<string>(getAppVersion, []);
 
     const selected = selectedOrganId
         ? (organs.find((organ) => organ._id === selectedOrganId) ?? null)
@@ -46,9 +49,9 @@ function App(): JSX.Element {
                 <div className="branding">
                     <img className="logo" src={logo} />
                     <h1 className="title">GO Dash</h1>
-                    <span className="version">
-                        {import.meta.env.VITE_VERSION}
-                    </span>
+                    {appVersion && (
+                        <span className="version">{`v${appVersion}`}</span>
+                    )}
                 </div>
                 <div className="actions">
                     <button onClick={reload}>Recharger</button>

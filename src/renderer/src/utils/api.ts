@@ -40,6 +40,10 @@ async function chooseOrganImage(): Promise<string | null> {
     return await window.api.chooseOrganImage();
 }
 
+async function getAppVersion(): Promise<string> {
+    return await window.api.getAppVersion();
+}
+
 export {
     getOrgansList,
     getCover,
@@ -51,4 +55,5 @@ export {
     removeOrgan,
     chooseOrganImage,
     chooseOrganFile,
+    getAppVersion,
 };

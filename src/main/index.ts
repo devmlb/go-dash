@@ -83,6 +83,7 @@ app.whenReady().then(() => {
     );
     ipcMain.handle("chooseOrganImage", () => organService.chooseImage(window));
     ipcMain.handle("chooseOrganFile", () => organService.chooseGOFile(window));
+    ipcMain.handle("getAppVersion", () => app.getVersion());
 
     app.on("activate", function () {
         // On macOS it's common to re-create a window in the app when the
