@@ -6,9 +6,11 @@ import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
 
 function OrganCard({
+    reloadCount,
     organ,
     onSelect,
 }: {
+    reloadCount: number;
     organ: MinimalOrgan;
     onSelect: (organ: MinimalOrgan) => void;
 }): JSX.Element {
@@ -16,7 +18,10 @@ function OrganCard({
         data: cover,
         isLoading: isCoverLoading,
         error: coverError,
-    } = useApi<string>(async () => await getCover(organ._id), []);
+    } = useApi<string | null>(
+        async () => await getCover(organ._id),
+        [reloadCount],
+    );
 
     return (
         <div key={organ._id} className="organ" onClick={() => onSelect(organ)}>
@@ -39,7 +44,9 @@ function OrganCard({
             </div>
             <div className="content">
                 <h3 className="name">{organ.name}</h3>
-                <div className="infos">{`${organ.country} • ${organ.year.toString()}`}</div>
+                {organ.year && (
+                    <div className="infos">{`${organ.country} • ${organ.year.toString()}`}</div>
+                )}
             </div>
         </div>
     );
@@ -77,6 +84,7 @@ function Grid({
                         key={organ._id}
                         onSelect={onSelectOrgan}
                         organ={organ}
+                        reloadCount={reloadCount}
                     />
                 ))}
         </div>

@@ -57,6 +57,7 @@ function App(): JSX.Element {
                         <EditModal
                             isOpen={isAddModalOpen}
                             close={closeModal}
+                            onSaved={reload}
                         />,
                         document.body,
                     )}
@@ -70,7 +71,6 @@ function App(): JSX.Element {
                 />
                 <Panel selectedOrgan={selected} reload={reload} />
             </main>
-            {/* <Modal /> */}
         </>
     );
 }

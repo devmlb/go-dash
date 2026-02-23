@@ -51,10 +51,11 @@ function Panel({
         data: preview,
         isLoading: isPreviewLoading,
         error: previewError,
-    } = useApi<string>(
+    } = useApi<string | null>(
         selectedOrgan
-            ? async (): Promise<string> => await getPreview(selectedOrgan._id)
-            : async (): Promise<string> => "",
+            ? async (): Promise<string | null> =>
+                  await getPreview(selectedOrgan._id)
+            : async (): Promise<null> => null,
         [selectedOrgan, previewReloadCount],
     );
 
@@ -87,10 +88,12 @@ function Panel({
                                 <MapPin size={16} />
                                 {selectedOrgan.country}
                             </div>
-                            <div>
-                                <Calendar size={16} />
-                                {selectedOrgan.year.toString()}
-                            </div>
+                            {selectedOrgan.year && (
+                                <div>
+                                    <Calendar size={16} />
+                                    {selectedOrgan.year.toString()}
+                                </div>
+                            )}
                         </div>
                         <div className="actions">
                             <button onClick={handleRemoved}>Supprimer</button>

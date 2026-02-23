@@ -6,7 +6,7 @@ import icon from "../../resources/icon.png?asset";
 import { organService } from "./services/organ.service";
 import type { Organ } from "./services/organ.service";
 
-function createWindow(): void {
+function createWindow(): BrowserWindow {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         width: 900,
@@ -35,6 +35,8 @@ function createWindow(): void {
     } else {
         mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
     }
+
+    return mainWindow;
 }
 
 // This method will be called when Electron has finished
@@ -51,6 +53,8 @@ app.whenReady().then(() => {
         optimizer.watchWindowShortcuts(window);
     });
 
+    const window = createWindow();
+
     ipcMain.handle("getAllOrgans", () => organService.getAll());
     ipcMain.handle("getFullOrgan", (_event, id: string) =>
         organService.getById(id),
@@ -58,6 +62,9 @@ app.whenReady().then(() => {
     ipcMain.handle("openOrgan", (_event, id: string) => organService.open(id));
     ipcMain.handle("updateOrgan", (_event, organ: Organ) =>
         organService.update(organ),
+    );
+    ipcMain.handle("addOrgan", (_event, organInfos: Omit<Organ, "_id">) =>
+        organService.add(organInfos),
     );
     ipcMain.handle("removeOrgan", (_event, id: string) =>
         organService.remove(id),
@@ -68,8 +75,8 @@ app.whenReady().then(() => {
     ipcMain.handle("getOrganPreview", (_event, id: string) =>
         organService.getPreviewB64(id),
     );
-
-    createWindow();
+    ipcMain.handle("chooseOrganImage", () => organService.chooseImage(window));
+    ipcMain.handle("chooseOrganFile", () => organService.chooseGOFile(window));
 
     app.on("activate", function () {
         // On macOS it's common to re-create a window in the app when the

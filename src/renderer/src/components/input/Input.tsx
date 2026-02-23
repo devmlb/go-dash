@@ -1,4 +1,4 @@
-import { ChangeEvent, JSX, useState } from "react";
+import { ChangeEvent, JSX } from "react";
 
 import "./Input.css";
 
@@ -17,18 +17,25 @@ function Input({
     validationErrorText?: string;
     setIsValid?: (v: boolean) => void;
 }): JSX.Element {
-    const [error, setError] = useState<string | null>(null);
+    const isValidInput = (input: string): boolean => {
+        return !regexValidation || regexValidation.test(input);
+    };
+
+    const getValidationError = (input: string): string | null => {
+        if (regexValidation && !regexValidation.test(input)) {
+            return validationErrorText ?? "Valeur incorrecte";
+        }
+
+        return null;
+    };
+
+    const error = getValidationError(value);
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>): void => {
-        console.log(e);
-        if (regexValidation && !regexValidation.test(e.target.value)) {
-            setError(validationErrorText ?? "Valeur incorrecte");
-            if (setIsValid) setIsValid(false);
-        } else {
-            setError(null);
-            if (setIsValid) setIsValid(true);
-        }
-        setValue(e.target.value);
+        const inputValue = e.target.value;
+
+        if (setIsValid) setIsValid(isValidInput(inputValue));
+        setValue(inputValue);
     };
 
     return (
