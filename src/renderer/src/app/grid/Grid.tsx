@@ -1,4 +1,4 @@
-import type { Dispatch, JSX, SetStateAction } from "react";
+import { useEffect, type JSX } from "react";
 
 import "./Grid.css";
 import { getCover, getOrgansList } from "../../utils/api";
@@ -7,10 +7,10 @@ import type { MinimalOrgan } from "../../utils/types/api.type";
 
 function OrganCard({
     organ,
-    setSelected,
+    onSelect,
 }: {
     organ: MinimalOrgan;
-    setSelected: Dispatch<SetStateAction<MinimalOrgan | null>>;
+    onSelect: (organ: MinimalOrgan) => void;
 }): JSX.Element {
     const {
         data: cover,
@@ -19,11 +19,7 @@ function OrganCard({
     } = useApi<string>(async () => await getCover(organ._id), []);
 
     return (
-        <div
-            key={organ._id}
-            className="organ"
-            onClick={() => setSelected(organ)}
-        >
+        <div key={organ._id} className="organ" onClick={() => onSelect(organ)}>
             <div className="cover shimmer-loading">
                 <div
                     className="image"
@@ -50,17 +46,25 @@ function OrganCard({
 }
 
 function Grid({
-    reloadTime,
-    setSelectedOrgan,
+    reloadCount,
+    onSelectOrgan,
+    onOrgansLoaded,
 }: {
-    reloadTime: number;
-    setSelectedOrgan: Dispatch<SetStateAction<MinimalOrgan | null>>;
+    reloadCount: number;
+    onSelectOrgan: (organ: MinimalOrgan) => void;
+    onOrgansLoaded: (organs: MinimalOrgan[]) => void;
 }): JSX.Element {
     const {
         data: organs,
         isLoading,
         error,
-    } = useApi<MinimalOrgan[]>(getOrgansList, [reloadTime]);
+    } = useApi<MinimalOrgan[]>(getOrgansList, [reloadCount]);
+
+    useEffect(() => {
+        if (!isLoading && !error) {
+            onOrgansLoaded(organs ?? []);
+        }
+    }, [error, isLoading, onOrgansLoaded, organs]);
 
     return (
         <div className="grid">
@@ -71,7 +75,7 @@ function Grid({
                 organs.map((organ) => (
                     <OrganCard
                         key={organ._id}
-                        setSelected={setSelectedOrgan}
+                        onSelect={onSelectOrgan}
                         organ={organ}
                     />
                 ))}

@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useReducer, useState, type JSX } from "react";
 
 import "./App.css";
 // import { openConfig, reloadOrgans } from "./utils/api";
@@ -6,21 +6,38 @@ import type { MinimalOrgan } from "../utils/types/api.type";
 import logo from "../assets/logo.ico";
 import { Panel } from "./panel/Panel";
 import { Grid } from "./grid/Grid";
-import { AddModal } from "./modals/AddModal";
+import { EditModal } from "./modals/EditModal";
 
 function App(): JSX.Element {
-    const [selected, setSelected] = useState<MinimalOrgan | null>(null);
+    const [selectedOrganId, setSelectedOrganId] = useState<string | null>(null);
+    const [organs, setOrgans] = useState<MinimalOrgan[]>([]);
     const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
-    const [reloadTime, setReloadTime] = useState<number>(Date.now());
+    const [reloadCount, triggerReload] = useReducer(
+        (count: number) => count + 1,
+        0,
+    );
 
-    const reload = async (): Promise<void> => {
-        // await reloadOrgans();
-        setSelected(null);
-        setReloadTime(Date.now());
+    const selected = selectedOrganId
+        ? (organs.find((organ) => organ._id === selectedOrganId) ?? null)
+        : null;
+
+    const reload = (): void => {
+        triggerReload();
     };
 
     const closeModal = (): void => setIsAddModalOpen(false);
     const openModal = (): void => setIsAddModalOpen(true);
+
+    const handleOrgansLoaded = (nextOrgans: MinimalOrgan[]): void => {
+        setOrgans(nextOrgans);
+
+        if (
+            selectedOrganId &&
+            !nextOrgans.some((organ) => organ._id === selectedOrganId)
+        ) {
+            setSelectedOrganId(null);
+        }
+    };
 
     return (
         <>
@@ -35,12 +52,16 @@ function App(): JSX.Element {
                 <div className="actions">
                     <button onClick={reload}>Recharger</button>
                     <button onClick={openModal}>Ajouter un orgue</button>
-                    <AddModal isOpen={isAddModalOpen} close={closeModal} />
+                    <EditModal isOpen={isAddModalOpen} close={closeModal} />
                 </div>
             </div>
             <main>
-                <Grid reloadTime={reloadTime} setSelectedOrgan={setSelected} />
-                <Panel selectedOrgan={selected} />
+                <Grid
+                    reloadCount={reloadCount}
+                    onSelectOrgan={(organ) => setSelectedOrganId(organ._id)}
+                    onOrgansLoaded={handleOrgansLoaded}
+                />
+                <Panel selectedOrgan={selected} reload={reload} />
             </main>
             {/* <Modal /> */}
         </>

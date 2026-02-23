@@ -74,6 +74,10 @@ class OrganService {
     //     );
     // }
 
+    async update(organ: Organ): Promise<void> {
+        await this.db.updateAsync({ _id: organ._id }, organ);
+    }
+
     async open(id: string): Promise<void> {
         openFile((await this.getById(id)).path);
     }
@@ -89,4 +93,4 @@ class OrganService {
 
 const organService = new OrganService();
 
-export { organService };
+export { organService, type Organ };

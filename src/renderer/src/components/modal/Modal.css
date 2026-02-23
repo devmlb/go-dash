@@ -14,12 +14,13 @@
         & > .container {
             pointer-events: auto;
         }
+
         & > .scrim {
             opacity: 1;
         }
 
         & > .container {
-            transform: scale(1.0);
+            transform: scale(1);
             opacity: 1;
         }
     }
@@ -44,7 +45,9 @@
         padding: 30px;
         transform: scale(0.98);
         opacity: 0;
-        transition: transform .3s, opacity .3s;
+        transition:
+            transform 0.3s,
+            opacity 0.3s;
 
         & > .window {
             padding: 30px;

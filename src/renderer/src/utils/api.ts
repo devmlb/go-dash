@@ -1,4 +1,4 @@
-import type { MinimalOrgan } from "./types/api.type";
+import type { MinimalOrgan, Organ } from "./types/api.type";
 
 // async function openConfig(): Promise<void> {
 //     if (import.meta.env.VITE_UI_ONLY !== "true") {
@@ -8,6 +8,10 @@ import type { MinimalOrgan } from "./types/api.type";
 
 async function getOrgansList(): Promise<MinimalOrgan[]> {
     return await window.api.getAllOrgans();
+}
+
+async function getFullOrgan(id: string): Promise<Organ> {
+    return await window.api.getFullOrgan(id);
 }
 
 async function getCover(organId: string): Promise<string> {
@@ -28,6 +32,10 @@ async function openOrgan(organId: string): Promise<void> {
     await window.api.openOrgan(organId);
 }
 
+async function updateOrgan(organ: Organ): Promise<void> {
+    await window.api.updateOrgan(organ);
+}
+
 export {
     // openConfig,
     getOrgansList,
@@ -35,4 +43,6 @@ export {
     getPreview,
     // reloadOrgans,
     openOrgan,
+    getFullOrgan,
+    updateOrgan,
 };

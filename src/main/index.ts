@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
 
 import { organService } from "./services/organ.service";
+import type { Organ } from "./services/organ.service";
 
 function createWindow(): void {
     // Create the browser window.
@@ -51,10 +52,13 @@ app.whenReady().then(() => {
     });
 
     ipcMain.handle("getAllOrgans", () => organService.getAll());
-    ipcMain.handle("getOrgan", (_event, id: string) =>
+    ipcMain.handle("getFullOrgan", (_event, id: string) =>
         organService.getById(id),
     );
     ipcMain.handle("openOrgan", (_event, id: string) => organService.open(id));
+    ipcMain.handle("updateOrgan", (_event, organ: Organ) =>
+        organService.update(organ),
+    );
     ipcMain.handle("getOrganCover", (_event, id: string) =>
         organService.getCoverB64(id),
     );
