@@ -2,6 +2,8 @@
   "name": "go-dash",
   "version": "0.2.0",
   "main": "./out/main/index.js",
+  "description": "A dashboard for your Grand Orgue organs",
+  "author": "devmlb",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",

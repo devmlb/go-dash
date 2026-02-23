@@ -1,4 +1,4 @@
-import { useReducer, useState, useEffect, type JSX } from "react";
+import { useReducer, useState, type JSX } from "react";
 import { createPortal } from "react-dom";
 
 import "./App.css";
