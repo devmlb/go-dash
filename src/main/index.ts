@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
 
 import { organService } from "./services/organ.service";
+import { updaterService } from "./services/updater.service";
 import type { Organ } from "./services/organ.service";
 
 function createWindow(): BrowserWindow {
@@ -54,6 +55,11 @@ app.whenReady().then(() => {
     });
 
     const window = createWindow();
+
+    if (!is.dev) {
+        updaterService.init();
+        setTimeout(() => updaterService.checkForUpdates(), 3000);
+    }
 
     ipcMain.handle("getAllOrgans", () => organService.getAll());
     ipcMain.handle("getFullOrgan", (_event, id: string) =>
