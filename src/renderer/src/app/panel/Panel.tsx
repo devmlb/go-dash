@@ -3,7 +3,7 @@ import { MapPin, Calendar } from "lucide-react";
 import { createPortal } from "react-dom";
 
 import "./Panel.css";
-import { getPreview, openOrgan } from "../../utils/api";
+import { getPreview, openOrgan, removeOrgan } from "../../utils/api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
 import { EditModal } from "../modals/EditModal";
@@ -38,6 +38,12 @@ function Panel({
     const openEditModal = async (): Promise<void> => setIsEditModalOpen(true);
     const handleSaved = (): void => {
         reloadPreview();
+        reload();
+    };
+    const handleRemoved = (): void => {
+        if (!selectedOrgan) return;
+
+        removeOrgan(selectedOrgan._id);
         reload();
     };
 
@@ -87,6 +93,7 @@ function Panel({
                             </div>
                         </div>
                         <div className="actions">
+                            <button onClick={handleRemoved}>Supprimer</button>
                             <button onClick={() => openEditModal()}>
                                 Modifier
                             </button>

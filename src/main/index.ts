@@ -59,6 +59,9 @@ app.whenReady().then(() => {
     ipcMain.handle("updateOrgan", (_event, organ: Organ) =>
         organService.update(organ),
     );
+    ipcMain.handle("removeOrgan", (_event, id: string) =>
+        organService.remove(id),
+    );
     ipcMain.handle("getOrganCover", (_event, id: string) =>
         organService.getCoverB64(id),
     );

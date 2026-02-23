@@ -32,6 +32,10 @@ async function openOrgan(organId: string): Promise<void> {
     await window.api.openOrgan(organId);
 }
 
+async function removeOrgan(organId: string): Promise<void> {
+    await window.api.removeOrgan(organId);
+}
+
 async function updateOrgan(organ: Organ): Promise<void> {
     await window.api.updateOrgan(organ);
 }
@@ -45,4 +49,5 @@ export {
     openOrgan,
     getFullOrgan,
     updateOrgan,
+    removeOrgan,
 };

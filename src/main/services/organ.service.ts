@@ -78,6 +78,10 @@ class OrganService {
         await this.db.updateAsync({ _id: organ._id }, organ);
     }
 
+    async remove(organId: string): Promise<void> {
+        await this.db.removeAsync({ _id: organId }, {});
+    }
+
     async open(id: string): Promise<void> {
         openFile((await this.getById(id)).path);
     }
