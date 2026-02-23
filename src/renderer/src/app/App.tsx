@@ -9,6 +9,8 @@ import { Grid } from "./grid/Grid";
 import { EditModal } from "./modals/EditModal";
 import { getAppVersion } from "../utils/api";
 import { useApi } from "../utils/hooks/api.hook";
+import { IconButton, TextButton } from "@renderer/components/button/Button";
+import { Plus, RefreshCcw } from "lucide-react";
 
 function App(): JSX.Element {
     const [selectedOrganId, setSelectedOrganId] = useState<string | null>(null);
@@ -54,8 +56,16 @@ function App(): JSX.Element {
                     )}
                 </div>
                 <div className="actions">
-                    <button onClick={reload}>Recharger</button>
-                    <button onClick={openModal}>Ajouter un orgue</button>
+                    <IconButton
+                        icon={<RefreshCcw />}
+                        secondary
+                        onClick={reload}
+                    />
+                    <TextButton
+                        text="Ajouter un orgue"
+                        icon={<Plus />}
+                        onClick={openModal}
+                    />
                     {createPortal(
                         <EditModal
                             isOpen={isAddModalOpen}

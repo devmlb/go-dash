@@ -2,6 +2,7 @@ import { JSX, ReactNode } from "react";
 import { Pen } from "lucide-react";
 
 import "./Modal.css";
+import { TextButton } from "../button/Button";
 
 function Modal({
     isOpen,
@@ -31,13 +32,16 @@ function Modal({
                     </div>
                     <div className="content">{children}</div>
                     <div className="actions">
-                        <button onClick={onClose}>Annuler</button>
-                        <button
-                            onClick={onConfirm}
+                        <TextButton
+                            text="Annuler"
+                            secondary
+                            onClick={onClose}
+                        />
+                        <TextButton
                             disabled={!isConfirmActionEnabled}
-                        >
-                            {confirmActionText}
-                        </button>
+                            text={confirmActionText}
+                            onClick={onConfirm}
+                        />
                     </div>
                 </div>
             </div>

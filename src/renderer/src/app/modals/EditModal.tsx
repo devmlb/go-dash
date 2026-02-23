@@ -12,6 +12,7 @@ import {
     chooseOrganImage,
     chooseOrganFile,
 } from "@renderer/utils/api";
+import { TextButton } from "@renderer/components/button/Button";
 
 interface FormFields {
     [key: string]:
@@ -304,16 +305,16 @@ function EditModal({
                                             "Aucun"}
                                     </span>
                                 </span>
-                                <button
+                                <TextButton
+                                    text="Sélectionner"
+                                    secondary
                                     onClick={() =>
                                         handlePathSelection(
                                             fieldKey,
                                             field.action,
                                         )
                                     }
-                                >
-                                    Sélectionner
-                                </button>
+                                />
                             </div>
                         );
                     }

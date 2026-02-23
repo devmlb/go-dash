@@ -76,6 +76,12 @@
             display: flex;
             justify-content: end;
             align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+
+            & > .secondary {
+                display: flex;
+            }
         }
     }
 }

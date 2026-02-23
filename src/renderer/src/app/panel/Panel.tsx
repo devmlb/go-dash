@@ -1,5 +1,14 @@
 import { useReducer, useState, type JSX } from "react";
-import { MapPin, Calendar, Hammer, Globe, Tag } from "lucide-react";
+import {
+    MapPin,
+    Calendar,
+    Hammer,
+    Globe,
+    Tag,
+    Trash,
+    Pen,
+    ExternalLink,
+} from "lucide-react";
 import { createPortal } from "react-dom";
 
 import "./Panel.css";
@@ -7,6 +16,7 @@ import { getPreview, openOrgan, removeOrgan } from "../../utils/api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
 import { EditModal } from "../modals/EditModal";
+import { IconButton, TextButton } from "@renderer/components/button/Button";
 
 function Panel({
     selectedOrgan,
@@ -120,15 +130,23 @@ function Panel({
                             )}
                         </div>
                         <div className="actions">
-                            <button onClick={handleRemoved}>Supprimer</button>
-                            <button onClick={() => openEditModal()}>
-                                Modifier
-                            </button>
-                            <button
+                            <div className="secondary">
+                                <IconButton
+                                    secondary
+                                    onClick={handleRemoved}
+                                    icon={<Trash />}
+                                />
+                                <IconButton
+                                    secondary
+                                    onClick={() => openEditModal()}
+                                    icon={<Pen />}
+                                />
+                            </div>
+                            <TextButton
+                                text="Ouvrir"
                                 onClick={() => openOrgan(selectedOrgan._id)}
-                            >
-                                Ouvrir
-                            </button>
+                                icon={<ExternalLink />}
+                            />
                         </div>
                     </div>
                     {createPortal(

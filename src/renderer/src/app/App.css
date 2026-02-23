@@ -1,4 +1,7 @@
 :root {
+    --color-primary: #1f1f1f;
+    --color-primary-light: #2e2e2e;
+    --color-on-primary: #ebebeb;
     --color-background: #fcfcfc;
     --color-surface: #ffffff;
     --color-surface-dark: #e0e0e0;
@@ -70,23 +73,6 @@ body,
         overflow-y: auto;
         display: flex;
     }
-}
-
-button {
-    border: none;
-    border-radius: 1000px;
-    padding: 15px 20px;
-    background-color: transparent;
-    color: var(--color-on-surface-low-emphasis);
-    cursor: pointer;
-    font-family: "Segoe UI", sans-serif;
-    font-weight: bold;
-    flex-shrink: 0;
-    height: fit-content;
-}
-
-button:hover {
-    background-color: var(--color-surface-dark);
 }
 
 @keyframes shimmer {
