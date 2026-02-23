@@ -75,6 +75,10 @@ body,
     }
 }
 
+a {
+    color: var(--color-on-surface);
+}
+
 @keyframes shimmer {
     0% {
         background-position: -1000px 0;

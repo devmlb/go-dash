@@ -18,6 +18,11 @@ import type { MinimalOrgan } from "../../utils/types/api.type";
 import { EditModal } from "../modals/EditModal";
 import { IconButton, TextButton } from "@renderer/components/button/Button";
 
+function extractWebsite(url: string): string {
+    const result = url.match(/https?:\/\/([^/]+)/);
+    return result ? result[1] : url;
+}
+
 function Panel({
     selectedOrgan,
     reload,
@@ -124,7 +129,7 @@ function Panel({
                                         rel="noreferrer"
                                         href={selectedOrgan.url}
                                     >
-                                        Site web
+                                        {extractWebsite(selectedOrgan.url)}
                                     </a>
                                 </div>
                             )}

@@ -166,7 +166,7 @@ function buildFormFields(organInfos: Organ | null): FormFields {
 function extractFilename(filePath: string | null | undefined): string | null {
     if (!filePath) return null;
     const filename = filePath.match(/[^\\/]*\.[a-zA-Z]+$/);
-    return filename ? filename[0] : "";
+    return filename ? filename[0] : filePath;
 }
 
 function EditModal({
