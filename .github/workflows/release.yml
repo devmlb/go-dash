@@ -2,11 +2,38 @@ name: Publish Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    paths:
+      - package.json
 
 jobs:
+  check-version-change:
+    runs-on: ubuntu-latest
+    outputs:
+      version_changed: ${{ steps.check.outputs.version_changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - id: check
+        shell: bash
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -q '^package.json$'; then
+            old_version=$(git show HEAD^:package.json | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).version")
+            new_version=$(node -p "require('./package.json').version")
+
+            if [ "$old_version" != "$new_version" ]; then
+              echo "version_changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "version_changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "version_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build-and-publish:
+    needs: check-version-change
+    if: needs.check-version-change.outputs.version_changed == 'true'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -23,7 +50,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies

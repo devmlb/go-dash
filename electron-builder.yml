@@ -41,3 +41,4 @@ npmRebuild: false
 publish:
   provider: github
   releaseType: release
+  tagNamePrefix: v
