@@ -13,6 +13,7 @@ import {
     chooseOrganFile,
 } from "@renderer/utils/api";
 import { TextButton } from "@renderer/components/button/Button";
+import { Pen } from "lucide-react";
 
 interface FormFields {
     [key: string]:
@@ -268,6 +269,7 @@ function EditModal({
             onConfirm={closeAndSave}
             title={organId ? "Modifier un orgue" : "Ajouter un orgue"}
             isConfirmActionEnabled={isFormValid()}
+            titleIcon={<Pen />}
         >
             <div className="edit-modal-content">
                 {Object.keys(formFields).map((fieldKey) => {

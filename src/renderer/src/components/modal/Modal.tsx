@@ -1,5 +1,4 @@
-import { JSX, ReactNode } from "react";
-import { Pen } from "lucide-react";
+import { cloneElement, JSX, ReactNode } from "react";
 
 import "./Modal.css";
 import { TextButton } from "../button/Button";
@@ -12,6 +11,7 @@ function Modal({
     isConfirmActionEnabled = true,
     children,
     title,
+    titleIcon,
 }: {
     isOpen: boolean;
     onClose: () => void;
@@ -20,6 +20,7 @@ function Modal({
     isConfirmActionEnabled?: boolean;
     children: ReactNode;
     title: string;
+    titleIcon: JSX.Element;
 }): JSX.Element {
     return (
         <div className={isOpen ? "modal open" : "modal"}>
@@ -27,7 +28,10 @@ function Modal({
             <div className="container">
                 <div className="window">
                     <div className="title">
-                        <Pen />
+                        {cloneElement(titleIcon, {
+                            size: 20,
+                            strokeWidth: 2.75,
+                        })}
                         <h3>{title}</h3>
                     </div>
                     <div className="content">{children}</div>

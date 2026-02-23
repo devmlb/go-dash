@@ -16,7 +16,7 @@ function Button({
     className: string | undefined;
     id: string | undefined;
     text: string | undefined;
-    icon: React.JSX.Element | undefined;
+    icon: JSX.Element | undefined;
     iconOnly: boolean;
     onClick: React.MouseEventHandler<HTMLButtonElement>;
     secondary: boolean;
@@ -53,7 +53,7 @@ function IconButton({
 }: {
     className?: string;
     id?: string;
-    icon: React.JSX.Element;
+    icon: JSX.Element;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     secondary?: boolean;
     disabled?: boolean;
@@ -87,7 +87,7 @@ function TextButton({
     className?: string;
     id?: string;
     text: string;
-    icon?: React.JSX.Element;
+    icon?: JSX.Element;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     secondary?: boolean;
     disabled?: boolean;
