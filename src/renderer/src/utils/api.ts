@@ -9,11 +9,13 @@ async function getFullOrgan(id: string): Promise<Organ> {
 }
 
 async function getCover(organId: string): Promise<string | null> {
-    return `data:image;base64,${await window.api.getOrganCover(organId)}`;
+    const cover = await window.api.getOrganCover(organId);
+    return cover ? `data:image;base64,${cover}` : null;
 }
 
 async function getPreview(organId: string): Promise<string | null> {
-    return `data:image;base64,${await window.api.getOrganPreview(organId)}`;
+    const preview = await window.api.getOrganPreview(organId);
+    return preview ? `data:image;base64,${preview}` : null;
 }
 
 async function openOrgan(organId: string): Promise<void> {

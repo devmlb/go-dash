@@ -25,16 +25,18 @@ function OrganCard({
 
     return (
         <div key={organ._id} className="organ" onClick={() => onSelect(organ)}>
-            <div className="cover shimmer-loading">
+            <div className={`cover${cover ? " shimmer-loading" : ""}`}>
                 <div
                     className="image"
-                    style={
-                        cover && !isCoverLoading
-                            ? {
-                                  backgroundImage: `url(${cover})`,
-                              }
-                            : undefined
-                    }
+                    style={{
+                        backgroundImage:
+                            cover && !isCoverLoading
+                                ? `url(${cover})`
+                                : undefined,
+                        backgroundColor: !cover
+                            ? "var(--color-surface-dark)"
+                            : undefined,
+                    }}
                 />
                 {coverError && (
                     <div className="error">

@@ -84,24 +84,34 @@ function Panel({
         <div className="panel">
             {selectedOrgan ? (
                 <>
-                    <div className="preview-container shimmer-loading">
-                        {!isPreviewLoading && !previewError && preview && (
-                            <div
-                                className="preview"
-                                onMouseMove={handleMouseMove}
-                                onMouseEnter={() => setIsHovering(true)}
-                                onMouseLeave={() => setIsHovering(false)}
-                                style={{
-                                    scale: isHovering ? 1.5 : 1,
-                                    transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
-                                    backgroundImage: `url(${preview})`,
-                                }}
-                            />
-                        )}
-                    </div>
-                    <div className="preview-legend">
-                        Passer la souris sur l&apos;image pour zoomer.
-                    </div>
+                    {!isPreviewLoading && !previewError && !preview ? null : (
+                        <>
+                            <div className="preview-container shimmer-loading">
+                                {!isPreviewLoading &&
+                                    !previewError &&
+                                    preview && (
+                                        <div
+                                            className="preview"
+                                            onMouseMove={handleMouseMove}
+                                            onMouseEnter={() =>
+                                                setIsHovering(true)
+                                            }
+                                            onMouseLeave={() =>
+                                                setIsHovering(false)
+                                            }
+                                            style={{
+                                                scale: isHovering ? 1.5 : 1,
+                                                transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
+                                                backgroundImage: `url(${preview})`,
+                                            }}
+                                        />
+                                    )}
+                            </div>
+                            <div className="preview-legend">
+                                Passer la souris sur l&apos;image pour zoomer.
+                            </div>
+                        </>
+                    )}
                     <div className="content">
                         <div className="infos">
                             <h2 className="name">{selectedOrgan.name}</h2>
