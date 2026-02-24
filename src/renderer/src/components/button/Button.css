@@ -52,7 +52,8 @@
         background-color: var(--color-primary);
         color: var(--color-on-primary);
 
-        &:disabled {
+        &:disabled,
+        &:disabled:hover {
             background-color: var(--color-surface-dark);
             color: var(--color-on-surface-low-emphasis);
         }
@@ -71,7 +72,8 @@
         background-color: transparent;
         color: var(--color-primary-light);
 
-        &:disabled {
+        &:disabled,
+        &:disabled:hover {
             color: var(--color-on-surface-low-emphasis);
             background-color: transparent;
         }
