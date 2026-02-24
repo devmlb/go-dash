@@ -21,6 +21,11 @@
         height: 300px;
         cursor: pointer;
         width: 100%;
+        flex-shrink: 0;
+
+        @media (max-height: 700px) {
+            height: 200px;
+        }
 
         & > .preview {
             width: 100%;
@@ -53,11 +58,14 @@
         flex-direction: column;
         justify-content: space-between;
         width: 100%;
+        overflow: hidden;
+        gap: 10px;
 
         & > .infos {
             display: flex;
             flex-direction: column;
             gap: 10px;
+            overflow-y: auto;
 
             & > div {
                 display: flex;
