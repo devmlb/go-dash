@@ -3,16 +3,16 @@ import { JSX, useEffect, useReducer } from "react";
 import "./EditModal.css";
 import { Modal } from "../../components/modal/Modal";
 import { Input } from "../../components/input/Input";
-import type { Organ } from "@renderer/utils/types/api.type";
-import { useApi } from "@renderer/utils/hooks/api.hook";
+import type { Organ } from "../../utils/types/api.type";
+import { useApi } from "../../utils/hooks/api.hook";
 import {
     getFullOrgan,
     updateOrgan,
     addOrgan,
     chooseOrganImage,
     chooseOrganFile,
-} from "@renderer/utils/api";
-import { TextButton } from "@renderer/components/button/Button";
+} from "../../utils/api";
+import { TextButton } from "../../components/button/Button";
 import { Pen } from "lucide-react";
 
 interface FormFields {
@@ -96,8 +96,7 @@ function buildFormFields(organInfos: Organ | null): FormFields {
             isValid: false,
             placeholder: "Pays",
             regexValidation: /^.+$/,
-            validationErrorText:
-                "Pays invalide : au moins un caractère requis.",
+            validationErrorText: "Pays invalide : au moins 1 caractère requis.",
         },
         year: {
             value: "",

@@ -16,7 +16,7 @@ import { getPreview, openOrgan, removeOrgan } from "../../utils/api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
 import { EditModal } from "../modals/EditModal";
-import { IconButton, TextButton } from "@renderer/components/button/Button";
+import { IconButton, TextButton } from "../../components/button/Button";
 
 function extractWebsite(url: string): string {
     const result = url.match(/https?:\/\/([^/]+)/);

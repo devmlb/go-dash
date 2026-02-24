@@ -2,7 +2,14 @@ import { app, BrowserWindow } from "electron";
 import { join } from "node:path";
 import Datastore from "@seald-io/nedb";
 
-import { getFileContentB64, openChooseFileDialog, openFile } from "../utils/fs";
+import {
+    getFileContentB64,
+    openChooseFileDialog,
+    openFile,
+    openSaveFileDialog,
+    saveToFile,
+    getFileContent,
+} from "../utils/fs";
 
 interface MinimalOrgan {
     _id?: string;
@@ -31,7 +38,6 @@ class OrganService {
     }
 
     async getAll(): Promise<MinimalOrgan[]> {
-        await this.db.autoloadPromise;
         const organDocs = await this.db.findAsync({});
 
         return organDocs.map((doc) => ({
@@ -102,6 +108,96 @@ class OrganService {
     async getPreviewB64(id: string): Promise<string | null> {
         const organ = await this.getById(id);
         return organ.previewPath ? getFileContentB64(organ.previewPath) : null;
+    }
+
+    async exportAll(window: Electron.BaseWindow): Promise<void> {
+        const organDocs = await this.db.findAsync({});
+
+        const organsExport = JSON.stringify(
+            organDocs.map((organ) => {
+                delete organ._id;
+                return organ;
+            }),
+            null,
+            2,
+        );
+
+        const exportPath = openSaveFileDialog(window, "Exporter les orgues", [
+            {
+                name: "Fichier JSON",
+                extensions: ["json"],
+            },
+        ]);
+        if (exportPath) saveToFile(organsExport, exportPath);
+    }
+
+    async import(window: Electron.BaseWindow): Promise<void> {
+        const importPath = openChooseFileDialog(window, "Importer des orgues", [
+            {
+                name: "Fichier JSON",
+                extensions: ["json"],
+            },
+        ]);
+        if (!importPath) return;
+
+        try {
+            const organs = getFileContent(importPath);
+            const parsedOrgans = JSON.parse(organs);
+
+            if (Array.isArray(parsedOrgans)) {
+                parsedOrgans.forEach((parsedOrgan) => {
+                    if (
+                        !("name" in parsedOrgan) ||
+                        typeof parsedOrgan.name !== "string" ||
+                        !("country" in parsedOrgan) ||
+                        typeof parsedOrgan.country !== "string" ||
+                        !("path" in parsedOrgan) ||
+                        typeof parsedOrgan.path !== "string"
+                    ) {
+                        // Invalid organ, skip it
+                        return;
+                    }
+
+                    this.add({
+                        name: parsedOrgan.name,
+                        country: parsedOrgan.country,
+                        year:
+                            "year" in parsedOrgan &&
+                            typeof parsedOrgan.year === "number"
+                                ? parsedOrgan.year
+                                : null,
+                        builder:
+                            "builder" in parsedOrgan &&
+                            typeof parsedOrgan.builder === "string"
+                                ? parsedOrgan.builder
+                                : null,
+                        features:
+                            "features" in parsedOrgan &&
+                            typeof parsedOrgan.features === "string"
+                                ? parsedOrgan.features
+                                : null,
+                        url:
+                            "url" in parsedOrgan &&
+                            typeof parsedOrgan.url === "string"
+                                ? parsedOrgan.url
+                                : null,
+                        path: parsedOrgan.path,
+                        previewPath:
+                            "previewPath" in parsedOrgan &&
+                            typeof parsedOrgan.previewPath === "string"
+                                ? parsedOrgan.previewPath
+                                : null,
+                        coverPath:
+                            "coverPath" in parsedOrgan &&
+                            typeof parsedOrgan.coverPath === "string"
+                                ? parsedOrgan.coverPath
+                                : null,
+                    });
+                });
+            }
+        } catch (error) {
+            throw new Error(`Cannot parse the provided file: ${error}`);
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { copyFileSync, readFileSync } from "node:fs";
+import { copyFileSync, readFileSync, writeFileSync } from "node:fs";
 import { app, dialog, FileFilter } from "electron";
 import { join } from "node:path";
 
@@ -18,6 +18,10 @@ function copyFileToAppData(
     return targetPath;
 }
 
+function getFileContent(filePath: string): string {
+    return readFileSync(filePath, "utf-8");
+}
+
 function getFileContentB64(filePath: string): string {
     return readFileSync(filePath).toString("base64");
 }
@@ -27,13 +31,36 @@ function openChooseFileDialog(
     title: string,
     fileTypes: FileFilter[],
 ): string | null {
-    const result = dialog.showOpenDialogSync(window, {
+    const path = dialog.showOpenDialogSync(window, {
         title: title,
         filters: fileTypes,
         properties: ["openFile", "multiSelections"],
     });
-
-    return result ? result[0] : null;
+    return path ? path[0] : null;
 }
 
-export { openFile, copyFileToAppData, getFileContentB64, openChooseFileDialog };
+function openSaveFileDialog(
+    window: Electron.BaseWindow,
+    title: string,
+    fileTypes: FileFilter[],
+): string | null {
+    const path = dialog.showSaveDialogSync(window, {
+        title: title,
+        filters: fileTypes,
+    });
+    return path ? path : null;
+}
+
+function saveToFile(content: string, path: string): void {
+    writeFileSync(path, content);
+}
+
+export {
+    openFile,
+    copyFileToAppData,
+    getFileContent,
+    getFileContentB64,
+    openChooseFileDialog,
+    openSaveFileDialog,
+    saveToFile,
+};

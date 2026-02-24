@@ -1,5 +1,6 @@
 import { useReducer, useState, type JSX } from "react";
 import { createPortal } from "react-dom";
+import { Download, FolderOpen, Plus, RefreshCcw } from "lucide-react";
 
 import "./App.css";
 import type { MinimalOrgan } from "../utils/types/api.type";
@@ -7,10 +8,9 @@ import logo from "../assets/logo.ico";
 import { Panel } from "./panel/Panel";
 import { Grid } from "./grid/Grid";
 import { EditModal } from "./modals/EditModal";
-import { getAppVersion } from "../utils/api";
+import { getAppVersion, exportAllOrgans, importOrgans } from "../utils/api";
 import { useApi } from "../utils/hooks/api.hook";
-import { IconButton, TextButton } from "@renderer/components/button/Button";
-import { Plus, RefreshCcw } from "lucide-react";
+import { IconButton, TextButton } from "../components/button/Button";
 
 function App(): JSX.Element {
     const [selectedOrganId, setSelectedOrganId] = useState<string | null>(null);
@@ -45,6 +45,11 @@ function App(): JSX.Element {
         }
     };
 
+    const handleImport = async (): Promise<void> => {
+        await importOrgans();
+        reload();
+    };
+
     return (
         <>
             <div className="appbar">
@@ -56,11 +61,23 @@ function App(): JSX.Element {
                     )}
                 </div>
                 <div className="actions">
-                    <IconButton
-                        icon={<RefreshCcw />}
-                        secondary
-                        onClick={reload}
-                    />
+                    <div className="secondary">
+                        <IconButton
+                            icon={<RefreshCcw />}
+                            secondary
+                            onClick={reload}
+                        />
+                        <IconButton
+                            icon={<FolderOpen />}
+                            secondary
+                            onClick={handleImport}
+                        />
+                        <IconButton
+                            icon={<Download />}
+                            secondary
+                            onClick={exportAllOrgans}
+                        />
+                    </div>
                     <TextButton
                         text="Ajouter un orgue"
                         icon={<Plus />}

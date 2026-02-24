@@ -16,6 +16,8 @@ const api = {
     chooseOrganImage: () => ipcRenderer.invoke("chooseOrganImage"),
     chooseOrganFile: () => ipcRenderer.invoke("chooseOrganFile"),
     getAppVersion: () => ipcRenderer.invoke("getAppVersion"),
+    exportAllOrgans: () => ipcRenderer.invoke("exportAllOrgans"),
+    importOrgans: () => ipcRenderer.invoke("importOrgans"),
 };
 
 export { api };

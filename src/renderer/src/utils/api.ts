@@ -44,6 +44,14 @@ async function getAppVersion(): Promise<string> {
     return await window.api.getAppVersion();
 }
 
+async function exportAllOrgans(): Promise<string> {
+    return await window.api.exportAllOrgans();
+}
+
+async function importOrgans(): Promise<string> {
+    return await window.api.importOrgans();
+}
+
 export {
     getOrgansList,
     getCover,
@@ -56,4 +64,6 @@ export {
     chooseOrganImage,
     chooseOrganFile,
     getAppVersion,
+    exportAllOrgans,
+    importOrgans,
 };
