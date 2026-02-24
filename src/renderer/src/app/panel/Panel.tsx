@@ -17,6 +17,7 @@ import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
 import { EditModal } from "../modals/EditModal";
 import { IconButton, TextButton } from "../../components/button/Button";
+import { Modal } from "../../components/modal/Modal";
 
 function extractWebsite(url: string): string {
     const result = url.match(/https?:\/\/([^/]+)/);
@@ -44,6 +45,8 @@ function Panel({
     };
 
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
     const [previewReloadCount, reloadPreview] = useReducer(
         (count: number) => count + 1,
         0,
@@ -51,13 +54,16 @@ function Panel({
 
     const closeEditModal = (): void => setIsEditModalOpen(false);
     const openEditModal = async (): Promise<void> => setIsEditModalOpen(true);
+    const closeDeleteModal = (): void => setIsDeleteModalOpen(false);
+    const openDeleteModal = async (): Promise<void> =>
+        setIsDeleteModalOpen(true);
     const handleSaved = (): void => {
         reloadPreview();
         reload();
     };
     const handleRemoved = (): void => {
         if (!selectedOrgan) return;
-
+        closeDeleteModal();
         removeOrgan(selectedOrgan._id);
         reload();
     };
@@ -138,12 +144,12 @@ function Panel({
                             <div className="secondary">
                                 <IconButton
                                     secondary
-                                    onClick={handleRemoved}
+                                    onClick={openDeleteModal}
                                     icon={<Trash />}
                                 />
                                 <IconButton
                                     secondary
-                                    onClick={() => openEditModal()}
+                                    onClick={openEditModal}
                                     icon={<Pen />}
                                 />
                             </div>
@@ -161,6 +167,23 @@ function Panel({
                             organId={selectedOrgan._id}
                             onSaved={handleSaved}
                         />,
+                        document.body,
+                    )}
+                    {createPortal(
+                        <Modal
+                            isOpen={isDeleteModalOpen}
+                            onClose={closeDeleteModal}
+                            onConfirm={handleRemoved}
+                            title="Supprimer un orgue"
+                            titleIcon={<Trash />}
+                            confirmActionText="Supprimer"
+                        >
+                            Voulez-vous vraiment supprimer &quot;
+                            {selectedOrgan?.name}&quot; ? <br />
+                            Les fichiers extérieurs spécifiés dans les
+                            propriétés de l&apos;orgue sur GO Dash ne seront pas
+                            supprimés.
+                        </Modal>,
                         document.body,
                     )}
                 </>

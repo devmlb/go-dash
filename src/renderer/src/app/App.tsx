@@ -31,8 +31,8 @@ function App(): JSX.Element {
         triggerReload();
     };
 
-    const closeModal = (): void => setIsAddModalOpen(false);
-    const openModal = (): void => setIsAddModalOpen(true);
+    const closeAddModal = (): void => setIsAddModalOpen(false);
+    const openAddModal = (): void => setIsAddModalOpen(true);
 
     const handleOrgansLoaded = (nextOrgans: MinimalOrgan[]): void => {
         setOrgans(nextOrgans);
@@ -81,12 +81,12 @@ function App(): JSX.Element {
                     <TextButton
                         text="Ajouter un orgue"
                         icon={<Plus />}
-                        onClick={openModal}
+                        onClick={openAddModal}
                     />
                     {createPortal(
                         <EditModal
                             isOpen={isAddModalOpen}
-                            close={closeModal}
+                            close={closeAddModal}
                             onSaved={reload}
                         />,
                         document.body,
