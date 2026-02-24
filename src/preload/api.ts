@@ -8,6 +8,7 @@ const api = {
     getFullOrgan: (id: string) => ipcRenderer.invoke("getFullOrgan", id),
     openOrgan: (id: string) => ipcRenderer.invoke("openOrgan", id),
     removeOrgan: (id: string) => ipcRenderer.invoke("removeOrgan", id),
+    removeAllOrgans: () => ipcRenderer.invoke("removeAllOrgans"),
     updateOrgan: (organ: Organ) => ipcRenderer.invoke("updateOrgan", organ),
     addOrgan: (organInfos: Omit<Organ, "_id">) =>
         ipcRenderer.invoke("addOrgan", organInfos),

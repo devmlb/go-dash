@@ -74,6 +74,10 @@ class OrganService {
         await this.db.removeAsync({ _id: organId }, {});
     }
 
+    async removeAll(): Promise<void> {
+        await this.db.removeAsync({}, { multi: true });
+    }
+
     async open(id: string): Promise<void> {
         openFile((await this.getById(id)).path);
     }

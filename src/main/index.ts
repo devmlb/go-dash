@@ -78,6 +78,7 @@ app.whenReady().then(() => {
     ipcMain.handle("removeOrgan", (_event, id: string) =>
         organService.remove(id),
     );
+    ipcMain.handle("removeAllOrgans", () => organService.removeAll());
     ipcMain.handle("getOrganCover", (_event, id: string) =>
         organService.getCoverB64(id),
     );

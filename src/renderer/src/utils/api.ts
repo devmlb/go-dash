@@ -54,6 +54,10 @@ async function importOrgans(): Promise<string> {
     return await window.api.importOrgans();
 }
 
+async function removeAllOrgans(): Promise<string> {
+    return await window.api.removeAllOrgans();
+}
+
 export {
     getOrgansList,
     getCover,
@@ -68,4 +72,5 @@ export {
     getAppVersion,
     exportAllOrgans,
     importOrgans,
+    removeAllOrgans,
 };
