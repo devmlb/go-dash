@@ -1,6 +1,6 @@
 {
   "name": "go-dash",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "./out/main/index.js",
   "description": "A dashboard for your Grand Orgue organs",
   "author": "devmlb",
