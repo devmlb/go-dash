@@ -44,9 +44,7 @@ function OrganCard({
             </div>
             <div className="content">
                 <h3 className="name">{organ.name}</h3>
-                {organ.year && (
-                    <div className="infos">{`${organ.country} • ${organ.year.toString()}`}</div>
-                )}
+                <div className="infos">{`${organ.country}${organ.year ? " • " + organ.year.toString() : ""}`}</div>
             </div>
         </div>
     );
