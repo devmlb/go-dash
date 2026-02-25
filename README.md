@@ -1,9 +1,6 @@
-<div style="display: flex; justify-content: center; align-items: center; gap: 25px; margin: 30px 0;">
-    <img style="height: 50px; padding-bottom: 10px;" src=".github/logo.png" alt="Banner">
-    <p style="font-family: 'Segoe UI', sans-serif; font-size: 48px; font-weight: 600">GO Dash</p>
-</div>
+<img width="100%" src=".github/logo-large.png" alt="Banner">
 
-<img style="width: 100%; margin-bottom: 30px;" src=".github/banner.png" alt="Banner">
+<img width="100%" src=".github/banner.png" alt="Banner">
 
 _An app to easily manage your [GrandOrgue](https://github.com/GrandOrgue/grandorgue) organ library._
 
