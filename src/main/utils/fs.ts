@@ -4,7 +4,7 @@ import { app, dialog, FileFilter } from "electron";
 import { join } from "node:path";
 
 function openFile(path: string): void {
-    execSync(`Invoke-Item ${path}`, { shell: "powershell.exe" });
+    execSync(`Invoke-Item "${path}"`, { shell: "powershell.exe" });
 }
 
 function copyFileToAppData(
