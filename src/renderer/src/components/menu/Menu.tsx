@@ -188,7 +188,7 @@ function SelectionMenu({
     };
 
     const processedEntries = entries.map((entry, i) => {
-        const newEntry: Entry = entry;
+        const newEntry: Entry = structuredClone(entry);
         newEntry.onClick = () => selectEntry(i);
         if (i === selectedEntry) {
             newEntry.icon = <Check />;
