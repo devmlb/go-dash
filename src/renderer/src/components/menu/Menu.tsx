@@ -8,6 +8,7 @@ import {
     type JSX,
     type ReactNode,
 } from "react";
+import { Check } from "lucide-react";
 
 import "./Menu.css";
 
@@ -18,17 +19,46 @@ type Entry = {
     onClick?: () => void;
 };
 
+function MenuEntry({
+    name,
+    icon,
+    disabled,
+    onClick = () => {},
+    onClose,
+}: {
+    name: string;
+    icon?: JSX.Element;
+    disabled?: boolean;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    onClose: () => void;
+}): JSX.Element {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        onClose();
+        onClick?.(e);
+    };
+
+    return (
+        <button
+            type="button"
+            className="entry"
+            disabled={disabled}
+            onClick={handleClick}
+        >
+            {icon ? cloneElement(icon, { size: 16, strokeWidth: 2 }) : null}
+            <span className="entry-label">{name}</span>
+        </button>
+    );
+}
+
 function Menu({
     target,
     entries,
     className,
-    offsetX = 0,
     offsetY = 8,
 }: {
     target: ReactNode;
     entries: Entry[];
     className?: string;
-    offsetX?: number;
     offsetY?: number;
 }): JSX.Element {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -77,7 +107,7 @@ function Menu({
 
         updateMenuHeight();
         updateMenuPosition();
-    }, [isOpen, entries, offsetX, offsetY, updateMenuPosition]);
+    }, [isOpen, entries, offsetY, updateMenuPosition]);
 
     useEffect(() => {
         if (!isOpen) return;
@@ -106,18 +136,14 @@ function Menu({
             window.removeEventListener("resize", updateMenuPosition);
             window.removeEventListener("scroll", updateMenuPosition, true);
         };
-    }, [isOpen, offsetX, offsetY, updateMenuPosition]);
+    }, [isOpen, offsetY, updateMenuPosition]);
 
     return (
         <div className={className ? `menu-root ${className}` : "menu-root"}>
-            <div ref={triggerRef} onClick={toggleMenu}>
+            <div ref={triggerRef} onClick={toggleMenu} className="wrapper">
                 {target}
             </div>
-            <div
-                ref={menuRef}
-                className={isOpen ? "menu open" : "menu"}
-                aria-hidden={!isOpen}
-            >
+            <div ref={menuRef} className={isOpen ? "menu open" : "menu"}>
                 <div ref={contentRef} className="entries">
                     {entries.map((entry, index) => (
                         <MenuEntry
@@ -135,35 +161,49 @@ function Menu({
     );
 }
 
-function MenuEntry({
-    name,
-    icon,
-    disabled,
-    onClick = () => {},
-    onClose,
+function SelectionMenu({
+    target,
+    entries,
+    onSelected,
+    defaultSelected,
+    className,
+    offsetY,
 }: {
-    name: string;
-    icon?: JSX.Element;
-    disabled?: boolean;
-    onClick?: React.MouseEventHandler<HTMLButtonElement>;
-    onClose: () => void;
+    target: ReactNode;
+    entries: Omit<Entry, "icon" | "onClick">[];
+    onSelected: (entryIndex: number) => void;
+    defaultSelected: number;
+    className?: string;
+    offsetY?: number;
 }): JSX.Element {
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        onClose();
-        onClick?.(e);
+    const [selectedEntry, setSelectedEntry] = useState<number | null>(
+        defaultSelected >= 0 && defaultSelected < entries.length
+            ? defaultSelected
+            : null,
+    );
+
+    const selectEntry = (entryIndex: number): void => {
+        onSelected(entryIndex);
+        setSelectedEntry(entryIndex);
     };
 
+    const processedEntries = entries.map((entry, i) => {
+        const newEntry: Entry = entry;
+        newEntry.onClick = () => selectEntry(i);
+        if (i === selectedEntry) {
+            newEntry.icon = <Check />;
+        }
+        return newEntry;
+    });
+
     return (
-        <button
-            type="button"
-            className="menu-entry"
-            disabled={disabled}
-            onClick={handleClick}
-        >
-            {icon ? cloneElement(icon, { size: 16, strokeWidth: 2 }) : null}
-            <span className="menu-entry-label">{name}</span>
-        </button>
+        <Menu
+            className={className}
+            entries={processedEntries}
+            offsetY={offsetY}
+            target={target}
+        />
     );
 }
 
-export { Menu };
+export { Menu, SelectionMenu };
