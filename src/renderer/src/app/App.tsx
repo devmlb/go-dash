@@ -31,19 +31,19 @@ import { Menu, SelectionMenu } from "../components/menu/Menu";
 
 const sortFields: { name: string; id: keyof MinimalOrgan }[] = [
     {
-        name: "Nom",
+        name: "Trier par nom",
         id: "name",
     },
     {
-        name: "Pays",
+        name: "Trier par pays",
         id: "country",
     },
     {
-        name: "Année de construction",
+        name: "Trier par année de construction",
         id: "year",
     },
     {
-        name: "Facteur d'orgue",
+        name: "Trier par facteur d'orgue",
         id: "builder",
     },
 ];
