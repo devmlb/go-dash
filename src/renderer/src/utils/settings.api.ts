@@ -4,7 +4,9 @@ async function getAllSettings(): Promise<Setting[]> {
     return await window.api.getAllSettings();
 }
 
-async function getSettingValue(name: string): Promise<SettingValue> {
+async function getSettingValue<T extends SettingValue>(
+    name: string,
+): Promise<T> {
     return await window.api.getSettingValueByName(name);
 }
 

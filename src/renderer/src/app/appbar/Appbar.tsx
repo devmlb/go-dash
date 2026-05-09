@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import "./Appbar.css";
-import type { MinimalOrgan, SettingValue } from "../../utils/types/api.type";
+import type { MinimalOrgan } from "../../utils/types/api.type";
 import logo from "../../assets/logo.ico";
 import { EditModal } from "../modals/EditModal";
 import {
@@ -51,12 +51,12 @@ function Appbar({
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
     const { data: appVersion } = useApi<string>(getAppVersion, []);
-    const { data: storedAscendantSort } = useApi<SettingValue>(
-        () => getSettingValue("ascendant-sort"),
+    const { data: storedAscendantSort } = useApi<string>(
+        () => getSettingValue<string>("ascendant-sort"),
         [],
     );
-    const { data: storedSortField } = useApi<SettingValue>(
-        () => getSettingValue("sort-field"),
+    const { data: storedSortField } = useApi<boolean>(
+        () => getSettingValue<boolean>("sort-field"),
         [],
     );
 
@@ -123,7 +123,7 @@ function Appbar({
                         secondary
                         onClick={reloadFn}
                     />
-                    {selectedSortOrder ? (
+                    {selectedSortOrder !== null ? (
                         <SelectionMenu
                             target={
                                 <IconButton
@@ -151,7 +151,7 @@ function Appbar({
                     ) : (
                         <IconButton icon={<CircleQuestionMark />} secondary />
                     )}
-                    {selectedSortField ? (
+                    {selectedSortField !== null ? (
                         <SelectionMenu
                             target={
                                 <IconButton icon={<ArrowDownUp />} secondary />
