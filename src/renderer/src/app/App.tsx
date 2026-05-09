@@ -1,6 +1,9 @@
 import { useReducer, useState, type JSX } from "react";
 import { createPortal } from "react-dom";
 import {
+    ArrowDownNarrowWide,
+    ArrowDownUp,
+    ArrowDownWideNarrow,
     Download,
     Ellipsis,
     FolderOpen,
@@ -24,7 +27,26 @@ import {
 import { useApi } from "../utils/hooks/api.hook";
 import { IconButton, TextButton } from "../components/button/Button";
 import { Modal } from "../components/modal/Modal";
-import { Menu } from "../components/menu/Menu";
+import { Menu, SelectionMenu } from "../components/menu/Menu";
+
+const sortFields: { name: string; id: keyof MinimalOrgan }[] = [
+    {
+        name: "Nom",
+        id: "name",
+    },
+    {
+        name: "Pays",
+        id: "country",
+    },
+    {
+        name: "Année de construction",
+        id: "year",
+    },
+    {
+        name: "Facteur d'orgue",
+        id: "builder",
+    },
+];
 
 function App(): JSX.Element {
     const [selectedOrganId, setSelectedOrganId] = useState<string | null>(null);
@@ -51,6 +73,9 @@ function App(): JSX.Element {
     const closeDeleteModal = (): void => setIsDeleteModalOpen(false);
     const openDeleteModal = async (): Promise<void> =>
         setIsDeleteModalOpen(true);
+
+    const [selectedSortOrder, setSelectedSortOrder] = useState<number>(0);
+    const [selectedSortField, setSelectedSortField] = useState<number>(0);
 
     const handleOrgansLoaded = (nextOrgans: MinimalOrgan[]): void => {
         setOrgans(nextOrgans);
@@ -96,21 +121,42 @@ function App(): JSX.Element {
                             secondary
                             onClick={reload}
                         />
-                        {/* <IconButton
-                            icon={<Trash />}
-                            secondary
-                            onClick={openDeleteModal}
+                        <SelectionMenu
+                            target={
+                                <IconButton
+                                    icon={
+                                        selectedSortOrder === 0 ? (
+                                            <ArrowDownNarrowWide />
+                                        ) : (
+                                            <ArrowDownWideNarrow />
+                                        )
+                                    }
+                                    secondary
+                                />
+                            }
+                            entries={[
+                                {
+                                    name: "Tri croissant",
+                                },
+                                {
+                                    name: "Tri décroissant",
+                                },
+                            ]}
+                            defaultSelected={selectedSortOrder}
+                            onSelected={(entryIndex) =>
+                                setSelectedSortOrder(entryIndex)
+                            }
                         />
-                        <IconButton
-                            icon={<FolderOpen />}
-                            secondary
-                            onClick={handleImport}
+                        <SelectionMenu
+                            target={
+                                <IconButton icon={<ArrowDownUp />} secondary />
+                            }
+                            entries={sortFields}
+                            defaultSelected={selectedSortField}
+                            onSelected={(entryIndex) =>
+                                setSelectedSortField(entryIndex)
+                            }
                         />
-                        <IconButton
-                            icon={<Download />}
-                            secondary
-                            onClick={exportAllOrgans}
-                        /> */}
                         <Menu
                             target={
                                 <IconButton icon={<Ellipsis />} secondary />
@@ -127,7 +173,7 @@ function App(): JSX.Element {
                                     onClick: handleImport,
                                 },
                                 {
-                                    name: "Exporter des orgues",
+                                    name: "Exporter tous les orgues",
                                     icon: <Download />,
                                     onClick: exportAllOrgans,
                                 },
@@ -166,6 +212,8 @@ function App(): JSX.Element {
                     reloadCount={reloadCount}
                     onSelectOrgan={(organ) => setSelectedOrganId(organ._id)}
                     onOrgansLoaded={handleOrgansLoaded}
+                    ascendantSort={selectedSortOrder === 0}
+                    fieldSort={sortFields[selectedSortField].id}
                 />
                 <Panel selectedOrgan={selected} reload={reload} />
             </main>

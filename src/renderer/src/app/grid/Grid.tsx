@@ -4,6 +4,7 @@ import "./Grid.css";
 import { getCover, getOrgansList } from "../../utils/api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
+import { sortArrayOfObjectByField } from "@renderer/utils/sort";
 
 function OrganCard({
     reloadCount,
@@ -56,10 +57,14 @@ function Grid({
     reloadCount,
     onSelectOrgan,
     onOrgansLoaded,
+    ascendantSort,
+    fieldSort,
 }: {
     reloadCount: number;
     onSelectOrgan: (organ: MinimalOrgan) => void;
     onOrgansLoaded: (organs: MinimalOrgan[]) => void;
+    ascendantSort: boolean;
+    fieldSort: keyof MinimalOrgan;
 }): JSX.Element {
     const {
         data: organs,
@@ -79,7 +84,11 @@ function Grid({
             {!isLoading &&
                 !error &&
                 organs &&
-                organs.map((organ) => (
+                sortArrayOfObjectByField<MinimalOrgan>(
+                    organs,
+                    fieldSort,
+                    ascendantSort,
+                ).map((organ) => (
                     <OrganCard
                         key={organ._id}
                         onSelect={onSelectOrgan}
