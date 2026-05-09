@@ -1,6 +1,13 @@
 import { useReducer, useState, type JSX } from "react";
 import { createPortal } from "react-dom";
-import { Download, FolderOpen, Plus, RefreshCcw, Trash } from "lucide-react";
+import {
+    Download,
+    Ellipsis,
+    FolderOpen,
+    Plus,
+    RefreshCcw,
+    Trash,
+} from "lucide-react";
 
 import "./App.css";
 import type { MinimalOrgan } from "../utils/types/api.type";
@@ -17,6 +24,7 @@ import {
 import { useApi } from "../utils/hooks/api.hook";
 import { IconButton, TextButton } from "../components/button/Button";
 import { Modal } from "../components/modal/Modal";
+import { Menu } from "../components/menu/Menu";
 
 function App(): JSX.Element {
     const [selectedOrganId, setSelectedOrganId] = useState<string | null>(null);
@@ -77,13 +85,18 @@ function App(): JSX.Element {
                     )}
                 </div>
                 <div className="actions">
+                    <TextButton
+                        text="Ajouter un orgue"
+                        icon={<Plus />}
+                        onClick={openAddModal}
+                    />
                     <div className="secondary">
                         <IconButton
                             icon={<RefreshCcw />}
                             secondary
                             onClick={reload}
                         />
-                        <IconButton
+                        {/* <IconButton
                             icon={<Trash />}
                             secondary
                             onClick={openDeleteModal}
@@ -97,13 +110,30 @@ function App(): JSX.Element {
                             icon={<Download />}
                             secondary
                             onClick={exportAllOrgans}
+                        /> */}
+                        <Menu
+                            target={
+                                <IconButton icon={<Ellipsis />} secondary />
+                            }
+                            entries={[
+                                {
+                                    name: "Supprimer tout",
+                                    icon: <Trash />,
+                                    onClick: openDeleteModal,
+                                },
+                                {
+                                    name: "Importer des orgues",
+                                    icon: <FolderOpen />,
+                                    onClick: handleImport,
+                                },
+                                {
+                                    name: "Exporter des orgues",
+                                    icon: <Download />,
+                                    onClick: exportAllOrgans,
+                                },
+                            ]}
                         />
                     </div>
-                    <TextButton
-                        text="Ajouter un orgue"
-                        icon={<Plus />}
-                        onClick={openAddModal}
-                    />
                     {createPortal(
                         <EditModal
                             isOpen={isAddModalOpen}
