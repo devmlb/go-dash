@@ -24,7 +24,6 @@
             max-height .2s,
             padding .2s,
             outline .3s;
-        font-weight: normal;
 
         &.open {
             max-height: var(--menu-open-max-height, 500px);
@@ -49,8 +48,8 @@
                 border: none;
                 cursor: pointer;
                 background-color: transparent;
-                font: inherit;
-                font-size: inherit;
+                font-size: 14px;
+                font-weight: normal;
                 text-align: left;
                 transition:
                     background-color .2s,
