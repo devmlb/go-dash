@@ -11,7 +11,7 @@ import {
     addOrgan,
     chooseOrganImage,
     chooseOrganFile,
-} from "../../utils/api";
+} from "../../utils/organ.api";
 import { TextButton } from "../../components/button/Button";
 import { Pen } from "lucide-react";
 

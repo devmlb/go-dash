@@ -1,6 +1,7 @@
 import { ipcRenderer } from "electron";
 
 import { Organ } from "../main/services/organ.service";
+import { SettingValue } from "../main/services/settings.service";
 
 // Custom APIs for renderer
 const api = {
@@ -16,9 +17,16 @@ const api = {
     getOrganPreview: (id: string) => ipcRenderer.invoke("getOrganPreview", id),
     chooseOrganImage: () => ipcRenderer.invoke("chooseOrganImage"),
     chooseOrganFile: () => ipcRenderer.invoke("chooseOrganFile"),
-    getAppVersion: () => ipcRenderer.invoke("getAppVersion"),
     exportAllOrgans: () => ipcRenderer.invoke("exportAllOrgans"),
     importOrgans: () => ipcRenderer.invoke("importOrgans"),
+
+    getAllSettings: () => ipcRenderer.invoke("getAllSettings"),
+    getSettingValueByName: (name: string) =>
+        ipcRenderer.invoke("getSettingValueByName", name),
+    setSettingValueByName: (name: string, value: SettingValue) =>
+        ipcRenderer.invoke("setSettingValueByName", name, value),
+
+    getAppVersion: () => ipcRenderer.invoke("getAppVersion"),
 };
 
 export { api };

@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 // import icon from "../../resources/icon.png?asset";
 
 import { organService } from "./services/organ.service";
+import { settingsService, SettingValue } from "./services/settings.service";
 import { updaterService } from "./services/updater.service";
 import type { Organ } from "./services/organ.service";
 
@@ -87,9 +88,20 @@ app.whenReady().then(() => {
     );
     ipcMain.handle("chooseOrganImage", () => organService.chooseImage(window));
     ipcMain.handle("chooseOrganFile", () => organService.chooseGOFile(window));
-    ipcMain.handle("getAppVersion", () => app.getVersion());
     ipcMain.handle("exportAllOrgans", () => organService.exportAll(window));
     ipcMain.handle("importOrgans", () => organService.import(window));
+
+    ipcMain.handle("getAllSettings", () => settingsService.getAll());
+    ipcMain.handle("getSettingValueByName", (_event, name: string) =>
+        settingsService.getValueByName(name),
+    );
+    ipcMain.handle(
+        "setSettingValueByName",
+        (_event, name: string, value: SettingValue) =>
+            settingsService.setValueByName(name, value),
+    );
+
+    ipcMain.handle("getAppVersion", () => app.getVersion());
 
     app.on("activate", function () {
         // On macOS it's common to re-create a window in the app when the

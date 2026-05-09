@@ -12,7 +12,7 @@ import {
 import { createPortal } from "react-dom";
 
 import "./Panel.css";
-import { getPreview, openOrgan, removeOrgan } from "../../utils/api";
+import { getPreview, openOrgan, removeOrgan } from "../../utils/organ.api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
 import { EditModal } from "../modals/EditModal";
@@ -26,10 +26,10 @@ function extractWebsite(url: string): string {
 
 function Panel({
     selectedOrgan,
-    reload,
+    reloadFn,
 }: {
     selectedOrgan: MinimalOrgan | null;
-    reload: () => void;
+    reloadFn: () => void;
 }): JSX.Element {
     const [mousePosition, setMousePosition] = useState<{
         x: number;
@@ -59,13 +59,13 @@ function Panel({
         setIsDeleteModalOpen(true);
     const handleSaved = (): void => {
         reloadPreview();
-        reload();
+        reloadFn();
     };
     const handleRemoved = (): void => {
         if (!selectedOrgan) return;
         closeDeleteModal();
         removeOrgan(selectedOrgan._id);
-        reload();
+        reloadFn();
     };
 
     const {

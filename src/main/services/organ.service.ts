@@ -28,13 +28,20 @@ interface Organ extends MinimalOrgan {
 }
 
 class OrganService {
-    db: Datastore<Organ>;
+    db!: Datastore<Organ>;
 
     constructor() {
         this.db = new Datastore<Organ>({
             filename: join(app.getPath("userData"), "organs"),
             autoload: true,
         });
+        (async () => {
+            try {
+                await this.db.autoloadPromise;
+            } catch {
+                throw new Error("Cannot load the Organ DB");
+            }
+        })();
     }
 
     async getAll(): Promise<MinimalOrgan[]> {
@@ -52,7 +59,6 @@ class OrganService {
     }
 
     async getById(id: string): Promise<Organ> {
-        await this.db.autoloadPromise;
         const organDoc = await this.db.findOneAsync({ _id: id });
 
         if (organDoc) {
@@ -126,12 +132,16 @@ class OrganService {
             2,
         );
 
-        const exportPath = openSaveFileDialog(window, "Exporter les orgues", [
-            {
-                name: "Fichier JSON",
-                extensions: ["json"],
-            },
-        ]);
+        const exportPath = openSaveFileDialog(
+            window,
+            "Exporter tous les orgues",
+            [
+                {
+                    name: "Fichier JSON",
+                    extensions: ["json"],
+                },
+            ],
+        );
         if (exportPath) saveToFile(organsExport, exportPath);
     }
 
