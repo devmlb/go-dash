@@ -12,7 +12,7 @@
     & > .menu {
         background-color: var(--color-surface);
         border-radius: 15px;
-        box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.05);
+        box-shadow: 0px 2px 6px 1px transparent;
         outline: transparent solid 0px;
         outline-offset: -1px;
         min-width: 232px;
@@ -28,13 +28,15 @@
         transition:
             max-height 0.2s,
             padding 0.2s,
-            outline 0.3s;
+            outline 0.3s,
+            box-shadow 0.3s;
 
         &.open {
             max-height: var(--menu-open-max-height, 500px);
             pointer-events: auto;
             padding: 6px;
             outline: var(--color-surface-dark) solid 1px;
+            box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.05);
         }
 
         & > .entries {
