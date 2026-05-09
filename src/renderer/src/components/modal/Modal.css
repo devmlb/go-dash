@@ -47,7 +47,7 @@
         opacity: 0;
         transition:
             transform 0.3s,
-            opacity 0.3s;
+            opacity 0.2s;
 
         & > .window {
             padding: 30px;
