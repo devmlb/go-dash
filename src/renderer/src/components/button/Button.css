@@ -12,8 +12,8 @@
     gap: 10px;
     position: relative;
     transition:
-        background-color 0.2s,
-        color.2s;
+        background-color .2s,
+        color .2s;
 
     &:disabled {
         cursor: not-allowed;

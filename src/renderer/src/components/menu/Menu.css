@@ -1,0 +1,84 @@
+/* TODO */
+
+.menu-root {
+    display: inline-block;
+    position: relative;
+
+    & > .menu {
+        background-color: var(--color-surface);
+        border-radius: 15px;
+        box-shadow: 0px 2px 6px 1px rgba(0,0,0,0.05);
+        outline: transparent solid 0px;
+        outline-offset: -1px;
+        min-width: 232px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 0px 6px;
+        overflow: hidden;
+        max-height: 0px;
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+        transition:
+            max-height .2s,
+            padding .2s,
+            outline .3s;
+        font-weight: normal;
+
+        &.open {
+            max-height: var(--menu-open-max-height, 500px);
+            pointer-events: auto;
+            padding: 6px;
+            outline: var(--color-surface-dark) solid 1px;
+        }
+
+        & > .entries {
+            display: flex;
+            flex-direction: column;
+
+            & > .menu-entry {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 10px;
+                border-radius: 9px;
+                color: var(--color-primary);
+                text-decoration: none;
+                border: none;
+                cursor: pointer;
+                background-color: transparent;
+                font: inherit;
+                font-size: inherit;
+                text-align: left;
+                transition:
+                    background-color .2s,
+                    color .2s;
+
+                &:not(:has(svg))::before {
+                    content: "";
+                    display: inline-block;
+                    width: 16px;
+                }
+
+                &:disabled,
+                &:disabled:hover {
+                    cursor: not-allowed;
+                    color: var(--color-on-surface-low-emphasis);
+                    background-color: transparent;
+                }
+
+                &:hover {
+                    background-color: var(--color-surface-dark);
+                }
+            }
+        }
+    }
+}
+
+.menu-entry-label {
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+}
