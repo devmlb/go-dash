@@ -47,7 +47,20 @@ function OrganCard({
             </div>
             <div className="content">
                 <h3 className="name">{organ.name}</h3>
-                <div className="infos">{`${organ.country}${organ.year ? " • " + organ.year.toString() : ""}`}</div>
+                <div className="infos">
+                    {organ.country +
+                        (organ.year ? " • " + organ.year : "") +
+                        (organ.stops
+                            ? " • " +
+                              organ.stops +
+                              ` jeu${organ.stops > 1 ? "x" : ""}`
+                            : "") +
+                        (organ.keyboards
+                            ? (organ.stops ? ", " : " • ") +
+                              organ.keyboards +
+                              ` clavier${organ.keyboards > 1 ? "s" : ""}`
+                            : "")}
+                </div>
             </div>
         </div>
     );

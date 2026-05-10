@@ -23,6 +23,14 @@ const sortFields: { name: string; id: keyof MinimalOrgan }[] = [
         name: "Trier par facteur d'orgue",
         id: "builder",
     },
+    {
+        name: "Trier par nombre de jeux",
+        id: "stops",
+    },
+    {
+        name: "Trier par nombre de claviers",
+        id: "keyboards",
+    },
 ];
 
 function App(): JSX.Element {
