@@ -1,7 +1,7 @@
 import { useEffect, type JSX } from "react";
 
 import "./Grid.css";
-import { getCover, getOrgansList } from "../../utils/organ.api";
+import { getCover, getOrgansList } from "../../api/organ.api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
 import { sortArrayOfObjectByField } from "@renderer/utils/sort";

@@ -1,4 +1,4 @@
-import type { Setting, SettingValue } from "./types/api.type";
+import type { Setting, SettingValue } from "../utils/types/api.type";
 
 async function getAllSettings(): Promise<Setting[]> {
     return await window.api.getAllSettings();

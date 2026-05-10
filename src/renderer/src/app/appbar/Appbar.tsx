@@ -21,12 +21,12 @@ import {
     exportAllOrgans,
     importOrgans,
     removeAllOrgans,
-} from "../../utils/organ.api";
+} from "../../api/organ.api";
 import {
     getAppVersion,
     getSettingValue,
     setSettingValue,
-} from "@renderer/utils/settings.api";
+} from "@renderer/api/settings.api";
 import { useApi } from "../../utils/hooks/api.hook";
 import { IconButton, TextButton } from "../../components/button/Button";
 import { Modal } from "../../components/modal/Modal";

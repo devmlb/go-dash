@@ -1,4 +1,4 @@
-import type { MinimalOrgan, Organ } from "./types/api.type";
+import type { MinimalOrgan, Organ } from "../utils/types/api.type";
 
 async function getOrgansList(): Promise<MinimalOrgan[]> {
     return await window.api.getAllOrgans();

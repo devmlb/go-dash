@@ -6,6 +6,8 @@ interface MinimalOrgan {
     builder: string | null;
     url: string | null;
     features: string | null;
+    stops: number | null;
+    keyboards: number | null;
 }
 
 interface Organ extends MinimalOrgan {
