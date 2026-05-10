@@ -11,11 +11,14 @@ _An app to easily manage your [GrandOrgue](https://github.com/GrandOrgue/grandor
     - country
     - year of construction
     - builder
-    - other specifications
+    - stops number
+    - keyboards number
+    - other features
     - URL of an associated website
     - organ file (.orgue, .organ)
     - cover image
     - console preview image
+- Sort your organs by name, country, year of construction, builder, stops number or keyboards number
 - Launch the associated GrandOrgue file directly from the GO Dash app
 - Import and export your config file
 - Nice and modern UI
@@ -46,9 +49,9 @@ $ npm run dev
 # For windows
 $ npm run build:win
 
-# For macOS
+# For macOS (not tested yet)
 $ npm run build:mac
 
-# For Linux
+# For Linux (not tested yet)
 $ npm run build:linux
 ```
