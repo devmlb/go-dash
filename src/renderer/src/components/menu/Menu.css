@@ -1,0 +1,83 @@
+.menu-root {
+    display: inline-block;
+    position: relative;
+
+    & > .wrapper {
+        /* Prevent menu opening when clicking outside a child which has rounded corners */
+        border-radius: 100%;
+    }
+
+    & > .menu {
+        background-color: var(--color-surface);
+        border-radius: 15px;
+        box-shadow: 0px 2px 6px 1px transparent;
+        outline: transparent solid 0px;
+        outline-offset: -1px;
+        min-width: 232px;
+        width: max-content;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 0px 6px;
+        overflow: hidden;
+        max-height: 0px;
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+        transition:
+            max-height 0.2s,
+            padding 0.2s,
+            outline 0.3s,
+            box-shadow 0.3s;
+
+        &.open {
+            max-height: var(--menu-open-max-height, 500px);
+            pointer-events: auto;
+            padding: 6px;
+            outline: var(--color-surface-dark) solid 1px;
+            box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        & > .entries {
+            display: flex;
+            flex-direction: column;
+
+            & > .entry {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 10px;
+                border-radius: 9px;
+                color: var(--color-primary);
+                text-decoration: none;
+                border: none;
+                cursor: pointer;
+                background-color: transparent;
+                font-size: 14px;
+                font-weight: normal;
+                text-align: left;
+                transition:
+                    background-color 0.2s,
+                    color 0.2s;
+
+                &:not(:has(svg))::before {
+                    content: "";
+                    display: inline-block;
+                    width: 16px;
+                }
+
+                &:disabled,
+                &:disabled:hover {
+                    cursor: not-allowed;
+                    color: var(--color-on-surface-low-emphasis);
+                    background-color: transparent;
+                }
+
+                &:hover {
+                    background-color: var(--color-surface-dark);
+                }
+            }
+        }
+    }
+}

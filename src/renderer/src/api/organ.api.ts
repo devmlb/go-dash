@@ -1,4 +1,4 @@
-import type { MinimalOrgan, Organ } from "./types/api.type";
+import type { MinimalOrgan, Organ } from "../utils/types/api.type";
 
 async function getOrgansList(): Promise<MinimalOrgan[]> {
     return await window.api.getAllOrgans();
@@ -42,10 +42,6 @@ async function chooseOrganImage(): Promise<string | null> {
     return await window.api.chooseOrganImage();
 }
 
-async function getAppVersion(): Promise<string> {
-    return await window.api.getAppVersion();
-}
-
 async function exportAllOrgans(): Promise<string> {
     return await window.api.exportAllOrgans();
 }
@@ -69,7 +65,6 @@ export {
     removeOrgan,
     chooseOrganImage,
     chooseOrganFile,
-    getAppVersion,
     exportAllOrgans,
     importOrgans,
     removeAllOrgans,

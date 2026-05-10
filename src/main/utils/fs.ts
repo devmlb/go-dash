@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { copyFileSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { app, dialog, FileFilter } from "electron";
 import { join } from "node:path";
 
@@ -22,8 +22,16 @@ function getFileContent(filePath: string): string {
     return readFileSync(filePath, "utf-8");
 }
 
-function getFileContentB64(filePath: string): string {
-    return readFileSync(filePath).toString("base64");
+function getFileContentB64(filePath: string): string | null {
+    if (!existsSync(filePath)) {
+        return null;
+    }
+
+    try {
+        return readFileSync(filePath).toString("base64");
+    } catch {
+        return null;
+    }
 }
 
 function openChooseFileDialog(

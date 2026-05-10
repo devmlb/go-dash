@@ -8,11 +8,13 @@ import {
     Trash,
     Pen,
     ExternalLink,
+    GamepadDirectional,
+    KeyboardMusic,
 } from "lucide-react";
 import { createPortal } from "react-dom";
 
 import "./Panel.css";
-import { getPreview, openOrgan, removeOrgan } from "../../utils/api";
+import { getPreview, openOrgan, removeOrgan } from "../../api/organ.api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
 import { EditModal } from "../modals/EditModal";
@@ -26,10 +28,10 @@ function extractWebsite(url: string): string {
 
 function Panel({
     selectedOrgan,
-    reload,
+    reloadFn,
 }: {
     selectedOrgan: MinimalOrgan | null;
-    reload: () => void;
+    reloadFn: () => void;
 }): JSX.Element {
     const [mousePosition, setMousePosition] = useState<{
         x: number;
@@ -59,13 +61,13 @@ function Panel({
         setIsDeleteModalOpen(true);
     const handleSaved = (): void => {
         reloadPreview();
-        reload();
+        reloadFn();
     };
     const handleRemoved = (): void => {
         if (!selectedOrgan) return;
         closeDeleteModal();
         removeOrgan(selectedOrgan._id);
-        reload();
+        reloadFn();
     };
 
     const {
@@ -129,6 +131,18 @@ function Panel({
                                 <div>
                                     <Hammer size={16} />
                                     {selectedOrgan.builder}
+                                </div>
+                            )}
+                            {selectedOrgan.stops && (
+                                <div>
+                                    <GamepadDirectional size={16} />
+                                    {`${selectedOrgan.stops} jeu${selectedOrgan.stops > 1 ? "x" : ""}`}
+                                </div>
+                            )}
+                            {selectedOrgan.keyboards && (
+                                <div>
+                                    <KeyboardMusic size={16} />
+                                    {`${selectedOrgan.keyboards} clavier${selectedOrgan.keyboards > 1 ? "s" : ""}`}
                                 </div>
                             )}
                             {selectedOrgan.features && (

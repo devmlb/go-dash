@@ -1,9 +1,10 @@
 import { useEffect, type JSX } from "react";
 
 import "./Grid.css";
-import { getCover, getOrgansList } from "../../utils/api";
+import { getCover, getOrgansList } from "../../api/organ.api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/api.type";
+import { sortArrayOfObjectByField } from "@renderer/utils/sort";
 
 function OrganCard({
     reloadCount,
@@ -46,7 +47,20 @@ function OrganCard({
             </div>
             <div className="content">
                 <h3 className="name">{organ.name}</h3>
-                <div className="infos">{`${organ.country}${organ.year ? " • " + organ.year.toString() : ""}`}</div>
+                <div className="infos">
+                    {organ.country +
+                        (organ.year ? " • " + organ.year : "") +
+                        (organ.stops
+                            ? " • " +
+                              organ.stops +
+                              ` jeu${organ.stops > 1 ? "x" : ""}`
+                            : "") +
+                        (organ.keyboards
+                            ? (organ.stops ? ", " : " • ") +
+                              organ.keyboards +
+                              ` clavier${organ.keyboards > 1 ? "s" : ""}`
+                            : "")}
+                </div>
             </div>
         </div>
     );
@@ -56,10 +70,14 @@ function Grid({
     reloadCount,
     onSelectOrgan,
     onOrgansLoaded,
+    ascendantSort,
+    fieldSort,
 }: {
     reloadCount: number;
     onSelectOrgan: (organ: MinimalOrgan) => void;
     onOrgansLoaded: (organs: MinimalOrgan[]) => void;
+    ascendantSort: boolean;
+    fieldSort: keyof MinimalOrgan;
 }): JSX.Element {
     const {
         data: organs,
@@ -79,7 +97,11 @@ function Grid({
             {!isLoading &&
                 !error &&
                 organs &&
-                organs.map((organ) => (
+                sortArrayOfObjectByField<MinimalOrgan>(
+                    organs,
+                    fieldSort,
+                    ascendantSort,
+                ).map((organ) => (
                     <OrganCard
                         key={organ._id}
                         onSelect={onSelectOrgan}

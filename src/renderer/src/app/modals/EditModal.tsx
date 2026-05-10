@@ -11,9 +11,10 @@ import {
     addOrgan,
     chooseOrganImage,
     chooseOrganFile,
-} from "../../utils/api";
+} from "../../api/organ.api";
 import { TextButton } from "../../components/button/Button";
 import { Pen } from "lucide-react";
+import { extractIntIfFound } from "@renderer/utils/extract";
 
 interface FormFields {
     [key: string]:
@@ -111,10 +112,24 @@ function buildFormFields(organInfos: Organ | null): FormFields {
             isValid: true,
             placeholder: "Facteur d'orgue",
         },
+        stops: {
+            value: "",
+            isValid: true,
+            placeholder: "Nombre de jeux",
+            regexValidation: /^[0-9]*$/,
+            validationErrorText: "Nombre de jeux invalide.",
+        },
+        keyboards: {
+            value: "",
+            isValid: true,
+            placeholder: "Nombre de claviers",
+            regexValidation: /^[0-9]*$/,
+            validationErrorText: "Nombre de claviers invalide.",
+        },
         features: {
             value: "",
             isValid: true,
-            placeholder: "Caractéristiques",
+            placeholder: "Autres caractéristiques",
         },
         url: {
             value: "",
@@ -226,21 +241,18 @@ function EditModal({
     };
 
     const closeAndSave = async (): Promise<void> => {
-        const year = formFields["year"].value
-            ? parseInt(formFields["year"].value)
-            : null;
-        const parsedYear = year && !isNaN(year) ? year : null;
-
         const newOrgan = {
             name: formFields["name"].value,
             country: formFields["country"].value,
-            year: parsedYear,
+            year: extractIntIfFound(formFields["year"].value),
             builder: formFields["builder"].value
                 ? formFields["builder"].value
                 : null,
             features: formFields["features"].value
                 ? formFields["features"].value
                 : null,
+            stops: extractIntIfFound(formFields["stops"].value),
+            keyboards: extractIntIfFound(formFields["keyboards"].value),
             url: formFields["url"].value ? formFields["url"].value : null,
             path: formFields["path"].value,
             previewPath: formFields["previewPath"].value

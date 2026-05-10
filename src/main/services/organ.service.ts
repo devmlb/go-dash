@@ -19,6 +19,8 @@ interface MinimalOrgan {
     builder: string | null;
     url: string | null;
     features: string | null;
+    stops: number | null;
+    keyboards: number | null;
 }
 
 interface Organ extends MinimalOrgan {
@@ -28,13 +30,20 @@ interface Organ extends MinimalOrgan {
 }
 
 class OrganService {
-    db: Datastore<Organ>;
+    db!: Datastore<Organ>;
 
     constructor() {
         this.db = new Datastore<Organ>({
             filename: join(app.getPath("userData"), "organs"),
             autoload: true,
         });
+        (async () => {
+            try {
+                await this.db.autoloadPromise;
+            } catch {
+                throw new Error("Cannot load the Organ DB");
+            }
+        })();
     }
 
     async getAll(): Promise<MinimalOrgan[]> {
@@ -44,19 +53,33 @@ class OrganService {
             _id: doc._id,
             name: doc.name,
             country: doc.country,
-            year: doc.year,
-            builder: doc.builder,
-            url: doc.url,
-            features: doc.features,
+            year: doc.year ?? null,
+            builder: doc.builder ?? null,
+            url: doc.url ?? null,
+            features: doc.features ?? null,
+            stops: doc.stops ?? null,
+            keyboards: doc.keyboards ?? null,
         }));
     }
 
     async getById(id: string): Promise<Organ> {
-        await this.db.autoloadPromise;
         const organDoc = await this.db.findOneAsync({ _id: id });
 
         if (organDoc) {
-            return organDoc;
+            return {
+                _id: organDoc._id,
+                name: organDoc.name,
+                country: organDoc.country,
+                year: organDoc.year ?? null,
+                builder: organDoc.builder ?? null,
+                url: organDoc.url ?? null,
+                features: organDoc.features ?? null,
+                stops: organDoc.stops ?? null,
+                keyboards: organDoc.keyboards ?? null,
+                path: organDoc.path,
+                coverPath: organDoc.coverPath,
+                previewPath: organDoc.previewPath,
+            };
         } else {
             throw new Error("Unknown organ");
         }
@@ -126,12 +149,16 @@ class OrganService {
             2,
         );
 
-        const exportPath = openSaveFileDialog(window, "Exporter les orgues", [
-            {
-                name: "Fichier JSON",
-                extensions: ["json"],
-            },
-        ]);
+        const exportPath = openSaveFileDialog(
+            window,
+            "Exporter tous les orgues",
+            [
+                {
+                    name: "Fichier JSON",
+                    extensions: ["json"],
+                },
+            ],
+        );
         if (exportPath) saveToFile(organsExport, exportPath);
     }
 
@@ -195,6 +222,16 @@ class OrganService {
                             "coverPath" in parsedOrgan &&
                             typeof parsedOrgan.coverPath === "string"
                                 ? parsedOrgan.coverPath
+                                : null,
+                        stops:
+                            "stops" in parsedOrgan &&
+                            typeof parsedOrgan.stops === "number"
+                                ? parsedOrgan.stops
+                                : null,
+                        keyboards:
+                            "keyboards" in parsedOrgan &&
+                            typeof parsedOrgan.keyboards === "number"
+                                ? parsedOrgan.keyboards
                                 : null,
                     });
                 });

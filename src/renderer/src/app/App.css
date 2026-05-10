@@ -33,46 +33,6 @@ body,
     display: flex;
     flex-direction: column;
 
-    & > .appbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 30px;
-
-        & > .branding {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-
-            & > .logo {
-                width: 36px;
-                height: auto;
-            }
-
-            & > .title {
-                margin-block: 0;
-            }
-
-            & > .version {
-                padding: 4px 10px;
-                font-size: 12px;
-                font-weight: 500;
-                background-color: var(--color-surface-dark);
-                border-radius: 100px;
-            }
-        }
-
-        & > .actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-
-            & > .secondary {
-                display: flex;
-            }
-        }
-    }
-
     & > main {
         flex-grow: 1;
         overflow-y: auto;

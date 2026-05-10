@@ -6,6 +6,8 @@ interface MinimalOrgan {
     builder: string | null;
     url: string | null;
     features: string | null;
+    stops: number | null;
+    keyboards: number | null;
 }
 
 interface Organ extends MinimalOrgan {
@@ -14,4 +16,12 @@ interface Organ extends MinimalOrgan {
     previewPath: string | null;
 }
 
-export type { Organ, MinimalOrgan };
+type SettingValue = string | boolean;
+
+interface Setting {
+    _id?: string;
+    name: string;
+    value: SettingValue;
+}
+
+export type { Organ, MinimalOrgan, SettingValue, Setting };
