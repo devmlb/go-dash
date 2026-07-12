@@ -1,4 +1,0 @@
-provider: github
-owner: devmlb
-repo: go-dash
-updaterCacheDirName: go-dash-updater

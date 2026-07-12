@@ -1,66 +1,73 @@
-name: Publish Release
+name: Release
 
 on:
-  push:
-    paths:
-      - package.json
+    workflow_dispatch:
+    push:
+        tags:
+            - "v*"
+
+permissions:
+    contents: write
 
 jobs:
-  check-version-change:
-    runs-on: ubuntu-latest
-    outputs:
-      version_changed: ${{ steps.check.outputs.version_changed }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+    release:
+        name: Build ${{ matrix.name }}
+        runs-on: ${{ matrix.runner }}
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    # - name: macOS Apple Silicon
+                    #   runner: macos-latest
+                    #   rust-target: aarch64-apple-darwin
+                    #   args: --target aarch64-apple-darwin
+                    # - name: macOS Intel
+                    #   runner: macos-latest
+                    #   rust-target: x86_64-apple-darwin
+                    #   args: --target x86_64-apple-darwin
+                    - name: Windows classic x64
+                      runner: windows-latest
+                      rust-target: x86_64-pc-windows-msvc
+                      args: --target x86_64-pc-windows-msvc
+                    # - name: Windows ARM64
+                    #   runner: windows-11-arm
+                    #   rust-target: aarch64-pc-windows-msvc
+                    #   args: --target aarch64-pc-windows-msvc --bundles nsis
 
-      - id: check
-        shell: bash
-        run: |
-          if git diff --name-only HEAD^ HEAD | grep -q '^package.json$'; then
-            old_version=$(git show HEAD^:package.json | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).version")
-            new_version=$(node -p "require('./package.json').version")
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-            if [ "$old_version" != "$new_version" ]; then
-              echo "version_changed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "version_changed=false" >> "$GITHUB_OUTPUT"
-            fi
-          else
-            echo "version_changed=false" >> "$GITHUB_OUTPUT"
-          fi
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+                  cache: npm
 
-  build-and-publish:
-    needs: check-version-change
-    if: needs.check-version-change.outputs.version_changed == 'true'
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: windows-latest
-            target: win
-          # - os: macos-latest
-          #   target: mac
-          # - os: ubuntu-latest
-          #   target: linux
+            - name: Install Rust
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: ${{ matrix.rust-target }}
 
-    steps:
-      - uses: actions/checkout@v4
+            - name: Cache Rust
+              uses: Swatinem/rust-cache@v2
+              with:
+                  workspaces: src-tauri
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
+            - name: Install frontend dependencies
+              run: npm ci
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Type check
-        run: npm run typecheck
-
-      - name: Build and publish to GitHub Releases
-        run: npm run build:${{ matrix.target }}:publish
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Build and upload Tauri release
+              uses: tauri-apps/tauri-action@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+                  TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+                  TAURI_UPDATER_PUBKEY: ${{ secrets.TAURI_UPDATER_PUBKEY }}
+              with:
+                  tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'v__VERSION__' }}
+                  releaseName: v__VERSION__
+                  releaseBody: This new version brings you Go Dash v__VERSION__, featuring bug fixes and improvements.
+                  releaseDraft: true
+                  prerelease: false
+                  args: ${{ matrix.args }}

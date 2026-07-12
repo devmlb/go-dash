@@ -1,65 +1,40 @@
 {
   "name": "go-dash",
-  "version": "0.4.0",
-  "main": "./out/main/index.js",
+  "private": true,
+  "version": "0.5.0",
   "description": "A dashboard for your Grand Orgue organs",
   "author": "devmlb",
+  "type": "module",
   "scripts": {
-    "format": "prettier --write .",
-    "lint": "eslint --cache .",
-    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
-    "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "npm run typecheck:node && npm run typecheck:web",
-    "start": "electron-vite preview",
-    "dev": "electron-vite dev",
-    "build": "npm run typecheck && electron-vite build",
-    "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "npm run build && electron-builder --dir",
-    "build:win": "npm run build && electron-builder --win",
-    "build:win:publish": "npm run build && electron-builder --win --publish always",
-    "build:mac": "electron-vite build && electron-builder --mac",
-    "build:mac:publish": "electron-vite build && electron-builder --mac --publish always",
-    "build:linux": "electron-vite build && electron-builder --linux",
-    "build:linux:publish": "electron-vite build && electron-builder --linux --publish always"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
   },
   "dependencies": {
-    "@electron-toolkit/preload": "^3.0.2",
-    "@electron-toolkit/utils": "^4.0.0",
-    "@seald-io/nedb": "^4.1.2",
-    "@typescript-eslint/parser": "^8.59.2",
-    "autoprefixer": "^10.5.0",
-    "electron-updater": "^6.8.3",
-    "lucide-react": "^1.14.0",
-    "postcss": "^8.5.6",
-    "postcss-nesting": "^14.0.0"
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "^2.7.1",
+    "@tauri-apps/plugin-fs": "^2.5.1",
+    "@tauri-apps/plugin-opener": "^2.5.4",
+    "@tauri-apps/plugin-store": "^2.4.3",
+    "@tauri-apps/plugin-updater": "^2.10.1",
+    "autoprefixer": "^10.5.2",
+    "lucide-react": "^1.24.0",
+    "postcss": "^8.5.17",
+    "postcss-nesting": "^14.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@electron-toolkit/eslint-config-prettier": "^3.0.0",
-    "@electron-toolkit/eslint-config-ts": "^3.1.0",
-    "@electron-toolkit/tsconfig": "^2.0.0",
-    "@types/node": "^25.6.2",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "electron": "^42.0.1",
-    "electron-builder": "^26.8.1",
-    "electron-vite": "^5.0.0",
-    "eslint": "^10.3.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "prettier": "^3.8.3",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "typescript": "^6.0.3",
-    "vite": "^8.0.11"
+    "@tauri-apps/cli": "^2",
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4"
   },
-  "overrides": {
-    "electron-vite": {
-      "vite": "$vite"
-    },
-    "eslint-plugin-react": {
-      "eslint": "$eslint"
-    }
+  "allowScripts": {
+    "esbuild@0.28.1": true
   }
 }
