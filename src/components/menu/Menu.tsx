@@ -112,7 +112,7 @@ function Menu({
     useEffect(() => {
         if (!isOpen) return;
 
-        const handleDocumentClick = (event: PointerEvent): void => {
+        const handleDocumentClick = (event: Event): void => {
             const target = event.target;
 
             if (

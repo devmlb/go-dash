@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Update } from "@tauri-apps/plugin-updater";
 import { BadgeAlert } from "lucide-react";
 
@@ -16,19 +15,12 @@ function UpdateModal({
     restart: () => Promise<void>;
     updateDetails: Update;
 }) {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | undefined>(undefined);
-
     const handleConfirm = async (): Promise<void> => {
         try {
-            setIsLoading(true);
             await restart();
             close();
         } catch (e) {
-            setError("Unexpected error: try again later");
             console.error(e);
-        } finally {
-            setIsLoading(false);
         }
     };
 
