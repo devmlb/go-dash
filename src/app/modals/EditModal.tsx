@@ -153,19 +153,27 @@ function buildFormFields(organInfos: Organ | null): FormFields {
     };
 
     if (organInfos) {
-        Object.keys(organInfos).forEach((key) => {
-            if (key === "_id") return;
+        (Object.keys(organInfos) as (keyof typeof organInfos)[]).forEach(
+            (key) => {
+                if (key === "id") return;
 
-            defaults[key].value = organInfos[key] ? organInfos[key] : "";
+                if (typeof organInfos[key] === "number") {
+                    defaults[key].value = organInfos[key].toString();
+                } else {
+                    defaults[key].value = organInfos[key]
+                        ? organInfos[key]
+                        : "";
+                }
 
-            if (
-                "isValid" in defaults[key] &&
-                !defaults[key].isValid &&
-                organInfos[key]
-            ) {
-                defaults[key].isValid = true;
-            }
-        });
+                if (
+                    "isValid" in defaults[key] &&
+                    !defaults[key].isValid &&
+                    organInfos[key]
+                ) {
+                    defaults[key].isValid = true;
+                }
+            },
+        );
     }
 
     return defaults;
@@ -241,20 +249,20 @@ function EditModal({
             year: extractIntIfFound(formFields["year"].value),
             builder: formFields["builder"].value
                 ? formFields["builder"].value
-                : null,
+                : undefined,
             features: formFields["features"].value
                 ? formFields["features"].value
-                : null,
+                : undefined,
             stops: extractIntIfFound(formFields["stops"].value),
             keyboards: extractIntIfFound(formFields["keyboards"].value),
-            url: formFields["url"].value ? formFields["url"].value : null,
+            url: formFields["url"].value ? formFields["url"].value : undefined,
             path: formFields["path"].value,
             previewPath: formFields["previewPath"].value
                 ? formFields["previewPath"].value
-                : null,
+                : undefined,
             coverPath: formFields["coverPath"].value
                 ? formFields["coverPath"].value
-                : null,
+                : undefined,
         };
 
         if (organInfos) {

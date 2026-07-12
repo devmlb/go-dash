@@ -83,10 +83,7 @@ function Grid({
         data: organs,
         isLoading,
         error,
-    } = useApi<MinimalOrgan[]>(
-        async () => await organApi.getAll(),
-        [reloadCount],
-    );
+    } = useApi<MinimalOrgan[]>(async () => await organApi.getAll(), [reloadCount]);
 
     useEffect(() => {
         if (!isLoading && !error) {

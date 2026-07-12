@@ -62,12 +62,15 @@ function Appbar({
     const openDeleteModal = async (): Promise<void> =>
         setIsDeleteModalOpen(true);
     const handleImport = async (): Promise<void> => {
-        // await importOrgans(); TODO
+        await organApi.import();
         reloadFn();
+    };
+    const handleExport = async (): Promise<void> => {
+        await organApi.exportAll();
     };
     const handleRemove = async (): Promise<void> => {
         closeDeleteModal();
-        // await removeAllOrgans(); TODO
+        await organApi.clear();
         reloadFn();
     };
     const handleSortOrderChange = async (entryIndex: number): Promise<void> => {
@@ -175,7 +178,7 @@ function Appbar({
                             {
                                 name: "Exporter tous les orgues",
                                 icon: <Download />,
-                                // onClick: exportAllOrgans,
+                                onClick: handleExport,
                             },
                         ]}
                     />

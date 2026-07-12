@@ -25,8 +25,6 @@ async function getFileContentB64(path: string): Promise<string> {
 }
 
 async function saveToFile(content: string, path: string): Promise<void> {
-    if (!(await exists(path))) throw new FileNotFoundError();
-
     await writeTextFile(path, content);
 }
 

@@ -1,6 +1,9 @@
 import { LazyStore } from "@tauri-apps/plugin-store";
 import { openPath as openFile } from "@tauri-apps/plugin-opener";
-import { open as openChooseFileDialog } from "@tauri-apps/plugin-dialog";
+import {
+    open as openChooseFileDialog,
+    save as openSaveFileDialog,
+} from "@tauri-apps/plugin-dialog";
 
 import type { Organ } from "../utils/types/organ.type";
 
@@ -33,11 +36,11 @@ class OrganApi {
     }
 
     async getById(id: string): Promise<Organ> {
-        const organ = await this.store.get<Organ>(id);
+        const organ = await this.store.get<Omit<Organ, "id">>(id);
         if (!organ) throw new OrganNotFoundError();
 
         return {
-            id: organ.id,
+            id,
             name: organ.name,
             country: organ.country,
             year: organ.year !== null ? organ.year : undefined,
@@ -47,8 +50,9 @@ class OrganApi {
             stops: organ.stops !== null ? organ.stops : undefined,
             keyboards: organ.keyboards !== null ? organ.keyboards : undefined,
             path: organ.path,
-            coverPath: organ.coverPath,
-            previewPath: organ.previewPath,
+            coverPath: organ.coverPath !== null ? organ.coverPath : undefined,
+            previewPath:
+                organ.previewPath !== null ? organ.previewPath : undefined,
         };
     }
 
@@ -62,7 +66,11 @@ class OrganApi {
     }
 
     async add(organ: Omit<Organ, "id">): Promise<string> {
-        const id = Date.now().toString();
+        const id =
+            Date.now().toString() +
+            (Math.floor(Math.random() * (1000 - 0 + 1)) + 0)
+                .toString()
+                .padStart(4, "0");
         await this.store.set(id, organ);
 
         return id;
@@ -130,109 +138,98 @@ class OrganApi {
         return organ.previewPath ? getFileContentB64(organ.previewPath) : null;
     }
 
-    // async exportAll(window: Electron.BaseWindow): Promise<void> {
-    //     const organDocs = await this.db.findAsync({});
+    async exportAll(): Promise<void> {
+        const organs = await this.getAll();
 
-    //     const organsExport = JSON.stringify(
-    //         organDocs.map((organ) => {
-    //             delete organ._id;
-    //             return organ;
-    //         }),
-    //         null,
-    //         2,
-    //     );
+        const exportPath = await openSaveFileDialog({
+            filters: [
+                {
+                    name: "Fichier JSON",
+                    extensions: ["json"],
+                },
+            ],
+            title: "Exporter tous les orgues",
+        });
+        if (exportPath) saveToFile(JSON.stringify(organs, null, 2), exportPath);
+    }
 
-    //     const exportPath = openSaveFileDialog(
-    //         window,
-    //         "Exporter tous les orgues",
-    //         [
-    //             {
-    //                 name: "Fichier JSON",
-    //                 extensions: ["json"],
-    //             },
-    //         ],
-    //     );
-    //     if (exportPath) saveToFile(organsExport, exportPath);
-    // }
+    async import(): Promise<void> {
+        const importPath = await openChooseFileDialog({
+            filters: [
+                {
+                    name: "Fichier JSON",
+                    extensions: ["json"],
+                },
+            ],
+            title: "Sélectionner un fichier d'orgue",
+        });
+        if (!importPath) return;
 
-    // async import(window: Electron.BaseWindow): Promise<void> {
-    //     const importPath = openChooseFileDialog(window, "Importer des orgues", [
-    //         {
-    //             name: "Fichier JSON",
-    //             extensions: ["json"],
-    //         },
-    //     ]);
-    //     if (!importPath) return;
+        const organs = await getFileContent(importPath);
+        const parsedOrgans = JSON.parse(organs);
 
-    //     try {
-    //         const organs = getFileContent(importPath);
-    //         const parsedOrgans = JSON.parse(organs);
+        if (Array.isArray(parsedOrgans)) {
+            for (const parsedOrgan of parsedOrgans) {
+                if (
+                    !("name" in parsedOrgan) ||
+                    typeof parsedOrgan.name !== "string" ||
+                    !("country" in parsedOrgan) ||
+                    typeof parsedOrgan.country !== "string" ||
+                    !("path" in parsedOrgan) ||
+                    typeof parsedOrgan.path !== "string"
+                ) {
+                    // Invalid organ, skip it
+                    return;
+                }
 
-    //         if (Array.isArray(parsedOrgans)) {
-    //             parsedOrgans.forEach((parsedOrgan) => {
-    //                 if (
-    //                     !("name" in parsedOrgan) ||
-    //                     typeof parsedOrgan.name !== "string" ||
-    //                     !("country" in parsedOrgan) ||
-    //                     typeof parsedOrgan.country !== "string" ||
-    //                     !("path" in parsedOrgan) ||
-    //                     typeof parsedOrgan.path !== "string"
-    //                 ) {
-    //                     // Invalid organ, skip it
-    //                     return;
-    //                 }
-
-    //                 this.add({
-    //                     name: parsedOrgan.name,
-    //                     country: parsedOrgan.country,
-    //                     year:
-    //                         "year" in parsedOrgan &&
-    //                         typeof parsedOrgan.year === "number"
-    //                             ? parsedOrgan.year
-    //                             : null,
-    //                     builder:
-    //                         "builder" in parsedOrgan &&
-    //                         typeof parsedOrgan.builder === "string"
-    //                             ? parsedOrgan.builder
-    //                             : null,
-    //                     features:
-    //                         "features" in parsedOrgan &&
-    //                         typeof parsedOrgan.features === "string"
-    //                             ? parsedOrgan.features
-    //                             : null,
-    //                     url:
-    //                         "url" in parsedOrgan &&
-    //                         typeof parsedOrgan.url === "string"
-    //                             ? parsedOrgan.url
-    //                             : null,
-    //                     path: parsedOrgan.path,
-    //                     previewPath:
-    //                         "previewPath" in parsedOrgan &&
-    //                         typeof parsedOrgan.previewPath === "string"
-    //                             ? parsedOrgan.previewPath
-    //                             : null,
-    //                     coverPath:
-    //                         "coverPath" in parsedOrgan &&
-    //                         typeof parsedOrgan.coverPath === "string"
-    //                             ? parsedOrgan.coverPath
-    //                             : null,
-    //                     stops:
-    //                         "stops" in parsedOrgan &&
-    //                         typeof parsedOrgan.stops === "number"
-    //                             ? parsedOrgan.stops
-    //                             : null,
-    //                     keyboards:
-    //                         "keyboards" in parsedOrgan &&
-    //                         typeof parsedOrgan.keyboards === "number"
-    //                             ? parsedOrgan.keyboards
-    //                             : null,
-    //                 });
-    //             });
-    //         }
-    //     } catch (error) {
-    //         throw new Error(`Cannot parse the provided file: ${error}`);
-    //     }
-    // }
+                await this.add({
+                    name: parsedOrgan.name,
+                    country: parsedOrgan.country,
+                    year:
+                        "year" in parsedOrgan &&
+                        typeof parsedOrgan.year === "number"
+                            ? parsedOrgan.year
+                            : null,
+                    builder:
+                        "builder" in parsedOrgan &&
+                        typeof parsedOrgan.builder === "string"
+                            ? parsedOrgan.builder
+                            : null,
+                    features:
+                        "features" in parsedOrgan &&
+                        typeof parsedOrgan.features === "string"
+                            ? parsedOrgan.features
+                            : null,
+                    url:
+                        "url" in parsedOrgan &&
+                        typeof parsedOrgan.url === "string"
+                            ? parsedOrgan.url
+                            : null,
+                    path: parsedOrgan.path,
+                    previewPath:
+                        "previewPath" in parsedOrgan &&
+                        typeof parsedOrgan.previewPath === "string"
+                            ? parsedOrgan.previewPath
+                            : null,
+                    coverPath:
+                        "coverPath" in parsedOrgan &&
+                        typeof parsedOrgan.coverPath === "string"
+                            ? parsedOrgan.coverPath
+                            : null,
+                    stops:
+                        "stops" in parsedOrgan &&
+                        typeof parsedOrgan.stops === "number"
+                            ? parsedOrgan.stops
+                            : null,
+                    keyboards:
+                        "keyboards" in parsedOrgan &&
+                        typeof parsedOrgan.keyboards === "number"
+                            ? parsedOrgan.keyboards
+                            : null,
+                });
+            }
+        }
+    }
 }
 
 const organApi = new OrganApi();
