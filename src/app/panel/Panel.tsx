@@ -196,7 +196,7 @@ function Panel({
                     {createPortal(
                         <Modal
                             isOpen={isDeleteModalOpen}
-                            onClose={closeDeleteModal}
+                            onCancel={closeDeleteModal}
                             onConfirm={handleRemoved}
                             title="Supprimer un orgue"
                             titleIcon={<Trash />}

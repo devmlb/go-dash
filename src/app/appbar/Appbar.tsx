@@ -191,7 +191,7 @@ function Appbar({
                 {createPortal(
                     <Modal
                         isOpen={isDeleteModalOpen}
-                        onClose={closeDeleteModal}
+                        onCancel={closeDeleteModal}
                         onConfirm={handleRemove}
                         title="Supprimer tous les orgues"
                         titleIcon={<Trash />}

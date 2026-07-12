@@ -25,3 +25,6 @@ dist-ssr
 
 old/
 *.old
+.tauri/
+*.key
+*.pub

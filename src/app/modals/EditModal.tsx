@@ -278,7 +278,7 @@ function EditModal({
     return (
         <Modal
             isOpen={isOpen}
-            onClose={close}
+            onCancel={close}
             onConfirm={closeAndSave}
             title={organId ? "Modifier un orgue" : "Ajouter un orgue"}
             isConfirmActionEnabled={isFormValid()}

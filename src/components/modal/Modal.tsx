@@ -5,18 +5,20 @@ import { TextButton } from "../button/Button";
 
 function Modal({
     isOpen,
-    onClose,
+    onCancel,
     onConfirm,
     confirmActionText = "Enregistrer",
+    cancelActionText = "Annuler",
     isConfirmActionEnabled = true,
     children,
     title,
     titleIcon,
 }: {
     isOpen: boolean;
-    onClose: () => void;
+    onCancel: () => void;
     onConfirm: () => void;
     confirmActionText?: string;
+    cancelActionText?: string;
     isConfirmActionEnabled?: boolean;
     children: ReactNode;
     title: string;
@@ -37,9 +39,9 @@ function Modal({
                     <div className="content">{children}</div>
                     <div className="actions">
                         <TextButton
-                            text="Annuler"
+                            text={cancelActionText}
                             secondary
-                            onClick={onClose}
+                            onClick={onCancel}
                         />
                         <TextButton
                             disabled={!isConfirmActionEnabled}

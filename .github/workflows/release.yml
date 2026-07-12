@@ -1,0 +1,73 @@
+name: Release
+
+on:
+    workflow_dispatch:
+    push:
+        tags:
+            - "v*"
+
+permissions:
+    contents: write
+
+jobs:
+    release:
+        name: Build ${{ matrix.name }}
+        runs-on: ${{ matrix.runner }}
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    # - name: macOS Apple Silicon
+                    #   runner: macos-latest
+                    #   rust-target: aarch64-apple-darwin
+                    #   args: --target aarch64-apple-darwin
+                    # - name: macOS Intel
+                    #   runner: macos-latest
+                    #   rust-target: x86_64-apple-darwin
+                    #   args: --target x86_64-apple-darwin
+                    - name: Windows classic x64
+                      runner: windows-latest
+                      rust-target: x86_64-pc-windows-msvc
+                      args: --target x86_64-pc-windows-msvc
+                    # - name: Windows ARM64
+                    #   runner: windows-11-arm
+                    #   rust-target: aarch64-pc-windows-msvc
+                    #   args: --target aarch64-pc-windows-msvc --bundles nsis
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+                  cache: npm
+
+            - name: Install Rust
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: ${{ matrix.rust-target }}
+
+            - name: Cache Rust
+              uses: Swatinem/rust-cache@v2
+              with:
+                  workspaces: src-tauri
+
+            - name: Install frontend dependencies
+              run: npm ci
+
+            - name: Build and upload Tauri release
+              uses: tauri-apps/tauri-action@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+                  TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+                  TAURI_UPDATER_PUBKEY: ${{ secrets.TAURI_UPDATER_PUBKEY }}
+              with:
+                  tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'seashell-v__VERSION__' }}
+                  releaseName: SeaShell v__VERSION__
+                  releaseBody: This new version brings you SeaShell v__VERSION__, featuring bug fixes and improvements.
+                  releaseDraft: true
+                  prerelease: false
+                  args: ${{ matrix.args }}

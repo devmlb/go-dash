@@ -1,10 +1,13 @@
-import { useReducer, useState, type JSX } from "react";
+import { useEffect, useReducer, useState, type JSX } from "react";
 
 import "./App.css";
 import type { MinimalOrgan } from "../utils/types/organ.type";
 import { Panel } from "./panel/Panel";
 import { Grid } from "./grid/Grid";
 import { Appbar } from "./appbar/Appbar";
+import { useUpdater } from "../utils/hooks/updater.hook";
+import { createPortal } from "react-dom";
+import { UpdateModal } from "./modals/UpdateModal";
 
 const sortFields: { name: string; id: keyof MinimalOrgan }[] = [
     {
@@ -42,19 +45,21 @@ function App(): JSX.Element {
     const [selectedSortField, setSelectedSortField] = useState<number | null>(
         null,
     );
-
     const [reloadCount, triggerReload] = useReducer(
         (count: number) => count + 1,
         0,
     );
-
     const selected = selectedOrganId
         ? (organs.find((organ) => organ.id === selectedOrganId) ?? null)
         : null;
+    const { updateInfos, isUpdateDownloaded, restartAndinstallUpdate } =
+        useUpdater();
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
 
     const reload = (): void => {
         triggerReload();
     };
+
     const handleOrgansLoaded = (nextOrgans: MinimalOrgan[]): void => {
         setOrgans(nextOrgans);
 
@@ -65,6 +70,12 @@ function App(): JSX.Element {
             setSelectedOrganId(null);
         }
     };
+
+    useEffect(() => {
+        if (isUpdateDownloaded) {
+            setIsUpdateModalOpen(true);
+        }
+    }, [isUpdateDownloaded]);
 
     return (
         <>
@@ -94,6 +105,16 @@ function App(): JSX.Element {
                 />
                 <Panel selectedOrgan={selected} reloadFn={reload} />
             </main>
+            {updateInfos &&
+                createPortal(
+                    <UpdateModal
+                        isOpen={isUpdateModalOpen}
+                        close={() => setIsUpdateModalOpen(false)}
+                        restart={restartAndinstallUpdate}
+                        updateDetails={updateInfos}
+                    />,
+                    document.body,
+                )}
         </>
     );
 }
