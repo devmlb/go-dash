@@ -1,24 +1,59 @@
-import type { Setting, SettingValue } from "../utils/types/api.type";
+import { LazyStore } from "@tauri-apps/plugin-store";
 
-async function getAllSettings(): Promise<Setting[]> {
-    return await window.api.getAllSettings();
+import { defaultSettings, Settings } from "../utils/types/settings.type";
+
+class SettingNotFoundError extends Error {}
+
+class SettingTypeMismatchError extends Error {}
+
+class SettingsApi {
+    store: LazyStore;
+
+    constructor() {
+        this.store = new LazyStore("settings.json", {
+            defaults: defaultSettings,
+        });
+    }
+
+    async getValue<T extends keyof Settings>(name: T): Promise<Settings[T]> {
+        const value = await this.store.get<Settings[T]>(name);
+
+        if (value !== undefined) {
+            return value;
+        } else {
+            throw new SettingNotFoundError();
+        }
+    }
+
+    async getAll(): Promise<Settings> {
+        const settings = structuredClone(defaultSettings) as Record<
+            keyof Settings,
+            Settings[keyof Settings]
+        >;
+
+        for (const settingName of Object.keys(
+            defaultSettings,
+        ) as (keyof Settings)[]) {
+            settings[settingName] = await this.getValue(settingName);
+        }
+
+        return settings as Settings;
+    }
+
+    async setValue(
+        name: keyof Settings,
+        value: Settings[keyof Settings],
+    ): Promise<void> {
+        const currentSettings = await this.getValue(name);
+
+        if (typeof value === typeof currentSettings) {
+            await this.store.set(name, value);
+        } else {
+            throw new SettingTypeMismatchError();
+        }
+    }
 }
 
-async function getSettingValue<T extends SettingValue>(
-    name: string,
-): Promise<T> {
-    return await window.api.getSettingValueByName(name);
-}
+const settingsApi = new SettingsApi();
 
-async function setSettingValue(
-    name: string,
-    value: SettingValue,
-): Promise<void> {
-    return await window.api.setSettingValueByName(name, value);
-}
-
-async function getAppVersion(): Promise<string> {
-    return await window.api.getAppVersion();
-}
-
-export { getAllSettings, getSettingValue, setSettingValue, getAppVersion };
+export { settingsApi };

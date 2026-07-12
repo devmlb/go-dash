@@ -12,17 +12,14 @@ import {
     RefreshCcw,
     Trash,
 } from "lucide-react";
+import { getVersion } from "@tauri-apps/api/app";
 
 import "./Appbar.css";
 import type { MinimalOrgan } from "../../utils/types/organ.type";
 import logo from "../../assets/logo.ico";
 import { EditModal } from "../modals/EditModal";
 import { organApi } from "../../api/organ.api";
-import {
-    getAppVersion,
-    getSettingValue,
-    setSettingValue,
-} from "../../api/settings.api";
+import { settingsApi } from "../../api/settings.api";
 import { useApi } from "../../utils/hooks/api.hook";
 import { IconButton, TextButton } from "../../components/button/Button";
 import { Modal } from "../../components/modal/Modal";
@@ -46,13 +43,13 @@ function Appbar({
     const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
-    const { data: appVersion } = useApi<string>(getAppVersion, []);
-    const { data: storedAscendantSort } = useApi<string>(
-        () => getSettingValue<string>("ascendant-sort"),
+    const { data: appVersion } = useApi<string>(getVersion, []);
+    const { data: storedAscendantSort } = useApi<boolean>(
+        async () => await settingsApi.getValue("ascendantSort"),
         [],
     );
-    const { data: storedSortField } = useApi<boolean>(
-        () => getSettingValue<boolean>("sort-field"),
+    const { data: storedSortField } = useApi<string>(
+        async () => await settingsApi.getValue("sortField"),
         [],
     );
 
@@ -75,11 +72,11 @@ function Appbar({
     };
     const handleSortOrderChange = async (entryIndex: number): Promise<void> => {
         setSelectedSortOrder(entryIndex);
-        await setSettingValue("ascendant-sort", entryIndex === 0);
+        await settingsApi.setValue("ascendantSort", entryIndex === 0);
     };
     const handleSortFieldChange = async (entryIndex: number): Promise<void> => {
         setSelectedSortField(entryIndex);
-        await setSettingValue("sort-field", sortFields[entryIndex].id);
+        await settingsApi.setValue("sortField", sortFields[entryIndex].id);
     };
 
     useEffect(() => {

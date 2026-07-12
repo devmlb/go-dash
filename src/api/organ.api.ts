@@ -16,19 +16,6 @@ class OrganApi {
 
     constructor() {
         this.store = new LazyStore("organs.json");
-
-        // Auto-bind instance methods so 'this' remains correct when methods
-        // are passed as callbacks
-        // const proto = Object.getPrototypeOf(this);
-        // for (const key of Object.getOwnPropertyNames(proto)) {
-        //     if (key === "constructor") continue;
-        //     const desc = Object.getOwnPropertyDescriptor(proto, key);
-        //     if (!desc) continue;
-        //     const value = (this as any)[key];
-        //     if (typeof value === "function") {
-        //         (this as any)[key] = value.bind(this);
-        //     }
-        // }
     }
 
     async exists(id: string): Promise<boolean> {
