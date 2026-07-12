@@ -14,9 +14,9 @@ import {
 import { createPortal } from "react-dom";
 
 import "./Panel.css";
-import { getPreview, openOrgan, removeOrgan } from "../../api/organ.api";
+import { organApi } from "../../api/organ.api";
 import { useApi } from "../../utils/hooks/api.hook";
-import type { MinimalOrgan } from "../../utils/types/api.type";
+import type { MinimalOrgan } from "../../utils/types/organ.type";
 import { EditModal } from "../modals/EditModal";
 import { IconButton, TextButton } from "../../components/button/Button";
 import { Modal } from "../../components/modal/Modal";
@@ -66,7 +66,7 @@ function Panel({
     const handleRemoved = (): void => {
         if (!selectedOrgan) return;
         closeDeleteModal();
-        removeOrgan(selectedOrgan._id);
+        organApi.remove(selectedOrgan.id);
         reloadFn();
     };
 
@@ -77,7 +77,7 @@ function Panel({
     } = useApi<string | null>(
         selectedOrgan
             ? async (): Promise<string | null> =>
-                  await getPreview(selectedOrgan._id)
+                  `data:image;base64,${await organApi.getPreviewB64(selectedOrgan.id)}`
             : async (): Promise<null> => null,
         [selectedOrgan, previewReloadCount],
     );
@@ -179,7 +179,7 @@ function Panel({
                             </div>
                             <TextButton
                                 text="Ouvrir"
-                                onClick={() => openOrgan(selectedOrgan._id)}
+                                onClick={() => organApi.open(selectedOrgan.id)}
                                 icon={<ExternalLink />}
                             />
                         </div>
@@ -188,7 +188,7 @@ function Panel({
                         <EditModal
                             isOpen={isEditModalOpen}
                             close={closeEditModal}
-                            organId={selectedOrgan._id}
+                            organId={selectedOrgan.id}
                             onSaved={handleSaved}
                         />,
                         document.body,

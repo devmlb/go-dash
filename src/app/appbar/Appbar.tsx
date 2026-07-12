@@ -14,14 +14,10 @@ import {
 } from "lucide-react";
 
 import "./Appbar.css";
-import type { MinimalOrgan } from "../../utils/types/api.type";
+import type { MinimalOrgan } from "../../utils/types/organ.type";
 import logo from "../../assets/logo.ico";
 import { EditModal } from "../modals/EditModal";
-import {
-    exportAllOrgans,
-    importOrgans,
-    removeAllOrgans,
-} from "../../api/organ.api";
+import { organApi } from "../../api/organ.api";
 import {
     getAppVersion,
     getSettingValue,
@@ -66,12 +62,12 @@ function Appbar({
     const openDeleteModal = async (): Promise<void> =>
         setIsDeleteModalOpen(true);
     const handleImport = async (): Promise<void> => {
-        await importOrgans();
+        // await importOrgans(); TODO
         reloadFn();
     };
     const handleRemove = async (): Promise<void> => {
         closeDeleteModal();
-        await removeAllOrgans();
+        // await removeAllOrgans(); TODO
         reloadFn();
     };
     const handleSortOrderChange = async (entryIndex: number): Promise<void> => {
@@ -179,7 +175,7 @@ function Appbar({
                             {
                                 name: "Exporter tous les orgues",
                                 icon: <Download />,
-                                onClick: exportAllOrgans,
+                                // onClick: exportAllOrgans,
                             },
                         ]}
                     />

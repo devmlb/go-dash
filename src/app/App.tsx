@@ -1,7 +1,7 @@
 import { useReducer, useState, type JSX } from "react";
 
 import "./App.css";
-import type { MinimalOrgan } from "../utils/types/api.type";
+import type { MinimalOrgan } from "../utils/types/organ.type";
 import { Panel } from "./panel/Panel";
 import { Grid } from "./grid/Grid";
 import { Appbar } from "./appbar/Appbar";
@@ -49,7 +49,7 @@ function App(): JSX.Element {
     );
 
     const selected = selectedOrganId
-        ? (organs.find((organ) => organ._id === selectedOrganId) ?? null)
+        ? (organs.find((organ) => organ.id === selectedOrganId) ?? null)
         : null;
 
     const reload = (): void => {
@@ -60,7 +60,7 @@ function App(): JSX.Element {
 
         if (
             selectedOrganId &&
-            !nextOrgans.some((organ) => organ._id === selectedOrganId)
+            !nextOrgans.some((organ) => organ.id === selectedOrganId)
         ) {
             setSelectedOrganId(null);
         }
@@ -79,7 +79,7 @@ function App(): JSX.Element {
             <main>
                 <Grid
                     reloadCount={reloadCount}
-                    onSelectOrgan={(organ) => setSelectedOrganId(organ._id)}
+                    onSelectOrgan={(organ) => setSelectedOrganId(organ.id)}
                     onOrgansLoaded={handleOrgansLoaded}
                     ascendantSort={
                         selectedSortOrder !== null

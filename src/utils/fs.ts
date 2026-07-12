@@ -1,73 +1,39 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { dialog, FileFilter } from "electron";
-import { openPath } from '@tauri-apps/plugin-opener';
-
-async function openFile(path: string): Promise<void> {
-    await openPath(path)
-}
+import { readTextFile, writeTextFile, exists } from "@tauri-apps/plugin-fs";
+import { utf8StringToBase64 } from "./base64";
 
 // function copyFileToAppData(
-//     filePath: string,
+//     path: string,
 //     newFileName: string,
 //     subdir: string,
 // ): string {
 //     const targetPath = join(app.getPath("userData"), subdir, newFileName);
-//     copyFileSync(filePath, targetPath);
+//     copyFileSync(path, targetPath);
 
 //     return targetPath;
 // }
 
-function getFileContent(filePath: string): string {
-    return readFileSync(filePath, "utf-8");
+class FileNotFoundError extends Error {}
+
+async function getFileContent(path: string): Promise<string> {
+    if (!(await exists(path))) throw new FileNotFoundError();
+
+    return await readTextFile(path);
 }
 
-function getFileContentB64(filePath: string): string | null {
-    if (!existsSync(filePath)) {
-        return null;
-    }
-
-    try {
-        return readFileSync(filePath).toString("base64");
-    } catch {
-        return null;
-    }
+async function getFileContentB64(path: string): Promise<string> {
+    return utf8StringToBase64(await getFileContent(path));
 }
 
-function openChooseFileDialog(
-    window: Electron.BaseWindow,
-    title: string,
-    fileTypes: FileFilter[],
-): string | null {
-    const path = dialog.showOpenDialogSync(window, {
-        title: title,
-        filters: fileTypes,
-        properties: ["openFile", "multiSelections"],
-    });
-    return path ? path[0] : null;
-}
+async function saveToFile(content: string, path: string): Promise<void> {
+    if (!(await exists(path))) throw new FileNotFoundError();
 
-function openSaveFileDialog(
-    window: Electron.BaseWindow,
-    title: string,
-    fileTypes: FileFilter[],
-): string | null {
-    const path = dialog.showSaveDialogSync(window, {
-        title: title,
-        filters: fileTypes,
-    });
-    return path ? path : null;
-}
-
-function saveToFile(content: string, path: string): void {
-    writeFileSync(path, content);
+    await writeTextFile(path, content);
 }
 
 export {
-    openFile,
     // copyFileToAppData,
     getFileContent,
     getFileContentB64,
-    openChooseFileDialog,
-    openSaveFileDialog,
     saveToFile,
+    FileNotFoundError,
 };

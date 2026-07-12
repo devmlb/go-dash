@@ -4,15 +4,9 @@ import { Pen } from "lucide-react";
 import "./EditModal.css";
 import { Modal } from "../../components/modal/Modal";
 import { Input } from "../../components/input/Input";
-import type { Organ } from "../../utils/types/api.type";
+import type { Organ } from "../../utils/types/organ.type";
 import { useApi } from "../../utils/hooks/api.hook";
-import {
-    getFullOrgan,
-    updateOrgan,
-    addOrgan,
-    chooseOrganImage,
-    chooseOrganFile,
-} from "../../api/organ.api";
+import { organApi } from "../../api/organ.api";
 import { TextButton } from "../../components/button/Button";
 import { extractIntIfFound } from "../../utils/extract";
 
@@ -142,19 +136,19 @@ function buildFormFields(organInfos: Organ | null): FormFields {
             value: "",
             required: true,
             legend: "Chemin du fichier d'orgue",
-            action: chooseOrganFile,
+            action: organApi.chooseGOFile,
         },
         coverPath: {
             value: "",
             required: false,
             legend: "Chemin de l'image de couverture",
-            action: chooseOrganImage,
+            action: organApi.chooseImage,
         },
         previewPath: {
             value: "",
             required: false,
             legend: "Chemin de l'aperçu",
-            action: chooseOrganImage,
+            action: organApi.chooseImage,
         },
     };
 
@@ -196,7 +190,7 @@ function EditModal({
 }): JSX.Element {
     const { data: organInfos } = useApi<Organ | null>(
         organId
-            ? async (): Promise<Organ> => await getFullOrgan(organId)
+            ? async (): Promise<Organ> => await organApi.getById(organId)
             : async (): Promise<null> => null,
         [organId],
     );
@@ -264,9 +258,9 @@ function EditModal({
         };
 
         if (organInfos) {
-            await updateOrgan({ ...newOrgan, _id: organInfos._id });
+            await organApi.update(organInfos.id, newOrgan);
         } else {
-            await addOrgan(newOrgan);
+            await organApi.add(newOrgan);
         }
 
         close();

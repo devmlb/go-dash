@@ -1,9 +1,9 @@
 import { useEffect, type JSX } from "react";
 
 import "./Grid.css";
-import { getCover, getOrgansList } from "../../api/organ.api";
+import { organApi } from "../../api/organ.api";
 import { useApi } from "../../utils/hooks/api.hook";
-import type { MinimalOrgan } from "../../utils/types/api.type";
+import type { MinimalOrgan } from "../../utils/types/organ.type";
 import { sortArrayOfObjectByField } from "../../utils/sort";
 
 function OrganCard({
@@ -20,12 +20,12 @@ function OrganCard({
         isLoading: isCoverLoading,
         error: coverError,
     } = useApi<string | null>(
-        async () => await getCover(organ._id),
+        async () => `data:image;base64,${await organApi.getCoverB64(organ.id)}`,
         [reloadCount],
     );
 
     return (
-        <div key={organ._id} className="organ" onClick={() => onSelect(organ)}>
+        <div key={organ.id} className="organ" onClick={() => onSelect(organ)}>
             <div className={`cover${cover ? " shimmer-loading" : ""}`}>
                 <div
                     className="image"
@@ -83,7 +83,10 @@ function Grid({
         data: organs,
         isLoading,
         error,
-    } = useApi<MinimalOrgan[]>(getOrgansList, [reloadCount]);
+    } = useApi<MinimalOrgan[]>(
+        async () => await organApi.getAll(),
+        [reloadCount],
+    );
 
     useEffect(() => {
         if (!isLoading && !error) {
@@ -103,7 +106,7 @@ function Grid({
                     ascendantSort,
                 ).map((organ) => (
                     <OrganCard
-                        key={organ._id}
+                        key={organ.id}
                         onSelect={onSelectOrgan}
                         organ={organ}
                         reloadCount={reloadCount}
