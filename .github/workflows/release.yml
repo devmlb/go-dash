@@ -65,9 +65,9 @@ jobs:
                   TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
                   TAURI_UPDATER_PUBKEY: ${{ secrets.TAURI_UPDATER_PUBKEY }}
               with:
-                  tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'seashell-v__VERSION__' }}
-                  releaseName: SeaShell v__VERSION__
-                  releaseBody: This new version brings you SeaShell v__VERSION__, featuring bug fixes and improvements.
+                  tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'v__VERSION__' }}
+                  releaseName: v__VERSION__
+                  releaseBody: This new version brings you Go Dash v__VERSION__, featuring bug fixes and improvements.
                   releaseDraft: true
                   prerelease: false
                   args: ${{ matrix.args }}
