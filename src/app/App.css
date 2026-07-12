@@ -14,6 +14,21 @@
     box-sizing: border-box;
     scrollbar-color: var(--color-surface-dark) var(--color-background);
     font-family: "Segoe UI", sans-serif;
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
+}
+
+/* Prevent Edge autofill menus */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+/* Prevent number input arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 html,
