@@ -41,7 +41,9 @@ function UpdateModal({
                     l'installation.
                 </div>
                 <span className="notes-title">Notes de version</span>
-                <div>{updateDetails.body}</div>
+                <div>
+                    <pre>{updateDetails.body}</pre>
+                </div>
             </div>
         </Modal>
     );

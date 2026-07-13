@@ -6,4 +6,9 @@
     & > .notes-title {
         font-weight: bold;
     }
+
+    & pre {
+        white-space: pre-wrap;
+        margin: 0;
+    }
 }
