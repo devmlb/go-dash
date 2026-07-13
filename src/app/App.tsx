@@ -40,27 +40,27 @@ function App(): JSX.Element {
     const sortFields = useMemo(
         () => [
             {
-                name: t("sort.name"),
+                name: t("appbar.sortMenu.name"),
                 id: "name" as const,
             },
             {
-                name: t("sort.country"),
+                name: t("appbar.sortMenu.country"),
                 id: "country" as const,
             },
             {
-                name: t("sort.year"),
+                name: t("appbar.sortMenu.year"),
                 id: "year" as const,
             },
             {
-                name: t("sort.builder"),
+                name: t("appbar.sortMenu.builder"),
                 id: "builder" as const,
             },
             {
-                name: t("sort.stops"),
+                name: t("appbar.sortMenu.stops"),
                 id: "stops" as const,
             },
             {
-                name: t("sort.keyboards"),
+                name: t("appbar.sortMenu.keyboards"),
                 id: "keyboards" as const,
             },
         ],

@@ -1,17 +1,18 @@
 {
-    "app.name": "GO Dash",
+    "appbar.sortMenu.name": "Trier par nom",
+    "appbar.sortMenu.country": "Trier par pays",
+    "appbar.sortMenu.year": "Trier par année de construction",
+    "appbar.sortMenu.builder": "Trier par facteur d'orgue",
+    "appbar.sortMenu.stops": "Trier par nombre de jeux",
+    "appbar.sortMenu.keyboards": "Trier par nombre de claviers",
+    "appbar.sortOrderMenu.ascendant": "Tri croissant",
+    "appbar.sortOrderMenu.descendant": "Tri décroissant",
+    "appbar.moreMenu.deleteAll": "Supprimer tout",
+    "appbar.moreMenu.import": "Importer des orgues",
+    "appbar.moreMenu.export": "Exporter tous les orgues",
+    "appbar.addButton": "Ajouter un orgue",
 
-    "sort.name": "Trier par nom",
-    "sort.country": "Trier par pays",
-    "sort.year": "Trier par année de construction",
-    "sort.builder": "Trier par facteur d'orgue",
-    "sort.stops": "Trier par nombre de jeux",
-    "sort.keyboards": "Trier par nombre de claviers",
-
-    "sortOrder.ascendant": "Tri croissant",
-    "sortOrder.descendant": "Tri décroissant",
-
-    "more.deleteAll": "Supprimer tout",
-    "more.import": "Importer des orgues",
-    "more.export": "Exporter tous les orgues"
+    "modal.deleteAll.title": "Supprimer tous les orgues",
+    "modal.deleteAll.body": "Voulez-vous vraiment supprimer tous les orgues ? Les fichiers extérieurs spécifiés dans les propriétés des orgues sur GO Dash ne seront pas supprimés.",
+    "modal.deleteAll.deleteButton": "Supprimer"
 }

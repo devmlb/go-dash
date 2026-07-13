@@ -111,7 +111,7 @@ function Appbar({
             </div>
             <div className="actions">
                 <TextButton
-                    text="Ajouter un orgue"
+                    text={t("appbar.addButton")}
                     icon={<Plus />}
                     onClick={openAddModal}
                 />
@@ -137,10 +137,10 @@ function Appbar({
                             }
                             entries={[
                                 {
-                                    name: t("sortOrder.ascendant"),
+                                    name: t("appbar.sortOrderMenu.ascendant"),
                                 },
                                 {
-                                    name: t("sortOrder.descendant"),
+                                    name: t("appbar.sortOrderMenu.descendant"),
                                 },
                             ]}
                             defaultSelected={selectedSortOrder}
@@ -165,17 +165,17 @@ function Appbar({
                         target={<IconButton icon={<Ellipsis />} secondary />}
                         entries={[
                             {
-                                name: t("more.deleteAll"),
+                                name: t("appbar.moreMenu.deleteAll"),
                                 icon: <Trash />,
                                 onClick: openDeleteModal,
                             },
                             {
-                                name: t("more.import"),
+                                name: t("appbar.moreMenu.import"),
                                 icon: <FolderOpen />,
                                 onClick: handleImport,
                             },
                             {
-                                name: t("more.export"),
+                                name: t("appbar.moreMenu.export"),
                                 icon: <Download />,
                                 onClick: handleExport,
                             },
@@ -195,13 +195,11 @@ function Appbar({
                         isOpen={isDeleteModalOpen}
                         onCancel={closeDeleteModal}
                         onConfirm={handleRemove}
-                        title="Supprimer tous les orgues"
+                        title={t("modal.deleteAll.title")}
                         titleIcon={<Trash />}
-                        confirmActionText="Supprimer"
+                        confirmActionText={t("modal.deleteAll.deleteButton")}
                     >
-                        Voulez-vous vraiment supprimer tous les orgues ? <br />
-                        Les fichiers extérieurs spécifiés dans les propriétés
-                        des orgues sur GO Dash ne seront pas supprimés.
+                        {t("modal.deleteAll.body")}
                     </Modal>,
                     document.body,
                 )}
