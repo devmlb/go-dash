@@ -37,8 +37,8 @@ function UpdateModal({
             <div className="update-modal-content">
                 <div>
                     La version {updateDetails.version} de GO Dash a été
-                    téléchargée. Redémarrez l'application pour terminer
-                    l'installation.
+                    téléchargée. Redémarrez l&apos;application pour terminer
+                    l&apos;installation.
                 </div>
                 <span className="notes-title">Notes de version</span>
                 <div>

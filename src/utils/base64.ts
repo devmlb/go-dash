@@ -1,7 +1,11 @@
 function base64ToUtf8String(base64String: string) {
     const binString = atob(base64String);
 
-    const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0)!);
+    const bytes = Uint8Array.from(binString, (m) => {
+        const code = m.codePointAt(0);
+        if (!code) throw new Error("Uint8Array convert error");
+        return code;
+    });
 
     return new TextDecoder().decode(bytes);
 }

@@ -23,7 +23,7 @@ function MenuEntry({
     name,
     icon,
     disabled,
-    onClick = () => {},
+    onClick,
     onClose,
 }: {
     name: string;

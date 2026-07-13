@@ -7,18 +7,18 @@ function Button({
     id,
     text,
     icon,
-    iconOnly = false,
-    onClick = () => {},
-    secondary = false,
-    disabled = false,
-    loading = false,
+    iconOnly,
+    onClick,
+    secondary,
+    disabled,
+    loading,
 }: {
     className: string | undefined;
     id: string | undefined;
     text: string | undefined;
     icon: JSX.Element | undefined;
     iconOnly: boolean;
-    onClick: React.MouseEventHandler<HTMLButtonElement>;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
     secondary: boolean;
     disabled: boolean;
     loading: boolean;
@@ -46,7 +46,7 @@ function IconButton({
     className,
     id,
     icon,
-    onClick = () => {},
+    onClick,
     secondary = false,
     disabled = false,
     loading = false,
@@ -79,7 +79,7 @@ function TextButton({
     id,
     text,
     icon,
-    onClick = () => {},
+    onClick,
     secondary = false,
     disabled = false,
     loading = false,

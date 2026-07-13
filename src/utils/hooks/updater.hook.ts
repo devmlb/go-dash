@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { check as checkForUpdates, type Update } from "@tauri-apps/plugin-updater";
+import {
+    check as checkForUpdates,
+    type Update,
+} from "@tauri-apps/plugin-updater";
 
 function useUpdater() {
     const [status, setStatus] = useState<Update | null>(null);
     const [isDownloaded, setIsDownloaded] = useState<boolean>(false);
+    const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
     const check = async (): Promise<Update | null> => {
         const result = await checkForUpdates();
@@ -32,6 +36,12 @@ function useUpdater() {
         }
     };
 
+    if (status && !isDownloading) {
+        setIsDownloading(true);
+        console.log(`Update found: app can be upgraded to v${status.version}`);
+        void download();
+    }
+
     useEffect(() => {
         (async (): Promise<void> => {
             try {
@@ -41,15 +51,6 @@ function useUpdater() {
             }
         })();
     }, []);
-
-    useEffect(() => {
-        if (status) {
-            console.log(
-                `Update found: app can be upgraded to v${status.version}`,
-            );
-            download();
-        }
-    }, [status]);
 
     return {
         updateInfos: status,
