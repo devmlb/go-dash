@@ -1,4 +1,4 @@
-import { cloneElement, JSX } from "react";
+import { cloneElement, type JSX } from "react";
 
 import "./Button.css";
 

@@ -12,12 +12,12 @@ import { Check } from "lucide-react";
 
 import "./Menu.css";
 
-type Entry = {
+interface Entry {
     name: string;
     icon?: JSX.Element;
     disabled?: boolean;
     onClick?: () => void;
-};
+}
 
 function MenuEntry({
     name,

@@ -1,4 +1,4 @@
-import { Update } from "@tauri-apps/plugin-updater";
+import type { Update } from "@tauri-apps/plugin-updater";
 import { BadgeAlert } from "lucide-react";
 
 import "./UpdateModal.css";

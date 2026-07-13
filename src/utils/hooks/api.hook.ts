@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 
-type ApiState<T> = {
-    data: T | null;
-    isLoading: boolean;
-    error: string | null;
-};
-
 function useApi<T>(
     apiCall: () => Promise<T>,
     deps: unknown[] = [],
-): ApiState<T> {
+): {
+    data: T | null;
+    isLoading: boolean;
+    error: string | null;
+} {
     const [data, setData] = useState<T | null>(null);
     const [isLoading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);

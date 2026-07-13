@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { check as checkForUpdates, Update } from "@tauri-apps/plugin-updater";
+import { check as checkForUpdates, type Update } from "@tauri-apps/plugin-updater";
 
 function useUpdater() {
     const [status, setStatus] = useState<Update | null>(null);

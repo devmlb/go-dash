@@ -1,4 +1,4 @@
-import { cloneElement, JSX, ReactNode } from "react";
+import { cloneElement, type JSX, type ReactNode } from "react";
 
 import "./Modal.css";
 import { TextButton } from "../button/Button";

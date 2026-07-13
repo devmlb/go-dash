@@ -1,6 +1,6 @@
 import { LazyStore } from "@tauri-apps/plugin-store";
 
-import { defaultSettings, Settings } from "../utils/types/settings.type";
+import { defaultSettings, type Settings } from "../utils/types/settings.type";
 
 class SettingNotFoundError extends Error {}
 

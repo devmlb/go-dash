@@ -1,4 +1,4 @@
-import { JSX, useEffect, useReducer } from "react";
+import { type JSX, useEffect, useReducer } from "react";
 import { Pen } from "lucide-react";
 
 import "./EditModal.css";
@@ -10,9 +10,7 @@ import { organApi } from "../../api/organ.api";
 import { TextButton } from "../../components/button/Button";
 import { extractIntIfFound } from "../../utils/extract";
 
-interface FormFields {
-    [key: string]:
-        | {
+type FormFields = Record<string, | {
               value: string;
               isValid: boolean;
               placeholder: string;
@@ -24,8 +22,7 @@ interface FormFields {
               required: boolean;
               legend: string;
               action: () => Promise<string | null>;
-          };
-}
+          }>;
 
 type FormFieldsAction =
     | {
