@@ -1,6 +1,6 @@
 [package]
 name = "go-dash"
-version = "0.5.0"
+version = "0.6.0"
 description = "A dashboard for your Grand Orgue organs"
 authors = ["devmlb"]
 edition = "2021"
