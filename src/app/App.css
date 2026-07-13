@@ -12,10 +12,8 @@
 
 * {
     box-sizing: border-box;
-    scrollbar-color: var(--color-surface-dark) var(--color-background);
+    scrollbar-color: var(--color-surface-dark) transparent;
     font-family: "Segoe UI", sans-serif;
-    overscroll-behavior-x: none;
-    overscroll-behavior-y: none;
 }
 
 /* Prevent Edge autofill menus */

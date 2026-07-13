@@ -12,28 +12,61 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
     color: var(--color-on-surface-low-emphasis);
 
-    & > .preview-container {
-        overflow: hidden;
-        position: relative;
-        height: 300px;
-        cursor: pointer;
+    & > .graphics {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        height: 100%;
+        max-height: 300px;
         width: 100%;
-        flex-shrink: 0;
+        overflow: hidden;
+        animation: grow 0.3s forwards cubic-bezier(0.22, 0.61, 0.36, 1);
+        margin-bottom: 10px;
 
         @media (max-height: 700px) {
-            height: 200px;
+            max-height: 200px;
         }
 
-        & > .preview {
+        & > .preview-container {
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
             width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            transition: scale 0.3s;
+            flex-grow: 1;
+
+            & > .preview,
+            & > .error {
+                width: 100%;
+                height: 100%;
+            }
+
+            & > .preview {
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                transition: scale 0.3s;
+            }
+
+            & > .error {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                gap: 12px;
+                color: var(--color-on-surface-low-emphasis);
+                background-color: var(--color-surface);
+                padding: 20px;
+                text-align: center;
+            }
+        }
+
+        & > .preview-legend {
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
         }
     }
 
@@ -44,11 +77,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    & > .preview-legend {
-        font-size: 12px;
-        font-weight: 500;
     }
 
     & > .content {
@@ -91,5 +119,12 @@
                 display: flex;
             }
         }
+    }
+}
+
+@keyframes grow {
+    from {
+        max-height: 0;
+        margin-bottom: 0;
     }
 }

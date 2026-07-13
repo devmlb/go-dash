@@ -6,6 +6,7 @@
     "common.stop_other": "stops",
     "common.keyboard_one": "keyboard",
     "common.keyboard_other": "keyboards",
+    "common.imageError": "Cannot load image",
 
     "appbar.sortMenu.name": "Sort by name",
     "appbar.sortMenu.country": "Sort by country",

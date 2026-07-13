@@ -1,11 +1,13 @@
 import { useEffect, type JSX } from "react";
 import { useTranslation } from "react-i18next";
+import { CircleAlert } from "lucide-react";
 
 import "./Grid.css";
 import { organApi } from "../../api/organ.api";
 import { useApi } from "../../utils/hooks/api.hook";
 import type { MinimalOrgan } from "../../utils/types/organ.type";
 import { sortArrayOfObjectByField } from "../../utils/sort";
+import logo from "../../assets/logo.ico";
 
 function OrganCard({
     reloadCount,
@@ -21,29 +23,27 @@ function OrganCard({
         data: cover,
         isLoading: isCoverLoading,
         error: coverError,
-    } = useApi<string | null>(
-        async () => `data:image;base64,${await organApi.getCoverB64(organ.id)}`,
-        [reloadCount],
-    );
+    } = useApi<string | null>(async () => {
+        const rawB64 = await organApi.getCoverB64(organ.id);
+        return rawB64 ? `data:image;base64,${rawB64}` : null;
+    }, [reloadCount]);
 
     return (
         <div key={organ.id} className="organ" onClick={() => onSelect(organ)}>
-            <div className={`cover${cover ? " shimmer-loading" : ""}`}>
-                <div
-                    className="image"
-                    style={{
-                        backgroundImage:
-                            cover && !isCoverLoading
-                                ? `url(${cover})`
-                                : undefined,
-                        backgroundColor: !cover
-                            ? "var(--color-surface-dark)"
-                            : undefined,
-                    }}
-                />
+            <div className={`cover${isCoverLoading ? " shimmer-loading" : ""}`}>
+                {!coverError && !isCoverLoading && (
+                    <div
+                        className="image"
+                        style={{
+                            backgroundImage: `url(${cover ?? logo})`,
+                            ...(!cover && { backgroundSize: 80 }),
+                        }}
+                    />
+                )}
                 {coverError && (
                     <div className="error">
-                        Impossible de charger l&apos;image
+                        <CircleAlert size={24} strokeWidth={1.75} />
+                        {t("common.imageError")}
                     </div>
                 )}
             </div>

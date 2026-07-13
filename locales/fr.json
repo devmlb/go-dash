@@ -6,6 +6,7 @@
     "common.stop_other": "jeux",
     "common.keyboard_one": "clavier",
     "common.keyboard_other": "claviers",
+    "common.imageError": "Impossible de charger l'image",
 
     "appbar.sortMenu.name": "Trier par nom",
     "appbar.sortMenu.country": "Trier par pays",

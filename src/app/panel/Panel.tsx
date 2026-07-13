@@ -10,6 +10,7 @@ import {
     ExternalLink,
     GamepadDirectional,
     KeyboardMusic,
+    CircleAlert,
 } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
@@ -21,6 +22,7 @@ import type { MinimalOrgan } from "../../utils/types/organ.type";
 import { EditModal } from "../modals/EditModal";
 import { IconButton, TextButton } from "../../components/button/Button";
 import { Modal } from "../../components/modal/Modal";
+import logo from "../../assets/logo.ico";
 
 function extractWebsite(url: string): string {
     const result = url.match(/https?:\/\/([^/]+)/);
@@ -78,9 +80,11 @@ function Panel({
         error: previewError,
     } = useApi<string | null>(
         selectedOrgan
-            ? async (): Promise<string | null> =>
-                  `data:image;base64,${await organApi.getPreviewB64(selectedOrgan.id)}`
-            : async (): Promise<null> => null,
+            ? async () => {
+                  const rawB64 = await organApi.getPreviewB64(selectedOrgan.id);
+                  return rawB64 ? `data:image;base64,${rawB64}` : null;
+              }
+            : async () => null,
         [selectedOrgan, previewReloadCount],
     );
 
@@ -88,74 +92,78 @@ function Panel({
         <div className="panel">
             {selectedOrgan ? (
                 <>
-                    {!isPreviewLoading && !previewError && !preview ? null : (
-                        <>
-                            <div className="preview-container shimmer-loading">
-                                {!isPreviewLoading &&
-                                    !previewError &&
-                                    preview && (
-                                        <div
-                                            className="preview"
-                                            onMouseMove={handleMouseMove}
-                                            onMouseEnter={() =>
-                                                setIsHovering(true)
-                                            }
-                                            onMouseLeave={() =>
-                                                setIsHovering(false)
-                                            }
-                                            style={{
-                                                scale: isHovering ? 1.5 : 1,
-                                                transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
-                                                backgroundImage: `url(${preview})`,
-                                            }}
-                                        />
-                                    )}
-                            </div>
-                            <div className="preview-legend">
-                                {t("panel.previewHelper")}
-                            </div>
-                        </>
-                    )}
+                    <div className="graphics">
+                        <div className="preview-container">
+                            {!isPreviewLoading && !previewError && (
+                                <div
+                                    className="preview"
+                                    onMouseMove={handleMouseMove}
+                                    onMouseEnter={() => setIsHovering(true)}
+                                    onMouseLeave={() => setIsHovering(false)}
+                                    style={{
+                                        backgroundImage: `url(${preview ?? logo})`,
+                                        ...(preview && {
+                                            scale: isHovering ? 1.5 : 1,
+                                            transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
+                                        }),
+                                        ...(!preview && { backgroundSize: 80 }),
+                                    }}
+                                />
+                            )}
+                            {previewError && (
+                                <div className="error">
+                                    <CircleAlert size={24} strokeWidth={1.75} />
+                                    {t("common.imageError")}
+                                </div>
+                            )}
+                        </div>
+                        <div className="preview-legend">
+                            {t("panel.previewHelper")}
+                        </div>
+                    </div>
                     <div className="content">
                         <div className="infos">
                             <h2 className="name">{selectedOrgan.name}</h2>
                             <div>
-                                <MapPin size={16} />
+                                <MapPin size={16} strokeWidth={2} />
                                 {selectedOrgan.country}
                             </div>
                             {selectedOrgan.year && (
                                 <div>
-                                    <Calendar size={16} />
+                                    <Calendar size={16} strokeWidth={2} />
                                     {selectedOrgan.year.toString()}
                                 </div>
                             )}
                             {selectedOrgan.builder && (
                                 <div>
-                                    <Hammer size={16} />
+                                    <Hammer size={16} strokeWidth={2} />
                                     {selectedOrgan.builder}
                                 </div>
                             )}
                             {selectedOrgan.stops && (
                                 <div>
-                                    <GamepadDirectional size={16} />
+                                    <GamepadDirectional
+                                        size={16}
+                                        strokeWidth={2}
+                                    />
                                     {`${selectedOrgan.stops} ${t("common.stop", { count: selectedOrgan.stops })}`}
                                 </div>
                             )}
                             {selectedOrgan.keyboards && (
                                 <div>
-                                    <KeyboardMusic size={16} />
+                                    <KeyboardMusic size={16} strokeWidth={2} />
                                     {`${selectedOrgan.keyboards} ${t("common.keyboard", { count: selectedOrgan.keyboards })}`}
                                 </div>
                             )}
                             {selectedOrgan.features && (
                                 <div>
-                                    <Tag size={16} />
+                                    <Tag size={16} strokeWidth={2} />
                                     {selectedOrgan.features}
                                 </div>
                             )}
                             {selectedOrgan.url && (
                                 <div>
-                                    <Globe size={16} />
+                                    <Globe size={16} strokeWidth={2} />
                                     <a
                                         target="_blank"
                                         rel="noreferrer"
