@@ -1,4 +1,5 @@
-import { useEffect, useReducer, useState, type JSX } from "react";
+import { useMemo, useReducer, useState, type JSX } from "react";
+import { useTranslation } from "react-i18next";
 
 import "./App.css";
 import type { MinimalOrgan } from "../utils/types/organ.type";
@@ -9,34 +10,8 @@ import { useUpdater } from "../utils/hooks/updater.hook";
 import { createPortal } from "react-dom";
 import { UpdateModal } from "./modals/UpdateModal";
 
-const sortFields: { name: string; id: keyof MinimalOrgan }[] = [
-    {
-        name: "Trier par nom",
-        id: "name",
-    },
-    {
-        name: "Trier par pays",
-        id: "country",
-    },
-    {
-        name: "Trier par année de construction",
-        id: "year",
-    },
-    {
-        name: "Trier par facteur d'orgue",
-        id: "builder",
-    },
-    {
-        name: "Trier par nombre de jeux",
-        id: "stops",
-    },
-    {
-        name: "Trier par nombre de claviers",
-        id: "keyboards",
-    },
-];
-
 function App(): JSX.Element {
+    const { t } = useTranslation();
     const [selectedOrganId, setSelectedOrganId] = useState<string | null>(null);
     const [organs, setOrgans] = useState<MinimalOrgan[]>([]);
     const [selectedSortOrder, setSelectedSortOrder] = useState<number | null>(
@@ -55,6 +30,42 @@ function App(): JSX.Element {
     const { updateInfos, isUpdateDownloaded, restartAndinstallUpdate } =
         useUpdater();
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
+    const [updateModalDisplayed, setUpdateModalDisplayed] =
+        useState<boolean>(false);
+    if (isUpdateDownloaded && !updateModalDisplayed) {
+        setUpdateModalDisplayed(true);
+        setIsUpdateModalOpen(true);
+    }
+
+    const sortFields = useMemo(
+        () => [
+            {
+                name: t("sort.name"),
+                id: "name" as const,
+            },
+            {
+                name: t("sort.country"),
+                id: "country" as const,
+            },
+            {
+                name: t("sort.year"),
+                id: "year" as const,
+            },
+            {
+                name: t("sort.builder"),
+                id: "builder" as const,
+            },
+            {
+                name: t("sort.stops"),
+                id: "stops" as const,
+            },
+            {
+                name: t("sort.keyboards"),
+                id: "keyboards" as const,
+            },
+        ],
+        [t],
+    );
 
     const reload = (): void => {
         triggerReload();
@@ -70,12 +81,6 @@ function App(): JSX.Element {
             setSelectedOrganId(null);
         }
     };
-
-    useEffect(() => {
-        if (isUpdateDownloaded) {
-            setIsUpdateModalOpen(true);
-        }
-    }, [isUpdateDownloaded]);
 
     return (
         <>

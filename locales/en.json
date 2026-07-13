@@ -1,0 +1,17 @@
+{
+    "app.name": "GO Dash",
+
+    "sort.name": "Sort by name",
+    "sort.country": "Sort by country",
+    "sort.year": "Sort by construction year",
+    "sort.builder": "Sort by organ builder",
+    "sort.stops": "Sort by number of stops",
+    "sort.keyboards": "Sort by number of keyboards",
+
+    "sortOrder.ascendant": "Ascendant sort",
+    "sortOrder.descendant": "Descendant sort",
+
+    "more.deleteAll": "Delete all",
+    "more.import": "Import organs",
+    "more.export": "Export all organs"
+}

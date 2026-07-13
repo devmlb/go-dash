@@ -1,0 +1,17 @@
+{
+    "app.name": "GO Dash",
+
+    "sort.name": "Trier par nom",
+    "sort.country": "Trier par pays",
+    "sort.year": "Trier par année de construction",
+    "sort.builder": "Trier par facteur d'orgue",
+    "sort.stops": "Trier par nombre de jeux",
+    "sort.keyboards": "Trier par nombre de claviers",
+
+    "sortOrder.ascendant": "Tri croissant",
+    "sortOrder.descendant": "Tri décroissant",
+
+    "more.deleteAll": "Supprimer tout",
+    "more.import": "Importer des orgues",
+    "more.export": "Exporter tous les orgues"
+}

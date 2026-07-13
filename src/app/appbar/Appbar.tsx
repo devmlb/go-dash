@@ -24,6 +24,7 @@ import { useApi } from "../../utils/hooks/api.hook";
 import { IconButton, TextButton } from "../../components/button/Button";
 import { Modal } from "../../components/modal/Modal";
 import { Menu, SelectionMenu } from "../../components/menu/Menu";
+import { useTranslation } from "react-i18next";
 
 function Appbar({
     reloadFn,
@@ -40,6 +41,7 @@ function Appbar({
     setSelectedSortField: React.Dispatch<React.SetStateAction<number | null>>;
     sortFields: { name: string; id: keyof MinimalOrgan }[];
 }): React.JSX.Element {
+    const { t } = useTranslation();
     const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
@@ -135,10 +137,10 @@ function Appbar({
                             }
                             entries={[
                                 {
-                                    name: "Tri croissant",
+                                    name: t("sortOrder.ascendant"),
                                 },
                                 {
-                                    name: "Tri décroissant",
+                                    name: t("sortOrder.descendant"),
                                 },
                             ]}
                             defaultSelected={selectedSortOrder}
@@ -163,17 +165,17 @@ function Appbar({
                         target={<IconButton icon={<Ellipsis />} secondary />}
                         entries={[
                             {
-                                name: "Supprimer tout",
+                                name: t("more.deleteAll"),
                                 icon: <Trash />,
                                 onClick: openDeleteModal,
                             },
                             {
-                                name: "Importer des orgues",
+                                name: t("more.import"),
                                 icon: <FolderOpen />,
                                 onClick: handleImport,
                             },
                             {
-                                name: "Exporter tous les orgues",
+                                name: t("more.export"),
                                 icon: <Download />,
                                 onClick: handleExport,
                             },

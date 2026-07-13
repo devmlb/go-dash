@@ -10,6 +10,7 @@
         "store:default",
         "dialog:default",
         "fs:allow-write-text-file",
+        "os:allow-locale",
         {
             "identifier": "opener:allow-open-path",
             "allow": [
