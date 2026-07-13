@@ -1,5 +1,10 @@
-import { readTextFile, writeTextFile, exists } from "@tauri-apps/plugin-fs";
-import { utf8StringToBase64 } from "./base64";
+import {
+    readTextFile,
+    readFile,
+    writeTextFile,
+    exists,
+} from "@tauri-apps/plugin-fs";
+import { bytesToBase64 } from "./base64";
 
 // function copyFileToAppData(
 //     path: string,
@@ -20,8 +25,16 @@ async function getFileContent(path: string): Promise<string> {
     return await readTextFile(path);
 }
 
+async function getRawFileContent(
+    path: string,
+): Promise<Uint8Array<ArrayBuffer>> {
+    if (!(await exists(path))) throw new FileNotFoundError();
+
+    return await readFile(path);
+}
+
 async function getFileContentB64(path: string): Promise<string> {
-    return utf8StringToBase64(await getFileContent(path));
+    return bytesToBase64(await getRawFileContent(path));
 }
 
 async function saveToFile(content: string, path: string): Promise<void> {
@@ -31,6 +44,7 @@ async function saveToFile(content: string, path: string): Promise<void> {
 export {
     // copyFileToAppData,
     getFileContent,
+    getRawFileContent,
     getFileContentB64,
     saveToFile,
     FileNotFoundError,

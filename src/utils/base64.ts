@@ -10,9 +10,7 @@ function base64ToUtf8String(base64String: string) {
     return new TextDecoder().decode(bytes);
 }
 
-function utf8StringToBase64(string: string) {
-    const bytes = new TextEncoder().encode(string);
-
+function bytesToBase64(bytes: Uint8Array<ArrayBuffer>) {
     const binString = Array.from(bytes, (byte) =>
         String.fromCodePoint(byte),
     ).join("");
@@ -20,4 +18,10 @@ function utf8StringToBase64(string: string) {
     return btoa(binString);
 }
 
-export { base64ToUtf8String, utf8StringToBase64 };
+function utf8StringToBase64(string: string) {
+    const bytes = new TextEncoder().encode(string);
+
+    return bytesToBase64(bytes);
+}
+
+export { base64ToUtf8String, utf8StringToBase64, bytesToBase64 };
