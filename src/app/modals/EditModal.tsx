@@ -1,4 +1,5 @@
 import { type JSX, useEffect, useReducer } from "react";
+import { useTranslation } from "react-i18next";
 import { Pen } from "lucide-react";
 
 import "./EditModal.css";
@@ -10,19 +11,22 @@ import { organApi } from "../../api/organ.api";
 import { TextButton } from "../../components/button/Button";
 import { extractIntIfFound } from "../../utils/extract";
 
-type FormFields = Record<string, | {
-              value: string;
-              isValid: boolean;
-              placeholder: string;
-              regexValidation?: RegExp;
-              validationErrorText?: string;
-          }
-        | {
-              value: string;
-              required: boolean;
-              legend: string;
-              action: () => Promise<string | null>;
-          }>;
+type FormFields = Record<
+    string,
+    | {
+          value: string;
+          isValid: boolean;
+          placeholder: string;
+          regexValidation?: RegExp;
+          validationErrorText?: string;
+      }
+    | {
+          value: string;
+          required: boolean;
+          legend: string;
+          action: () => Promise<string | null>;
+      }
+>;
 
 type FormFieldsAction =
     | {
@@ -74,77 +78,79 @@ function formFieldsReducer(
     }
 }
 
-function buildFormFields(organInfos: Organ | null): FormFields {
+function buildFormFields(
+    organInfos: Organ | null,
+    t: ReturnType<typeof useTranslation>["t"],
+): FormFields {
     const defaults: FormFields = {
         name: {
             value: "",
             isValid: false,
-            placeholder: "Nom",
+            placeholder: t("modal.edit.form.name"),
             regexValidation: /^.+$/,
-            validationErrorText: "Nom invalide : au moins 1 caractère requis.",
+            validationErrorText: t("modal.edit.validation.name"),
         },
         country: {
             value: "",
             isValid: false,
-            placeholder: "Pays",
+            placeholder: t("modal.edit.form.country"),
             regexValidation: /^.+$/,
-            validationErrorText: "Pays invalide : au moins 1 caractère requis.",
+            validationErrorText: t("modal.edit.validation.country"),
         },
         year: {
             value: "",
             isValid: true,
-            placeholder: "Année de construction",
+            placeholder: t("modal.edit.form.year"),
             regexValidation: /^$|^[0-9]{4}$/,
-            validationErrorText:
-                "Année invalide : 4 caractères numériques requis.",
+            validationErrorText: t("modal.edit.validation.year"),
         },
         builder: {
             value: "",
             isValid: true,
-            placeholder: "Facteur d'orgue",
+            placeholder: t("modal.edit.form.builder"),
         },
         stops: {
             value: "",
             isValid: true,
-            placeholder: "Nombre de jeux",
+            placeholder: t("modal.edit.form.stops"),
             regexValidation: /^[0-9]*$/,
-            validationErrorText: "Nombre de jeux invalide.",
+            validationErrorText: t("modal.edit.validation.stops"),
         },
         keyboards: {
             value: "",
             isValid: true,
-            placeholder: "Nombre de claviers",
+            placeholder: t("modal.edit.form.keyboards"),
             regexValidation: /^[0-9]*$/,
-            validationErrorText: "Nombre de claviers invalide.",
+            validationErrorText: t("modal.edit.validation.keyboards"),
         },
         features: {
             value: "",
             isValid: true,
-            placeholder: "Autres caractéristiques",
+            placeholder: t("modal.edit.form.features"),
         },
         url: {
             value: "",
             isValid: true,
-            placeholder: "URL externe",
+            placeholder: t("modal.edit.form.url"),
             regexValidation: /^$|^(http|https):\/\/.*\..*$/,
-            validationErrorText: "URL invalide.",
+            validationErrorText: t("modal.edit.validation.url"),
         },
         path: {
             value: "",
             required: true,
-            legend: "Chemin du fichier d'orgue",
+            legend: t("modal.edit.form.path"),
             action: organApi.chooseGOFile,
         },
         coverPath: {
             value: "",
             required: false,
-            legend: "Chemin de l'image de couverture",
+            legend: t("modal.edit.form.coverPath"),
             action: organApi.chooseImage,
         },
         previewPath: {
             value: "",
             required: false,
-            legend: "Chemin de l'aperçu",
+            legend: t("modal.edit.form.previewPath"),
             action: organApi.chooseImage,
         },
     };
@@ -193,6 +199,8 @@ function EditModal({
     organId?: string;
     onSaved?: () => void;
 }): JSX.Element {
+    const { t } = useTranslation();
+
     const { data: organInfos } = useApi<Organ | null>(
         organId
             ? async (): Promise<Organ> => await organApi.getById(organId)
@@ -202,15 +210,15 @@ function EditModal({
 
     const [formFields, dispatchFormFields] = useReducer(
         formFieldsReducer,
-        buildFormFields(null),
+        buildFormFields(null, t),
     );
 
     useEffect(() => {
         dispatchFormFields({
             type: "reset",
-            fields: buildFormFields(organInfos),
+            fields: buildFormFields(organInfos, t),
         });
-    }, [organInfos]);
+    }, [organInfos, t]);
 
     const setFieldValue = (key: string, value: string): void => {
         dispatchFormFields({ type: "setValue", key, value });
@@ -277,7 +285,9 @@ function EditModal({
             isOpen={isOpen}
             onCancel={close}
             onConfirm={closeAndSave}
-            title={organId ? "Modifier un orgue" : "Ajouter un orgue"}
+            title={
+                organId ? t("modal.edit.title.edit") : t("modal.edit.title.add")
+            }
             isConfirmActionEnabled={isFormValid()}
             titleIcon={<Pen />}
         >
@@ -305,7 +315,9 @@ function EditModal({
                                 className="file-selection"
                             >
                                 <span className="description">
-                                    {field.legend} :
+                                    <span className="legend">
+                                        {field.legend}
+                                    </span>
                                     <span
                                         className={
                                             field.required && !field.value
@@ -314,11 +326,11 @@ function EditModal({
                                         }
                                     >
                                         {extractFilename(field.value) ??
-                                            "Aucun"}
+                                            t("modal.edit.form.noFileSelected")}
                                     </span>
                                 </span>
                                 <TextButton
-                                    text="Sélectionner"
+                                    text={t("modal.edit.buttons.select")}
                                     secondary
                                     onClick={() =>
                                         handlePathSelection(

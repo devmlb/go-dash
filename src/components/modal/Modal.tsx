@@ -1,4 +1,5 @@
 import { cloneElement, type JSX, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import "./Modal.css";
 import { TextButton } from "../button/Button";
@@ -7,8 +8,8 @@ function Modal({
     isOpen,
     onCancel,
     onConfirm,
-    confirmActionText = "Enregistrer",
-    cancelActionText = "Annuler",
+    confirmActionText,
+    cancelActionText,
     isConfirmActionEnabled = true,
     children,
     title,
@@ -24,6 +25,8 @@ function Modal({
     title: string;
     titleIcon: JSX.Element;
 }): JSX.Element {
+    const { t } = useTranslation();
+
     return (
         <div className={isOpen ? "modal open" : "modal"}>
             <div className="scrim" />
@@ -39,13 +42,13 @@ function Modal({
                     <div className="content">{children}</div>
                     <div className="actions">
                         <TextButton
-                            text={cancelActionText}
+                            text={cancelActionText ?? t("common.cancel")}
                             secondary
                             onClick={onCancel}
                         />
                         <TextButton
                             disabled={!isConfirmActionEnabled}
-                            text={confirmActionText}
+                            text={confirmActionText ?? t("common.confirm")}
                             onClick={onConfirm}
                         />
                     </div>

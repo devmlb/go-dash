@@ -1,4 +1,5 @@
 import { useEffect, type JSX } from "react";
+import { useTranslation } from "react-i18next";
 
 import "./Grid.css";
 import { organApi } from "../../api/organ.api";
@@ -15,6 +16,7 @@ function OrganCard({
     organ: MinimalOrgan;
     onSelect: (organ: MinimalOrgan) => void;
 }): JSX.Element {
+    const { t } = useTranslation();
     const {
         data: cover,
         isLoading: isCoverLoading,
@@ -53,12 +55,12 @@ function OrganCard({
                         (organ.stops
                             ? " • " +
                               organ.stops +
-                              ` jeu${organ.stops > 1 ? "x" : ""}`
+                              ` ${t("common.stop", { count: organ.stops })}`
                             : "") +
                         (organ.keyboards
                             ? (organ.stops ? ", " : " • ") +
                               organ.keyboards +
-                              ` clavier${organ.keyboards > 1 ? "s" : ""}`
+                              ` ${t("common.keyboard", { count: organ.keyboards })}`
                             : "")}
                 </div>
             </div>
@@ -83,7 +85,10 @@ function Grid({
         data: organs,
         isLoading,
         error,
-    } = useApi<MinimalOrgan[]>(async () => await organApi.getAll(), [reloadCount]);
+    } = useApi<MinimalOrgan[]>(
+        async () => await organApi.getAll(),
+        [reloadCount],
+    );
 
     useEffect(() => {
         if (!isLoading && !error) {

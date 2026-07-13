@@ -1,4 +1,12 @@
 {
+    "common.delete": "Supprimer",
+    "common.cancel": "Annuler",
+    "common.confirm": "Confirmer",
+    "common.stop_one": "jeu",
+    "common.stop_other": "jeux",
+    "common.keyboard_one": "clavier",
+    "common.keyboard_other": "claviers",
+
     "appbar.sortMenu.name": "Trier par nom",
     "appbar.sortMenu.country": "Trier par pays",
     "appbar.sortMenu.year": "Trier par année de construction",
@@ -12,7 +20,50 @@
     "appbar.moreMenu.export": "Exporter tous les orgues",
     "appbar.addButton": "Ajouter un orgue",
 
+    "panel.previewHelper": "Passer la souris sur l'image pour zoomer.",
+    "panel.openButton": "Ouvrir",
+    "panel.noneSelected": "Aucun orgue sélectionné.",
+
     "modal.deleteAll.title": "Supprimer tous les orgues",
     "modal.deleteAll.body": "Voulez-vous vraiment supprimer tous les orgues ? Les fichiers extérieurs spécifiés dans les propriétés des orgues sur GO Dash ne seront pas supprimés.",
-    "modal.deleteAll.deleteButton": "Supprimer"
+
+    "modal.delete.title": "Supprimer un orgue",
+    "modal.delete.body": "Voulez-vous vraiment supprimer '{{organName}}' ? Les fichiers extérieurs spécifiés dans les propriétés des orgues sur GO Dash ne seront pas supprimés.",
+
+    "modal.update.title": "Mise à jour disponible",
+    "modal.update.body.infos": "La version {{version}} de GO Dash a été téléchargée. Redémarrez l'application pour terminer l'installation.",
+    "modal.update.body.notesTitle": "Notes de version",
+    "modal.update.restartButton": "Redémarrer et installer",
+    "modal.update.laterButton": "Plus tard",
+
+    "modal.edit.title.add": "Ajouter un orgue",
+    "modal.edit.title.edit": "Modifier un orgue",
+    "modal.edit.form.name": "Nom",
+    "modal.edit.form.country": "Pays",
+    "modal.edit.form.year": "Année de construction",
+    "modal.edit.form.builder": "Facteur d'orgue",
+    "modal.edit.form.stops": "Nombre de jeux",
+    "modal.edit.form.keyboards": "Nombre de claviers",
+    "modal.edit.form.features": "Autres caractéristiques",
+    "modal.edit.form.url": "URL externe",
+    "modal.edit.form.path": "Chemin du fichier d'orgue",
+    "modal.edit.form.coverPath": "Chemin de l'image de couverture",
+    "modal.edit.form.previewPath": "Chemin de l'aperçu",
+    "modal.edit.validation.name": "Nom invalide : au moins 1 caractère requis.",
+    "modal.edit.validation.country": "Pays invalide : au moins 1 caractère requis.",
+    "modal.edit.validation.year": "Année invalide : 4 caractères numériques requis.",
+    "modal.edit.validation.stops": "Nombre de jeux invalide.",
+    "modal.edit.validation.keyboards": "Nombre de claviers invalide.",
+    "modal.edit.validation.url": "URL invalide.",
+    "modal.edit.buttons.select": "Sélectionner",
+    "modal.edit.form.noFileSelected": "Aucun",
+
+    "dialog.image.title": "Sélectionner une image pour l'orgue",
+    "dialog.image.filter": "Images",
+    "dialog.organ.title": "Sélectionner un fichier d'orgue",
+    "dialog.organ.filter": "Fichier Grand Orgue",
+    "dialog.export.title": "Exporter tous les orgues",
+    "dialog.export.filter": "Fichier JSON",
+    "dialog.import.title": "Sélectionner un fichier d'orgue à importer",
+    "dialog.import.filter": "Fichier JSON"
 }

@@ -16,10 +16,18 @@
         & > .description {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 24px;
+            overflow: hidden;
 
             & > span {
                 color: var(--color-on-surface);
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &.legend {
+                    flex-shrink: 0;
+                }
 
                 &.error {
                     color: #af0202;

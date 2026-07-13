@@ -5,6 +5,7 @@ import {
     save as openSaveFileDialog,
 } from "@tauri-apps/plugin-dialog";
 
+import { i18n } from "../utils/i18n";
 import type { Organ } from "../utils/types/organ.type";
 
 import { getFileContentB64, saveToFile, getFileContent } from "../utils/fs";
@@ -91,11 +92,11 @@ class OrganApi {
         return await openChooseFileDialog({
             filters: [
                 {
-                    name: "Images",
+                    name: i18n.t("dialog.image.filter"),
                     extensions: ["jpg", "png"],
                 },
             ],
-            title: "Sélectionner une image pour l'orgue",
+            title: i18n.t("dialog.image.title"),
         });
     }
 
@@ -103,11 +104,11 @@ class OrganApi {
         return await openChooseFileDialog({
             filters: [
                 {
-                    name: "Fichier Grand Orgue",
+                    name: i18n.t("dialog.organ.filter"),
                     extensions: ["orgue", "organ"],
                 },
             ],
-            title: "Sélectionner un fichier d'orgue",
+            title: i18n.t("dialog.organ.title"),
         });
     }
 
@@ -131,11 +132,11 @@ class OrganApi {
         const exportPath = await openSaveFileDialog({
             filters: [
                 {
-                    name: "Fichier JSON",
+                    name: i18n.t("dialog.export.filter"),
                     extensions: ["json"],
                 },
             ],
-            title: "Exporter tous les orgues",
+            title: i18n.t("dialog.export.title"),
         });
         if (exportPath) saveToFile(JSON.stringify(organs, null, 2), exportPath);
     }
@@ -144,11 +145,11 @@ class OrganApi {
         const importPath = await openChooseFileDialog({
             filters: [
                 {
-                    name: "Fichier JSON",
+                    name: i18n.t("dialog.import.filter"),
                     extensions: ["json"],
                 },
             ],
-            title: "Sélectionner un fichier d'orgue",
+            title: i18n.t("dialog.import.title"),
         });
         if (!importPath) return;
 

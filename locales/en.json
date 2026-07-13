@@ -1,4 +1,12 @@
 {
+    "common.delete": "Delete",
+    "common.cancel": "Cancel",
+    "common.confirm": "Confirm",
+    "common.stop_one": "stop",
+    "common.stop_other": "stops",
+    "common.keyboard_one": "keyboard",
+    "common.keyboard_other": "keyboards",
+
     "appbar.sortMenu.name": "Sort by name",
     "appbar.sortMenu.country": "Sort by country",
     "appbar.sortMenu.year": "Sort by construction year",
@@ -12,7 +20,50 @@
     "appbar.moreMenu.export": "Export all organs",
     "appbar.addButton": "Add organ",
 
+    "panel.previewHelper": "Move your mouse over the image to zoom in.",
+    "panel.openButton": "Open",
+    "panel.noneSelected": "No organ selected.",
+
     "modal.deleteAll.title": "Delete organs",
     "modal.deleteAll.body": "Do you really want to delete all your organs? The external files specified in the organ properties in GO Dash will not be deleted.",
-    "modal.deleteAll.deleteButton": "Delete"
+
+    "modal.delete.title": "Delete organ",
+    "modal.delete.body": "Do you really want to delete '{{organName}}'? The external files specified in the organ properties in GO Dash will not be deleted.",
+
+    "modal.update.title": "Update available",
+    "modal.update.body.infos": "GO Dash version {{version}} has been downloaded. Please restart the app to complete the installation.",
+    "modal.update.body.notesTitle": "Release notes",
+    "modal.update.restartButton": "Restart and install",
+    "modal.update.laterButton": "Later",
+
+    "modal.edit.title.add": "Add organ",
+    "modal.edit.title.edit": "Edit organ",
+    "modal.edit.form.name": "Name",
+    "modal.edit.form.country": "Country",
+    "modal.edit.form.year": "Bulding year",
+    "modal.edit.form.builder": "Organ builder",
+    "modal.edit.form.stops": "Number of stops",
+    "modal.edit.form.keyboards": "Number of keyboards",
+    "modal.edit.form.features": "Other features",
+    "modal.edit.form.url": "External URL",
+    "modal.edit.form.path": "Organ file path",
+    "modal.edit.form.coverPath": "Cover image path",
+    "modal.edit.form.previewPath": "Preview path",
+    "modal.edit.validation.name": "Invalid name: at least 1 character required.",
+    "modal.edit.validation.country": "Invalid country: at least 1 character required.",
+    "modal.edit.validation.year": "Invalid year: 4 numeric characters required.",
+    "modal.edit.validation.stops": "Invalid number of stops.",
+    "modal.edit.validation.keyboards": "Invalid number of keyboards.",
+    "modal.edit.validation.url": "Invalid URL.",
+    "modal.edit.buttons.select": "Select",
+    "modal.edit.form.noFileSelected": "None",
+
+    "dialog.image.title": "Select image for organ",
+    "dialog.image.filter": "Images",
+    "dialog.organ.title": "Select organ file",
+    "dialog.organ.filter": "Grand Orgue file",
+    "dialog.export.title": "Export all organs",
+    "dialog.export.filter": "JSON file",
+    "dialog.import.title": "Select organ file to import",
+    "dialog.import.filter": "JSON file"
 }

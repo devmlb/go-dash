@@ -1,5 +1,6 @@
 import type { Update } from "@tauri-apps/plugin-updater";
 import { BadgeAlert } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import "./UpdateModal.css";
 import { Modal } from "../../components/modal/Modal";
@@ -15,6 +16,7 @@ function UpdateModal({
     restart: () => Promise<void>;
     updateDetails: Update;
 }) {
+    const { t } = useTranslation();
     const handleConfirm = async (): Promise<void> => {
         try {
             await restart();
@@ -29,18 +31,20 @@ function UpdateModal({
             isOpen={isOpen}
             onCancel={close}
             onConfirm={handleConfirm}
-            confirmActionText="Redémarrer et installer"
-            cancelActionText="Plus tard"
-            title="Mise à jour disponible"
+            confirmActionText={t("modal.update.restartButton")}
+            cancelActionText={t("modal.update.laterButton")}
+            title={t("modal.update.title")}
             titleIcon={<BadgeAlert />}
         >
             <div className="update-modal-content">
                 <div>
-                    La version {updateDetails.version} de GO Dash a été
-                    téléchargée. Redémarrez l&apos;application pour terminer
-                    l&apos;installation.
+                    {t("modal.update.body.infos", {
+                        version: updateDetails.version,
+                    })}
                 </div>
-                <span className="notes-title">Notes de version</span>
+                <span className="notes-title">
+                    {t("modal.update.body.notesTitle")}
+                </span>
                 <div>
                     <pre>{updateDetails.body}</pre>
                 </div>

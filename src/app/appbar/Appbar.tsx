@@ -13,6 +13,7 @@ import {
     Trash,
 } from "lucide-react";
 import { getVersion } from "@tauri-apps/api/app";
+import { useTranslation } from "react-i18next";
 
 import "./Appbar.css";
 import type { MinimalOrgan } from "../../utils/types/organ.type";
@@ -24,7 +25,6 @@ import { useApi } from "../../utils/hooks/api.hook";
 import { IconButton, TextButton } from "../../components/button/Button";
 import { Modal } from "../../components/modal/Modal";
 import { Menu, SelectionMenu } from "../../components/menu/Menu";
-import { useTranslation } from "react-i18next";
 
 function Appbar({
     reloadFn,
@@ -197,7 +197,7 @@ function Appbar({
                         onConfirm={handleRemove}
                         title={t("modal.deleteAll.title")}
                         titleIcon={<Trash />}
-                        confirmActionText={t("modal.deleteAll.deleteButton")}
+                        confirmActionText={t("common.delete")}
                     >
                         {t("modal.deleteAll.body")}
                     </Modal>,

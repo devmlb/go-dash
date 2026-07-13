@@ -12,6 +12,7 @@ import {
     KeyboardMusic,
 } from "lucide-react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 
 import "./Panel.css";
 import { organApi } from "../../api/organ.api";
@@ -33,6 +34,7 @@ function Panel({
     selectedOrgan: MinimalOrgan | null;
     reloadFn: () => void;
 }): JSX.Element {
+    const { t } = useTranslation();
     const [mousePosition, setMousePosition] = useState<{
         x: number;
         y: number;
@@ -110,7 +112,7 @@ function Panel({
                                     )}
                             </div>
                             <div className="preview-legend">
-                                Passer la souris sur l&apos;image pour zoomer.
+                                {t("panel.previewHelper")}
                             </div>
                         </>
                     )}
@@ -136,13 +138,13 @@ function Panel({
                             {selectedOrgan.stops && (
                                 <div>
                                     <GamepadDirectional size={16} />
-                                    {`${selectedOrgan.stops} jeu${selectedOrgan.stops > 1 ? "x" : ""}`}
+                                    {`${selectedOrgan.stops} ${t("common.stop", { count: selectedOrgan.stops })}`}
                                 </div>
                             )}
                             {selectedOrgan.keyboards && (
                                 <div>
                                     <KeyboardMusic size={16} />
-                                    {`${selectedOrgan.keyboards} clavier${selectedOrgan.keyboards > 1 ? "s" : ""}`}
+                                    {`${selectedOrgan.keyboards} ${t("common.keyboard", { count: selectedOrgan.keyboards })}`}
                                 </div>
                             )}
                             {selectedOrgan.features && (
@@ -178,7 +180,7 @@ function Panel({
                                 />
                             </div>
                             <TextButton
-                                text="Ouvrir"
+                                text={t("panel.openButton")}
                                 onClick={() => organApi.open(selectedOrgan.id)}
                                 icon={<ExternalLink />}
                             />
@@ -198,21 +200,19 @@ function Panel({
                             isOpen={isDeleteModalOpen}
                             onCancel={closeDeleteModal}
                             onConfirm={handleRemoved}
-                            title="Supprimer un orgue"
+                            title={t("modal.delete.title")}
                             titleIcon={<Trash />}
-                            confirmActionText="Supprimer"
+                            confirmActionText={t("common.delete")}
                         >
-                            Voulez-vous vraiment supprimer &quot;
-                            {selectedOrgan?.name}&quot; ? <br />
-                            Les fichiers extérieurs spécifiés dans les
-                            propriétés de l&apos;orgue sur GO Dash ne seront pas
-                            supprimés.
+                            {t("modal.delete.body", {
+                                organName: selectedOrgan.name,
+                            })}
                         </Modal>,
                         document.body,
                     )}
                 </>
             ) : (
-                <div className="none">Aucun orgue sélectionné.</div>
+                <div className="none">{t("panel.noneSelected")}</div>
             )}
         </div>
     );
