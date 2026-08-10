@@ -18,7 +18,6 @@
         border: solid 1px var(--color-surface-dark);
         border-radius: 15px;
         overflow: hidden;
-        cursor: pointer;
         position: relative;
         background-color: var(--color-surface);
 

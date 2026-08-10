@@ -33,7 +33,7 @@
         & > .preview-container {
             overflow: hidden;
             position: relative;
-            cursor: pointer;
+            cursor: move;
             width: 100%;
             flex-grow: 1;
 
