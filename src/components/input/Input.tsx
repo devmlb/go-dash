@@ -41,12 +41,13 @@ function Input({
     return (
         <label className="input">
             <input
-                name={value}
+                name={placeholder}
+                placeholder=" "
                 type="text"
-                placeholder={placeholder}
                 value={value}
                 onChange={handleInput}
             />
+            <span data-label={placeholder} />
             {error && <span className="error">{error}</span>}
         </label>
     );

@@ -1,7 +1,7 @@
 .edit-modal-content {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 4px;
 
     & .file-selection {
         padding-left: 22px;
@@ -11,22 +11,23 @@
         gap: 20px;
         font-weight: 600;
         font-size: 14px;
-        color: var(--color-surface-darker);
+        margin-top: 10px;
 
         & > .description {
             display: flex;
             align-items: center;
             gap: 24px;
             overflow: hidden;
+            color: var(--color-on-surface);
 
             & > span {
-                color: var(--color-on-surface);
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
 
                 &.legend {
                     flex-shrink: 0;
+                    color: var(--color-on-surface-low-emphasis);
                 }
 
                 &.error {
