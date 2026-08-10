@@ -290,6 +290,7 @@ function EditModal({
         fn: () => Promise<string | null>,
     ): Promise<void> => {
         const path = await fn();
+        if (!path) return;
         setFieldValue(formKey, path ? path : "");
     };
 
