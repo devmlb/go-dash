@@ -23,7 +23,7 @@ _An app to easily manage your [GrandOrgue](https://github.com/GrandOrgue/grandor
 - Import and export your config file
 - Nice and modern UI
 
-⚠️ __Only Windows is supported for now, and the application is displayed in French only.__
+⚠️ __Only Windows is supported for now.__
 
 ### Download
 
