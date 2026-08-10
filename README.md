@@ -31,27 +31,22 @@ Download the [latest version](https://github.com/devmlb/go-dash/releases/latest)
 
 ## Project setup for development
 
-GO Dash is based on [electron-vite](https://electron-vite.org/).
+GO Dash is based on [Tauri](https://v2.tauri.app/), an open-source framework used to build tiny, fast, and cross-platform applications using web technologies for the user interface and Rust for the backend logic.
 
 ### Install and test
 
 ```bash
 # Install dependencies
-$ npm i
+npm i
 
-# Launch live development server
-$ npm run dev
+# Launch in development mode (with hot reload)
+npm run tauri dev
 ```
 
 ### Build
 
+The build output will depend on your host OS.
+
 ```bash
-# For windows
-$ npm run build:win
-
-# For macOS (not tested yet)
-$ npm run build:mac
-
-# For Linux (not tested yet)
-$ npm run build:linux
+npm run tauri build
 ```
