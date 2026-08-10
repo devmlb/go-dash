@@ -10,10 +10,12 @@ import { useApi } from "../../utils/hooks/api.hook";
 import { organApi } from "../../api/organ.api";
 import { TextButton } from "../../components/button/Button";
 import { extractIntIfFound } from "../../utils/extract";
+import { Switch } from "../../components/switch/Switch";
 
 type FormFields = Record<
     string,
     | {
+          type: "input";
           value: string;
           isValid: boolean;
           placeholder: string;
@@ -21,10 +23,16 @@ type FormFields = Record<
           validationErrorText?: string;
       }
     | {
+          type: "file";
           value: string;
           required: boolean;
           legend: string;
           action: () => Promise<string | null>;
+      }
+    | {
+          type: "switch";
+          value: boolean;
+          legend: string;
       }
 >;
 
@@ -36,7 +44,7 @@ type FormFieldsAction =
     | {
           type: "setValue";
           key: string;
-          value: string;
+          value: string | boolean;
       }
     | {
           type: "setValidity";
@@ -54,6 +62,24 @@ function formFieldsReducer(
         case "setValue": {
             const field = state[action.key];
             if (!field) return state;
+
+            if (typeof action.value === "boolean") {
+                if (field.type !== "switch") {
+                    throw new Error(`Invalid value type for '${action.key}'`);
+                }
+
+                return {
+                    ...state,
+                    [action.key]: {
+                        ...field,
+                        value: action.value,
+                    },
+                };
+            }
+
+            if (field.type === "switch") {
+                throw new Error(`Invalid value type for '${action.key}'`);
+            }
 
             return {
                 ...state,
@@ -84,6 +110,7 @@ function buildFormFields(
 ): FormFields {
     const defaults: FormFields = {
         name: {
+            type: "input",
             value: "",
             isValid: false,
             placeholder: t("modal.edit.form.name"),
@@ -91,6 +118,7 @@ function buildFormFields(
             validationErrorText: t("modal.edit.validation.name"),
         },
         country: {
+            type: "input",
             value: "",
             isValid: false,
             placeholder: t("modal.edit.form.country"),
@@ -98,6 +126,7 @@ function buildFormFields(
             validationErrorText: t("modal.edit.validation.country"),
         },
         year: {
+            type: "input",
             value: "",
             isValid: true,
             placeholder: t("modal.edit.form.year"),
@@ -105,11 +134,13 @@ function buildFormFields(
             validationErrorText: t("modal.edit.validation.year"),
         },
         builder: {
+            type: "input",
             value: "",
             isValid: true,
             placeholder: t("modal.edit.form.builder"),
         },
         stops: {
+            type: "input",
             value: "",
             isValid: true,
             placeholder: t("modal.edit.form.stops"),
@@ -117,18 +148,26 @@ function buildFormFields(
             validationErrorText: t("modal.edit.validation.stops"),
         },
         keyboards: {
+            type: "input",
             value: "",
             isValid: true,
             placeholder: t("modal.edit.form.keyboards"),
             regexValidation: /^[0-9]*$/,
             validationErrorText: t("modal.edit.validation.keyboards"),
         },
+        hasPedals: {
+            type: "switch",
+            value: true,
+            legend: t("modal.edit.form.pedals"),
+        },
         features: {
+            type: "input",
             value: "",
             isValid: true,
             placeholder: t("modal.edit.form.features"),
         },
         url: {
+            type: "input",
             value: "",
             isValid: true,
             placeholder: t("modal.edit.form.url"),
@@ -136,18 +175,21 @@ function buildFormFields(
             validationErrorText: t("modal.edit.validation.url"),
         },
         path: {
+            type: "file",
             value: "",
             required: true,
             legend: t("modal.edit.form.path"),
             action: organApi.chooseGOFile,
         },
         coverPath: {
+            type: "file",
             value: "",
             required: false,
             legend: t("modal.edit.form.coverPath"),
             action: organApi.chooseImage,
         },
         previewPath: {
+            type: "file",
             value: "",
             required: false,
             legend: t("modal.edit.form.previewPath"),
@@ -160,7 +202,9 @@ function buildFormFields(
             (key) => {
                 if (key === "id") return;
 
-                if (typeof organInfos[key] === "number") {
+                if (typeof organInfos[key] === "boolean") {
+                    defaults[key].value = organInfos[key];
+                } else if (typeof organInfos[key] === "number") {
                     defaults[key].value = organInfos[key].toString();
                 } else {
                     defaults[key].value = organInfos[key]
@@ -220,7 +264,7 @@ function EditModal({
         });
     }, [organInfos, t]);
 
-    const setFieldValue = (key: string, value: string): void => {
+    const setFieldValue = (key: string, value: string | boolean): void => {
         dispatchFormFields({ type: "setValue", key, value });
     };
 
@@ -233,6 +277,8 @@ function EditModal({
             const field = formFields[fieldKey];
             if ("isValid" in field) {
                 return field.isValid;
+            } else if (!("required" in field)) {
+                return true;
             } else {
                 return field.required ? !!field.value : true;
             }
@@ -248,26 +294,31 @@ function EditModal({
     };
 
     const closeAndSave = async (): Promise<void> => {
+        const getInputValue = (key: string): string => {
+            const field = formFields[key];
+            return field.type === "input" ? field.value : "";
+        };
+
+        const getFileValue = (key: string): string | undefined => {
+            const field = formFields[key];
+            return field.type === "file" && field.value
+                ? field.value
+                : undefined;
+        };
+
         const newOrgan = {
-            name: formFields["name"].value,
-            country: formFields["country"].value,
-            year: extractIntIfFound(formFields["year"].value),
-            builder: formFields["builder"].value
-                ? formFields["builder"].value
-                : undefined,
-            features: formFields["features"].value
-                ? formFields["features"].value
-                : undefined,
-            stops: extractIntIfFound(formFields["stops"].value),
-            keyboards: extractIntIfFound(formFields["keyboards"].value),
-            url: formFields["url"].value ? formFields["url"].value : undefined,
-            path: formFields["path"].value,
-            previewPath: formFields["previewPath"].value
-                ? formFields["previewPath"].value
-                : undefined,
-            coverPath: formFields["coverPath"].value
-                ? formFields["coverPath"].value
-                : undefined,
+            name: getInputValue("name"),
+            country: getInputValue("country"),
+            year: extractIntIfFound(getInputValue("year")),
+            builder: getInputValue("builder") || undefined,
+            features: getInputValue("features") || undefined,
+            stops: extractIntIfFound(getInputValue("stops")),
+            keyboards: extractIntIfFound(getInputValue("keyboards")),
+            hasPedals: !!formFields["hasPedals"].value,
+            url: getInputValue("url") || undefined,
+            path: getFileValue("path") ?? "",
+            previewPath: getFileValue("previewPath"),
+            coverPath: getFileValue("coverPath"),
         };
 
         if (organInfos) {
@@ -294,7 +345,7 @@ function EditModal({
             <div className="edit-modal-content">
                 {Object.keys(formFields).map((fieldKey) => {
                     const field = formFields[fieldKey];
-                    if ("isValid" in field) {
+                    if (field.type === "input") {
                         return (
                             <Input
                                 key={"field" + fieldKey}
@@ -308,7 +359,24 @@ function EditModal({
                                 }
                             />
                         );
-                    } else {
+                    } else if (field.type === "switch") {
+                        return (
+                            <div
+                                key={"field" + fieldKey}
+                                className="switch-view"
+                            >
+                                <span className="description">
+                                    {field.legend}
+                                </span>
+                                <Switch
+                                    isChecked={field.value}
+                                    setIsChecked={(v) =>
+                                        setFieldValue(fieldKey, v)
+                                    }
+                                />
+                            </div>
+                        );
+                    } else if (field.type === "file") {
                         return (
                             <div
                                 key={"field" + fieldKey}

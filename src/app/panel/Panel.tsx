@@ -149,10 +149,16 @@ function Panel({
                                     {`${selectedOrgan.stops} ${t("common.stop", { count: selectedOrgan.stops })}`}
                                 </div>
                             )}
-                            {selectedOrgan.keyboards && (
+                            {(selectedOrgan.keyboards ||
+                                selectedOrgan.hasPedals) && (
                                 <div>
                                     <KeyboardMusic size={16} strokeWidth={2} />
-                                    {`${selectedOrgan.keyboards} ${t("common.keyboard", { count: selectedOrgan.keyboards })}`}
+                                    {selectedOrgan.keyboards &&
+                                    selectedOrgan.hasPedals
+                                        ? `${selectedOrgan.keyboards}+P`
+                                        : selectedOrgan.keyboards
+                                          ? `${selectedOrgan.keyboards} ${t("common.keyboard", { count: selectedOrgan.keyboards })}`
+                                          : t("common.pedals")}
                                 </div>
                             )}
                             {selectedOrgan.features && (

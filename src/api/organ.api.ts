@@ -37,6 +37,7 @@ class OrganApi {
             features: organ.features !== null ? organ.features : undefined,
             stops: organ.stops !== null ? organ.stops : undefined,
             keyboards: organ.keyboards !== null ? organ.keyboards : undefined,
+            hasPedals: organ.hasPedals,
             path: organ.path,
             coverPath: organ.coverPath !== null ? organ.coverPath : undefined,
             previewPath:
@@ -213,6 +214,11 @@ class OrganApi {
                         "keyboards" in parsedOrgan &&
                         typeof parsedOrgan.keyboards === "number"
                             ? parsedOrgan.keyboards
+                            : null,
+                    hasPedals:
+                        "hasPedals" in parsedOrgan &&
+                        typeof parsedOrgan.hasPedals === "boolean"
+                            ? parsedOrgan.hasPedals
                             : null,
                 });
             }

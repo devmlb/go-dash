@@ -57,11 +57,15 @@ function OrganCard({
                               organ.stops +
                               ` ${t("common.stop", { count: organ.stops })}`
                             : "") +
-                        (organ.keyboards
-                            ? (organ.stops ? ", " : " • ") +
-                              organ.keyboards +
-                              ` ${t("common.keyboard", { count: organ.keyboards })}`
-                            : "")}
+                        (!organ.keyboards && !organ.hasPedals
+                            ? ""
+                            : (organ.stops ? ", " : " • ") +
+                              (organ.keyboards && organ.hasPedals
+                                  ? `${organ.keyboards}+P`
+                                  : organ.keyboards
+                                    ? organ.keyboards +
+                                      ` ${t("common.keyboard", { count: organ.keyboards })}`
+                                    : ` ${t("common.pedals")}`))}
                 </div>
             </div>
         </div>

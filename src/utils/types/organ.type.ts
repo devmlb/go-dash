@@ -8,6 +8,7 @@ interface MinimalOrgan {
     features?: string;
     stops?: number;
     keyboards?: number;
+    hasPedals: boolean;
 }
 
 interface Organ extends MinimalOrgan {

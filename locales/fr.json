@@ -6,6 +6,7 @@
     "common.stop_other": "jeux",
     "common.keyboard_one": "clavier",
     "common.keyboard_other": "claviers",
+    "common.pedals": "pédalier",
     "common.imageError": "Impossible de charger l'image",
 
     "appbar.sortMenu.name": "Trier par nom",
@@ -45,6 +46,7 @@
     "modal.edit.form.builder": "Facteur d'orgue",
     "modal.edit.form.stops": "Nombre de jeux",
     "modal.edit.form.keyboards": "Nombre de claviers",
+    "modal.edit.form.pedals": "Cet orgue possède un pédalier",
     "modal.edit.form.features": "Autres caractéristiques",
     "modal.edit.form.url": "URL externe",
     "modal.edit.form.path": "Chemin du fichier d'orgue",

@@ -6,6 +6,7 @@
     "common.stop_other": "stops",
     "common.keyboard_one": "keyboard",
     "common.keyboard_other": "keyboards",
+    "common.pedals": "pedals",
     "common.imageError": "Cannot load image",
 
     "appbar.sortMenu.name": "Sort by name",
@@ -45,6 +46,7 @@
     "modal.edit.form.builder": "Organ builder",
     "modal.edit.form.stops": "Number of stops",
     "modal.edit.form.keyboards": "Number of keyboards",
+    "modal.edit.form.pedals": "This organ has pedals",
     "modal.edit.form.features": "Other features",
     "modal.edit.form.url": "External URL",
     "modal.edit.form.path": "Organ file path",

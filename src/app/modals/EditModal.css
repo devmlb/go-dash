@@ -2,9 +2,10 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    color: var(--color-on-surface);
 
     & .file-selection {
-        padding-left: 22px;
+        padding-left: 23px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -18,7 +19,6 @@
             align-items: center;
             gap: 24px;
             overflow: hidden;
-            color: var(--color-on-surface);
 
             & > span {
                 overflow: hidden;
@@ -35,5 +35,17 @@
                 }
             }
         }
+    }
+
+    & .switch-view {
+        padding: 0 23px;
+        margin: 16px 0 12px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        /* margin-top: 10px; */
     }
 }
