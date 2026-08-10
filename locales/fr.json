@@ -34,7 +34,6 @@
 
     "modal.update.title": "Mise à jour disponible",
     "modal.update.body.infos": "La version {{version}} de GO Dash a été téléchargée. Redémarrez l'application pour terminer l'installation.",
-    "modal.update.body.notesTitle": "Notes de version",
     "modal.update.restartButton": "Redémarrer et installer",
     "modal.update.laterButton": "Plus tard",
 

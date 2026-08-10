@@ -33,7 +33,8 @@
         "postcss-nesting": "^14.0.1",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
-        "react-i18next": "^17.0.11"
+        "react-i18next": "^17.0.11",
+        "react-markdown": "^10.1.0"
     },
     "devDependencies": {
         "@tauri-apps/cli": "^2",

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import "./UpdateModal.css";
 import { Modal } from "../../components/modal/Modal";
+import Markdown from "react-markdown";
 
 function UpdateModal({
     isOpen,
@@ -42,11 +43,8 @@ function UpdateModal({
                         version: updateDetails.version,
                     })}
                 </div>
-                <span className="notes-title">
-                    {t("modal.update.body.notesTitle")}
-                </span>
                 <div>
-                    <pre>{updateDetails.body}</pre>
+                    <Markdown>{updateDetails.body}</Markdown>
                 </div>
             </div>
         </Modal>

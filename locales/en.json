@@ -34,7 +34,6 @@
 
     "modal.update.title": "Update available",
     "modal.update.body.infos": "GO Dash version {{version}} has been downloaded. Please restart the app to complete the installation.",
-    "modal.update.body.notesTitle": "Release notes",
     "modal.update.restartButton": "Restart and install",
     "modal.update.laterButton": "Later",
 
