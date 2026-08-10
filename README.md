@@ -12,7 +12,7 @@ _An app to easily manage your [GrandOrgue](https://github.com/GrandOrgue/grandor
     - year of construction
     - builder
     - stops number
-    - keyboards number
+    - keyboards number and pedals
     - other features
     - URL of an associated website
     - organ file (.orgue, .organ)
@@ -23,11 +23,11 @@ _An app to easily manage your [GrandOrgue](https://github.com/GrandOrgue/grandor
 - Import and export your config file
 - Nice and modern UI
 
-⚠️ __Only Windows is supported for now.__
-
 ### Download
 
 Download the [latest version](https://github.com/devmlb/go-dash/releases/latest) from the releases section.
+
+> ⚠️ Please note that only the Windows x64 build is fully tested for now.
 
 ## Project setup for development
 
