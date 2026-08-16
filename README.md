@@ -29,6 +29,8 @@ Download the [latest version](https://github.com/devmlb/go-dash/releases/latest)
 
 > ⚠️ Please note that only the Windows x64 build is fully tested for now.
 
+> ⚠️ To open MacOS builds, you will need to [whitelist the installation in your Privacy & Security settings](https://support.apple.com/fr-fr/guide/mac-help/mh40616/mac).
+
 ## Project setup for development
 
 GO Dash is based on [Tauri](https://v2.tauri.app/), an open-source framework used to build tiny, fast, and cross-platform applications using web technologies for the user interface and Rust for the backend logic.
